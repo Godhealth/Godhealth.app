@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0D1F0D">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<title>GodHealth — Meal Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F9F6F0;--bg2:#FFFFFF;--bg3:#F2EDE4;
+  --border:#E8E0D0;--border2:#D4C9B0;
+  --ink:#1A1410;--ink2:#5C4F3A;--ink3:#9A8E7A;
+  --temple:#C4573A;--temple-light:#FAF0ED;
+  --soul:#4A7FA5;--soul-light:#EEF4F9;
+  --spirit:#6B8F5E;--spirit-light:#EFF4EE;
+  --gold:#B8912A;--gold-light:#FBF5E6;
+  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:flex;flex-direction:column;}
+
+/* HEADER */
+.app-header{background:#0D1F0D;border-bottom:1px solid rgba(107,143,94,.25);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.3);}
+.header-left{display:flex;align-items:center;gap:10px;}
+.back-btn{background:rgba(245,237,216,.1);border:1px solid rgba(245,237,216,.15);color:#F5EDD8;font-size:16px;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;}
+.header-logo{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#F5EDD8;}
+.header-logo em{font-style:italic;color:var(--gold);}
+.header-day{font-size:11px;color:rgba(245,237,216,.5);font-weight:700;letter-spacing:1px;}
+
+/* SCROLL */
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll-area::-webkit-scrollbar{width:0;}
+.content{padding:16px;}
+
+/* GOAL SELECTOR */
+.goal-section{margin-bottom:16px;}
+.section-label{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.goal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.goal-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:14px 12px;cursor:pointer;transition:all .22s;text-align:center;}
+.goal-card.active.lose{background:var(--temple-light);border-color:rgba(196,87,58,.4);}
+.goal-card.active.energy{background:var(--gold-light);border-color:rgba(184,145,42,.4);}
+.goal-card.active.build{background:var(--soul-light);border-color:rgba(74,127,165,.4);}
+.goal-card.active.fast{background:var(--spirit-light);border-color:rgba(107,143,94,.4);}
+.goal-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm);}
+.goal-emoji{font-size:24px;margin-bottom:6px;}
+.goal-name{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.goal-desc{font-size:10px;color:var(--ink3);line-height:1.4;}
+
+/* FASTING TOGGLE */
+.fasting-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:16px;}
+.fasting-info{flex:1;}
+.fasting-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.fasting-desc{font-size:11px;color:var(--ink3);}
+.toggle{width:44px;height:24px;background:var(--border2);border-radius:100px;position:relative;cursor:pointer;transition:background .25s;border:none;flex-shrink:0;}
+.toggle.on{background:var(--spirit);}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .25s;box-shadow:0 1px 4px rgba(0,0,0,.15);}
+.toggle.on::after{left:23px;}
+
+/* GENERATE BTN */
+.generate-btn{width:100%;background:var(--gold);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:15px;border:none;border-radius:12px;cursor:pointer;transition:all .25s;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.generate-btn:hover{background:#9A7020;box-shadow:0 4px 16px rgba(184,145,42,.3);}
+.generate-btn:active{transform:scale(.98);}
+
+/* MEAL PLAN */
+.plan-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.plan-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);}
+.plan-date{font-size:11px;color:var(--ink3);}
+.plan-macros{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.macro-pill{font-size:10px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:.5px;}
+.macro-pill.p{background:rgba(74,127,165,.1);color:var(--soul);}
+.macro-pill.f{background:rgba(184,145,42,.1);color:var(--gold);}
+.macro-pill.c{background:rgba(107,143,94,.1);color:var(--spirit);}
+.macro-pill.cal{background:var(--bg3);color:var(--ink2);}
+
+/* MEAL SLOTS */
+.meal-slot{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm);animation:riseUp .4s ease both;}
+.meal-slot:nth-child(2){animation-delay:.08s;}
+.meal-slot:nth-child(3){animation-delay:.16s;}
+.meal-slot:nth-child(4){animation-delay:.24s;}
+.meal-slot-header{padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+.meal-time-badge{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:20px;flex-shrink:0;}
+.meal-time-badge.breakfast{background:var(--gold-light);color:var(--gold);}
+.meal-time-badge.lunch{background:var(--temple-light);color:var(--temple);}
+.meal-time-badge.dinner{background:var(--soul-light);color:var(--soul);}
+.meal-time-badge.snack{background:var(--spirit-light);color:var(--spirit);}
+.meal-slot-info{flex:1;}
+.meal-slot-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.meal-slot-ref{font-size:10px;color:var(--ink3);font-style:italic;}
+.meal-slot-emoji{font-size:24px;flex-shrink:0;}
+.meal-slot-chevron{font-size:12px;color:var(--ink3);transition:transform .25s;flex-shrink:0;}
+.meal-slot.open .meal-slot-chevron{transform:rotate(180deg);}
+.meal-slot-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border);}
+.meal-slot.open .meal-slot-body{display:block;}
+.meal-body-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:12px 0 6px;}
+.meal-science-box{background:var(--soul-light);border-left:3px solid var(--soul);border-radius:0 8px 8px 0;padding:10px 12px;font-size:12px;color:var(--ink2);line-height:1.65;margin-bottom:8px;}
+.meal-ingredients-text{font-size:13px;color:var(--ink2);line-height:1.8;}
+.meal-steps-list{list-style:none;}
+.meal-step-item{display:flex;gap:10px;margin-bottom:8px;font-size:13px;color:var(--ink2);line-height:1.55;}
+.meal-step-num{width:22px;height:22px;min-width:22px;border-radius:50%;background:var(--gold-light);border:1px solid rgba(184,145,42,.25);font-size:10px;font-weight:700;color:var(--gold);display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.meal-macros-row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.meal-macro{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.meal-macro.p{background:rgba(74,127,165,.1);color:var(--soul);}
+.meal-macro.f{background:rgba(184,145,42,.1);color:var(--gold);}
+.meal-macro.c{background:rgba(107,143,94,.1);color:var(--spirit);}
+.swap-btn{display:flex;align-items:center;gap:5px;background:var(--bg3);border:1px solid var(--border);color:var(--ink3);font-family:'Lato',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:7px 12px;border-radius:8px;cursor:pointer;margin-top:10px;transition:all .2s;}
+.swap-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* WATER TRACKER */
+.water-card{background:var(--soul-light);border:1.5px solid rgba(74,127,165,.2);border-radius:var(--radius);padding:16px;margin-bottom:12px;}
+.water-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--soul);margin-bottom:10px;}
+.water-glasses{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.water-glass{font-size:24px;cursor:pointer;transition:all .2s;opacity:.3;filter:grayscale(1);}
+.water-glass.filled{opacity:1;filter:none;}
+.water-info{font-size:11px;color:var(--soul);font-weight:700;}
+
+/* IF WINDOW */
+.if-window-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.if-window-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.if-timeline{position:relative;height:40px;background:var(--bg3);border-radius:100px;overflow:hidden;margin-bottom:8px;}
+.if-fasting-bar{position:absolute;top:0;left:0;height:100%;background:rgba(26,20,16,.08);border-radius:100px;}
+.if-eating-bar{position:absolute;top:0;height:100%;background:var(--gold);border-radius:100px;opacity:.3;}
+.if-now-line{position:absolute;top:0;height:100%;width:2px;background:var(--temple);}
+.if-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--ink3);}
+.if-window-times{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.if-time-box{background:var(--gold-light);border:1px solid rgba(184,145,42,.2);border-radius:9px;padding:9px 10px;text-align:center;}
+.if-time-label{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(184,145,42,.7);margin-bottom:3px;font-weight:700;}
+.if-time-val{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);}
+
+/* SAVED PLANS */
+.saved-plan-item{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all .2s;}
+.saved-plan-item:hover{border-color:var(--gold);background:var(--gold-light);}
+.saved-plan-date{font-size:12px;font-weight:700;color:var(--ink);}
+.saved-plan-goal{font-size:10px;color:var(--ink3);margin-top:2px;}
+.saved-plan-arrow{font-size:14px;color:var(--ink3);}
+
+/* VERSE STRIP */
+.verse-strip{background:var(--gold-light);border:1px solid rgba(184,145,42,.2);border-radius:12px;padding:14px 16px;margin-bottom:16px;position:relative;overflow:hidden;}
+.verse-strip::after{content:'🌿';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:40px;opacity:.15;}
+.verse-text{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--ink);line-height:1.6;margin-bottom:4px;}
+.verse-ref{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px 20px;}
+.empty-state-icon{font-size:48px;margin-bottom:12px;opacity:.4;}
+.empty-state-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.empty-state-desc{font-size:13px;color:var(--ink3);line-height:1.65;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;padding:10px 20px;border-radius:100px;z-index:999;opacity:0;transition:all .35s;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@keyframes riseUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ACCESSIBILITY */
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #B8912A;outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="header-left">
+    <a class="back-btn" href="index.html" onclick="ghGoBack(event)" aria-label="Back to home">←</a>
+    <div class="header-logo">God<em>Health</em> Kitchen</div>
+  </div>
+  <div class="header-day" id="header-day"></div>
+</div>
+
+<div class="scroll-area">
+  <div class="content">
+
+    <div class="verse-strip">
+      <div class="verse-text" id="daily-verse"></div>
+      <div class="verse-ref" id="daily-verse-ref"></div>
+    </div>
+
+    <!-- GOAL SELECTOR -->
+    <div class="goal-section">
+      <div class="section-label">Your Goal Today</div>
+      <div class="goal-grid">
+        <div class="goal-card lose" onclick="selectGoal('lose',this)">
+          <div class="goal-emoji">🔥</div>
+          <div class="goal-name">Lose Weight</div>
+          <div class="goal-desc">Lower calories, high protein, fat burning</div>
+        </div>
+        <div class="goal-card energy" onclick="selectGoal('energy',this)">
+          <div class="goal-emoji">⚡</div>
+          <div class="goal-name">Boost Energy</div>
+          <div class="goal-desc">Balanced macros, sustained energy all day</div>
+        </div>
+        <div class="goal-card build" onclick="selectGoal('build',this)">
+          <div class="goal-emoji">🏛️</div>
+          <div class="goal-name">Build Strength</div>
+          <div class="goal-desc">High protein, complex carbs, muscle repair</div>
+        </div>
+        <div class="goal-card fast" onclick="selectGoal('fast',this)">
+          <div class="goal-emoji">✝️</div>
+          <div class="goal-name">Fasting Day</div>
+          <div class="goal-desc">Gentle break-fast meals, spiritual focus</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FASTING TOGGLE -->
+    <div class="fasting-row">
+      <div class="fasting-info">
+        <div class="fasting-title">Intermittent Fasting</div>
+        <div class="fasting-desc" id="if-desc">16/8 — meals between <span id="if-open-time">12:00</span> and <span id="if-close-time">20:00</span></div>
+      </div>
+      <button class="toggle on" id="if-toggle" onclick="toggleIF()"></button>
+    </div>
+
+    <!-- IF WINDOW VISUAL -->
+    <div class="if-window-card" id="if-window-card">
+      <div class="if-window-title">Eating Window Today</div>
+      <div class="if-timeline">
+        <div class="if-fasting-bar" id="if-fasting-bar"></div>
+        <div class="if-eating-bar" id="if-eating-bar"></div>
+        <div class="if-now-line" id="if-now-line"></div>
+      </div>
+      <div class="if-labels">
+        <span>12am</span><span>6am</span><span>12pm</span><span>6pm</span><span>12am</span>
+      </div>
+      <div class="if-window-times">
+        <div class="if-time-box">
+          <div class="if-time-label">First Meal</div>
+          <div class="if-time-val" id="if-first-meal">12:00 PM</div>
+        </div>
+        <div class="if-time-box">
+          <div class="if-time-label">Last Meal</div>
+          <div class="if-time-val" id="if-last-meal">8:00 PM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GENERATE -->
+    <button class="generate-btn" onclick="generatePlan()">
+      🌿 Generate My Biblical Meal Plan
+    </button>
+
+    <!-- PLAN OUTPUT -->
+    <div id="plan-output"></div>
+
+    <!-- WATER TRACKER -->
+    <div class="water-card" id="water-tracker" style="display:none;">
+      <div class="water-title">💧 Daily Water — 8 Glasses</div>
+      <div class="water-glasses" id="water-glasses"></div>
+      <div class="water-info" id="water-info">0 of 8 glasses — keep drinking</div>
+    </div>
+
+    <!-- SAVED PLANS -->
+    <div id="saved-section" style="display:none;">
+      <div class="section-label" style="margin-top:8px;">Previous Plans</div>
+      <div id="saved-plans-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ STATE ═══
+let P={goal:'energy',ifEnabled:true,ifHours:16,water:{},savedPlans:[]};
+function lp(){try{const s=localStorage.getItem('gh_meals_v1');if(s)P=JSON.parse(s);}catch(e){}}
+function sp(){try{localStorage.setItem('gh_meals_v1',JSON.stringify(P));return true;}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}}
+function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+// ═══ VERSES ═══
+const VERSES=[
+  {text:"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God.",ref:"1 Corinthians 10:31 (KJV)"},
+  {text:"And God said, Behold, I have given you every herb bearing seed... to you it shall be for meat.",ref:"Genesis 1:29 (KJV)"},
+  {text:"He maketh me to lie down in green pastures: he leadeth me beside the still waters.",ref:"Psalm 23:2 (KJV)"},
+  {text:"Know ye not that your body is the temple of the Holy Ghost?",ref:"1 Corinthians 6:19 (KJV)"},
+  {text:"Daniel purposed in his heart that he would not defile himself with the king's meat.",ref:"Daniel 1:8 (KJV)"},
+  {text:"And Daniel was found ten times better than all the magicians.",ref:"Daniel 1:20 (KJV)"},
+  {text:"Prove thy servants, I beseech thee, ten days; and let them give us pulse to eat.",ref:"Daniel 1:12 (KJV)"},
+  {text:"He causeth the grass to grow for the cattle, and herb for the service of man.",ref:"Psalm 104:14 (KJV)"},
+  {text:"The LORD shall guide thee continually, and satisfy thy soul in drought.",ref:"Isaiah 58:11 (KJV)"},
+  {text:"Eat thou honey, because it is good; and the honeycomb, which is sweet to thy taste.",ref:"Proverbs 24:13 (KJV)"},
+  {text:"A land of wheat, and barley, and vines, and fig trees, and pomegranates; a land of oil olive, and honey.",ref:"Deuteronomy 8:8 (KJV)"},
+  {text:"Better is a dinner of herbs where love is, than a stalled ox and hatred therewith.",ref:"Proverbs 15:17 (KJV)"},
+  {text:"He satisfieth the longing soul, and filleth the hungry soul with goodness.",ref:"Psalm 107:9 (KJV)"},
+  {text:"Is not this the fast that I have chosen? to loose the bands of wickedness.",ref:"Isaiah 58:6 (KJV)"},
+];
+
+// ═══ ALL 50 BIBLICAL MEALS ═══
+const ALL_MEALS=[
+  {id:1,emoji:'🐟',name:'Grilled Fish by the Fire',pillar:'temple',ref:'John 21:9',tags:['protein','omega3','light'],goal:['lose','energy','build'],science:'Rich in omega-3 fatty acids which reduce inflammation. Provides 25–35g complete protein per serving.',ingredients:'• 200g fresh fish fillet\n• 2 tbsp olive oil\n• 3 garlic cloves, crushed\n• Fresh herbs: thyme, rosemary, parsley\n• Sea salt, black pepper\n• Lemon wedges',steps:['Pat fish completely dry — moisture prevents proper searing.','Score the skin 3 times. Rub with olive oil, garlic and herbs.','Heat pan until smoking. Place skin-side down.','Cook 4–5 minutes. Flip gently. Cook 3 more minutes.','Rest 2 minutes. Serve with lemon.'],macros:{p:42,f:30,c:0},cal:280,time:'15 min'},
+  {id:2,emoji:'🫘',name:'Lentil Pottage of Esau',pillar:'temple',ref:'Genesis 25:34',tags:['fibre','plant','filling'],goal:['lose','energy'],science:'Glycaemic index of just 21. Provides 18g protein and 16g fibre per cup, preventing blood sugar spikes.',ingredients:'• 200g red lentils, rinsed\n• 1 large onion, diced\n• 4 garlic cloves\n• 2 tbsp olive oil\n• 1 tsp cumin, ½ tsp turmeric\n• 700ml water',steps:['Heat olive oil. Add onion, cook 8 minutes.','Add garlic and spices. Stir 1 minute.','Add lentils and water. Bring to a boil.','Simmer 20–25 minutes until thick.','Season well. Serve with barley bread.'],macros:{p:28,f:18,c:54},cal:320,time:'30 min'},
+  {id:3,emoji:'🍯',name:'Barley Bread with Raw Honey',pillar:'spirit',ref:'Proverbs 24:13',tags:['carbs','energy','sweet'],goal:['energy','build'],science:'Beta-glucan in barley reduces LDL cholesterol by 5–10% and stabilises blood sugar for 4–6 hours.',ingredients:'• 250g barley flour\n• 1 tsp sea salt\n• 1 tbsp olive oil\n• 150ml warm water\n• Raw honey to serve',steps:['Mix flour and salt. Add olive oil.','Add warm water until firm dough.','Shape into flat disc 1cm thick.','Cook in dry hot pan 5 minutes each side.','Drizzle with raw honey.'],macros:{p:12,f:18,c:70},cal:380,time:'20 min'},
+  {id:4,emoji:'🍖',name:'Passover Lamb with Bitter Herbs',pillar:'spirit',ref:'Exodus 12:8',tags:['protein','iron','feast'],goal:['build','energy'],science:'Lamb provides bioavailable iron, zinc and B12. Bitter herbs stimulate bile production and liver detoxification.',ingredients:'• 300g lamb shoulder\n• 2 tbsp olive oil\n• 3 garlic cloves\n• Fresh rosemary and thyme\n• Bitter herb salad: rocket, endive, chicory',steps:['Pat lamb dry. Score surface, push garlic into cuts.','Rub with olive oil, salt and pepper.','Roast at 220°C 20 minutes, reduce to 160°C 1 hour.','Rest covered 15 minutes.','Serve with bitter herb salad.'],macros:{p:40,f:35,c:0},cal:420,time:'90 min'},
+  {id:5,emoji:'🫙',name:"Daniel's Pulse Bowl",pillar:'temple',ref:'Daniel 1:12',tags:['plant','fibre','detox'],goal:['lose','energy'],science:'Daniel was found ten times healthier. Legumes reduce inflammation markers by up to 22% compared to refined diets.',ingredients:'• 150g chickpeas, cooked\n• 100g green lentils, cooked\n• 2 tbsp olive oil\n• Juice of 1 lemon\n• Fresh parsley and mint\n• ½ tsp cumin',steps:['Combine olive oil, lemon juice, garlic and cumin.','Add warm legumes and toss to coat.','Fold in parsley and mint.','Top with pomegranate seeds.','Eat at room temperature.'],macros:{p:26,f:20,c:54},cal:310,time:'10 min'},
+  {id:6,emoji:'🫒',name:'Olive Oil & Herb Dipping Bread',pillar:'temple',ref:'Ruth 2:14',tags:['fat','flavour','simple'],goal:['energy'],science:'Extra virgin olive oil contains oleocanthal with anti-inflammatory properties. Reduces cardiovascular disease risk by 30%.',ingredients:'• 4 tbsp extra virgin olive oil\n• 1 garlic clove, minced\n• Fresh rosemary, thyme, oregano\n• Pinch of sea salt and black pepper\n• Barley bread for dipping',steps:['Pour olive oil into a wide shallow bowl.','Add minced garlic. Infuse 5 minutes.','Scatter fresh herbs and sea salt.','Do not heat the oil — heat destroys oleocanthal.','Dip bread slowly. This is a full meal.'],macros:{p:8,f:42,c:50},cal:440,time:'5 min'},
+  {id:7,emoji:'🐑',name:'Slow-Roasted Lamb with Pomegranate',pillar:'temple',ref:'Luke 15:23',tags:['protein','festive','antioxidant'],goal:['build','energy'],science:'Pomegranate reduces muscle soreness by 35% post-exercise. Lamb provides CLA which actively reduces body fat.',ingredients:'• 500g lamb shoulder\n• Seeds of 1 pomegranate\n• 2 tbsp pomegranate molasses\n• 3 tbsp olive oil\n• 4 garlic cloves\n• 1 tsp each: cinnamon, cumin, coriander',steps:['Mix molasses, olive oil, garlic and spices.','Rub all over lamb. Marinate 2+ hours.','Roast at 160°C for 2.5–3 hours.','Rest 20 minutes.','Serve with fresh pomegranate seeds.'],macros:{p:38,f:32,c:30},cal:480,time:'180 min'},
+  {id:8,emoji:'🌾',name:'Ezekiel Multi-Grain Bread',pillar:'temple',ref:'Ezekiel 4:9',tags:['complete protein','carbs','ancient'],goal:['build','energy'],science:'Combines six grains for all nine essential amino acids. Sprouting reduces phytic acid by 75%, maximising mineral absorption.',ingredients:'• 100g wheat flour\n• 100g barley flour\n• 50g spelt flour\n• 50g lentil flour\n• 50g millet flour\n• 1 tsp salt, 2 tbsp olive oil, 180ml warm water',steps:['Combine all flours and salt.','Add olive oil, mix. Add water, knead 8 minutes.','Shape into a loaf.','Bake at 190°C for 30–35 minutes.','Cool completely before slicing.'],macros:{p:18,f:15,c:67},cal:350,time:'50 min'},
+  {id:9,emoji:'🍇',name:'Fresh Grape & Walnut Plate',pillar:'soul',ref:'Numbers 13:23',tags:['snack','antioxidant','brain'],goal:['lose','energy'],science:'Grapes contain resveratrol linked to longevity. Walnuts are the only nut with significant ALA omega-3 which reduces anxiety.',ingredients:'• 200g fresh red grapes\n• 50g walnuts, soaked overnight\n• 30g almonds\n• 1 tsp raw honey\n• Fresh mint leaves',steps:['Soak walnuts overnight. Drain and rinse.','Wash grapes thoroughly.','Arrange in a bowl with almonds.','Drizzle with raw honey.','Add fresh mint.'],macros:{p:10,f:38,c:52},cal:320,time:'5 min'},
+  {id:10,emoji:'🫐',name:'Pomegranate & Fig Morning Plate',pillar:'spirit',ref:'Deuteronomy 8:8',tags:['breakfast','antioxidant','light'],goal:['lose','energy'],science:'Figs are 30% fibre by weight, feeding gut bacteria that produce serotonin. Pomegranate provides powerful anti-inflammatory compounds.',ingredients:'• 3 fresh figs, halved\n• Seeds of ½ pomegranate\n• 1 tbsp raw honey\n• 20g almonds\n• Fresh mint',steps:['Halve figs and arrange cut-side up.','Scatter pomegranate seeds.','Add almonds.','Drizzle raw honey.','Eat slowly with thanksgiving.'],macros:{p:8,f:22,c:70},cal:280,time:'5 min'},
+  {id:11,emoji:'🥣',name:'Barley & Honey Porridge',pillar:'temple',ref:'Proverbs 24:13',tags:['breakfast','slow-release','warm'],goal:['lose','energy'],science:'Glycaemic index of 28 — far lower than oats or rice. Beta-glucan reduces post-meal blood sugar spikes by up to 59%.',ingredients:'• 80g barley flakes\n• 400ml water\n• 1 tbsp raw honey\n• ½ tsp cinnamon\n• Fresh figs or walnuts to serve',steps:['Bring water to a boil. Add barley.','Simmer 10–12 minutes, stirring often.','Stir in cinnamon.','Serve with honey and figs.'],macros:{p:14,f:18,c:68},cal:340,time:'15 min'},
+  {id:12,emoji:'🫙',name:'Raisin & Almond Restoration Plate',pillar:'fast',ref:'1 Samuel 25:18',tags:['fast-break','gentle','energy'],goal:['fast'],science:'Raisins restore liver glycogen rapidly after fasting without overwhelming the digestive system. Almonds provide magnesium depleted during fasting.',ingredients:'• 40g raisins\n• 30g raw almonds\n• 3 dried figs\n• 2 dates, pitted\n• 1 tbsp raw honey',steps:['Always break a fast with water first.','Wait 5 minutes.','Start with raisins and dates.','Follow with almonds.','End with figs and honey. Wait 20 min before full meal.'],macros:{p:10,f:28,c:62},cal:290,time:'5 min'},
+  {id:13,emoji:'🌿',name:'Bitter Herb Salad',pillar:'soul',ref:'Exodus 12:8',tags:['salad','detox','digestive'],goal:['lose','energy'],science:'Bitter herbs stimulate bile production by up to 40%, improving fat digestion and liver detoxification.',ingredients:'• 60g rocket\n• 40g radicchio, torn\n• 30g endive\n• 20g fresh parsley\n• 3 tbsp olive oil\n• 1½ tbsp apple cider vinegar\n• 1 tsp raw honey',steps:['Wash all greens. Pat completely dry.','Tear into bite-sized pieces.','Whisk oil, vinegar, honey, salt and pepper.','Toss just before serving.','Eat with awareness — bitterness is healing.'],macros:{p:4,f:42,c:14},cal:180,time:'10 min'},
+  {id:14,emoji:'🥗',name:'Roasted Root Vegetables',pillar:'temple',ref:'Numbers 11:5',tags:['vegetables','vitamins','warm'],goal:['lose','energy'],science:'Roasting increases bioavailability of fat-soluble vitamins A, D, E and K. Garlic and onions contain quercetin reducing cardiovascular risk by 25%.',ingredients:'• 300g mixed root vegetables\n• 1 large onion\n• 6 garlic cloves, skin on\n• 3 tbsp olive oil\n• 1 tbsp raw honey\n• Fresh thyme and rosemary',steps:['Preheat oven to 200°C. Cut vegetables evenly.','Toss with olive oil, salt and pepper.','Spread on large tray — do not crowd.','Roast 35–45 minutes, turning once.','Drizzle honey in last 5 minutes.'],macros:{p:6,f:28,c:66},cal:300,time:'45 min'},
+  {id:15,emoji:'🫙',name:'Hummus — Crushed Chickpeas',pillar:'temple',ref:'Daniel 1:12',tags:['protein','fibre','dip'],goal:['lose','energy','build'],science:'Chickpeas are 20% protein and 40% fibre. This combination reduces hunger hormones for 4–6 hours after eating.',ingredients:'• 200g cooked chickpeas\n• 3 tbsp tahini\n• 3 tbsp lemon juice\n• 2 garlic cloves\n• 4 tbsp olive oil\n• ½ tsp salt\n• 4–6 tbsp cold water',steps:['Remove skins from chickpeas for smoothness.','Blend chickpeas alone 2 minutes.','Add tahini, lemon, garlic and salt.','Add cold water one tablespoon at a time.','Blend 4–5 minutes total. Serve with olive oil.'],macros:{p:16,f:38,c:46},cal:350,time:'15 min'},
+  {id:16,emoji:'🍳',name:'Eggs with Fresh Herbs',pillar:'temple',ref:'Luke 11:12',tags:['breakfast','protein','quick'],goal:['lose','build','energy'],science:'Eggs are the most bioavailable protein source — biological value of 100. All nine essential amino acids plus choline for brain function.',ingredients:'• 3 whole eggs\n• 1 tbsp butter or olive oil\n• Fresh herbs: parsley, chives, dill\n• Sea salt and black pepper',steps:['Crack eggs into bowl. Whisk until combined.','Heat pan over LOW heat.','Add butter. Pour in eggs before fully hot.','Stir constantly in slow figure-8 motions.','Remove when slightly underdone. Season. Add herbs.'],macros:{p:32,f:46,c:2},cal:260,time:'8 min'},
+  {id:17,emoji:'🌰',name:'Almond & Date Energy Plate',pillar:'fast',ref:'Genesis 43:11',tags:['fast-break','energy','pre-workout'],goal:['fast','energy','build'],science:'Dates restore liver and muscle glycogen simultaneously. Almonds provide magnesium to reduce muscle cramps and vitamin E as antioxidant.',ingredients:'• 4 Medjool dates, pitted\n• 30g raw almonds\n• 15g walnuts\n• 1 tsp raw honey\n• Pinch of cinnamon',steps:['Split dates open and remove pits.','Arrange dates, almonds and walnuts.','Drizzle honey.','Dust with cinnamon.','Eat slowly — this is a restorative meal.'],macros:{p:10,f:36,c:54},cal:310,time:'5 min'},
+  {id:18,emoji:'🥘',name:'Fish & Barley Bread',pillar:'spirit',ref:'John 21:9',tags:['complete','omega3','community'],goal:['energy','build'],science:'Jesus prepared this meal for His disciples. Fish omega-3s support brain recovery while barley provides sustained energy for 4–6 hours.',ingredients:'• 200g white fish fillet\n• 2 slices barley bread\n• 2 tbsp olive oil\n• 3 garlic cloves\n• Fresh parsley and lemon',steps:['Season fish with salt and pepper.','Heat olive oil until hot.','Cook fish 3–4 minutes each side.','Rub bread with garlic. Toast until golden.','Squeeze lemon. Scatter parsley.'],macros:{p:38,f:28,c:34},cal:380,time:'20 min'},
+  {id:19,emoji:'🧄',name:'Roasted Garlic & Olive Plate',pillar:'temple',ref:'Numbers 11:5',tags:['immune','heart','simple'],goal:['energy','lose'],science:'Allicin in garlic reduces blood pressure by 8–11 mmHg and LDL cholesterol by 10–15%. Significantly boosts immune cell activity.',ingredients:'• 2 whole heads of garlic\n• 20 mixed olives\n• 3 tbsp extra virgin olive oil\n• Fresh thyme\n• Barley bread to serve',steps:['Cut tops off garlic heads. Drizzle with olive oil.','Wrap in foil. Roast at 180°C for 45 minutes.','Squeeze garlic from skins — becomes a soft paste.','Arrange with olives and more olive oil.','Spread on barley bread.'],macros:{p:6,f:48,c:46},cal:420,time:'50 min'},
+  {id:20,emoji:'🌊',name:'Sardines with Herbs & Lemon',pillar:'temple',ref:'Matthew 14:17',tags:['omega3','quick','nutrition'],goal:['lose','energy'],science:'Sardines are among the most nutrient-dense foods — omega-3s, vitamin D, B12, selenium and bone-building calcium. Low in mercury.',ingredients:'• 2 tins sardines in olive oil\n• 1 lemon, zested and juiced\n• Fresh parsley\n• 1 tbsp capers\n• 2 tbsp olive oil\n• Black pepper',steps:['Drain sardines, keeping a little oil.','Place on a plate. Break gently.','Drizzle fresh olive oil and lemon.','Scatter lemon zest, parsley and capers.','Serve on barley bread.'],macros:{p:36,f:40,c:0},cal:320,time:'5 min'},
+  {id:21,emoji:'🧘',name:'Manna — Simple Grain Porridge',pillar:'soul',ref:'Exodus 16:31',tags:['breakfast','calming','simple'],goal:['lose','energy'],science:'Simple clean carbohydrates increase serotonin production. Coriander seed has clinically proven anxiolytic effects.',ingredients:'• 60g oats or millet flakes\n• 300ml water\n• 1 tbsp raw honey\n• ½ tsp ground coriander seed\n• Fresh figs or dates',steps:['Bring water and salt to a boil.','Add oats or millet. Simmer 5–8 minutes.','Stir in ground coriander seed.','Sweeten with honey.','Top with figs or dates.'],macros:{p:12,f:14,c:74},cal:300,time:'10 min'},
+  {id:22,emoji:'🍵',name:'Hyssop & Herb Healing Tea',pillar:'spirit',ref:'Psalm 51:7',tags:['drink','calming','cleansing'],goal:['lose','fast'],science:'Hyssop contains diosmin and hesperidin with anti-inflammatory properties. Reduces cortisol and supports respiratory health.',ingredients:'• 1 tsp dried hyssop\n• 1 tsp dried mint\n• ½ tsp dried thyme\n• 500ml freshly boiled water\n• Raw honey to taste',steps:['Place herbs in a teapot.','Pour water cooled to 90°C over herbs.','Steep covered 7–10 minutes.','Strain through a fine sieve.','Add honey and drink slowly.'],macros:{p:0,f:0,c:8},cal:30,time:'12 min'},
+  {id:23,emoji:'🌱',name:'Restorative Herb Broth',pillar:'soul',ref:'1 Kings 19:6',tags:['broth','light','healing'],goal:['lose','fast'],science:'Broth-based soups increase satiety significantly more than the same calories eaten separately. Creates glycine which improves sleep quality.',ingredients:'• 1.5L water\n• 1 onion, quartered\n• 3 carrots, roughly chopped\n• 4 garlic cloves\n• Fresh parsley, thyme, bay leaves\n• 1 tsp sea salt',steps:['Place all vegetables in a large pot.','Bring to a boil, then lowest possible simmer.','Simmer uncovered for 60–90 minutes.','Strain through a fine sieve.','Drink from a cup like the angel gave Elijah.'],macros:{p:4,f:4,c:12},cal:80,time:'90 min'},
+  {id:24,emoji:'🍂',name:'Lentil & Vegetable Sabbath Stew',pillar:'spirit',ref:'Genesis 25:34',tags:['warm','sabbath','filling'],goal:['lose','energy'],science:'A warm stew activates the parasympathetic nervous system. Warm soft foods eaten in a relaxed setting reduce cortisol by 20%.',ingredients:'• 200g green lentils\n• 2 carrots, diced\n• 2 celery stalks\n• 1 onion\n• 3 garlic cloves\n• 400g diced tomatoes\n• 1.2L water\n• 2 tbsp olive oil\n• 1 tsp cumin, 1 tsp smoked paprika',steps:['Rinse lentils. Sauté onion, carrot, celery 10 minutes.','Add garlic and spices. Add tomatoes.','Add lentils and water. Bring to a boil.','Simmer 35–40 minutes until tender.','Season and add fresh parsley.'],macros:{p:22,f:16,c:62},cal:330,time:'50 min'},
+  {id:25,emoji:'🍋',name:'Lemon Honey Water',pillar:'soul',ref:'Proverbs 24:13',tags:['drink','morning','digestive'],goal:['lose','fast'],science:'Warm lemon water increases gastric acid secretion. Lemon boosts iron absorption from plant foods by 300%. Raw honey is prebiotic.',ingredients:'• 300ml warm water\n• Juice of ½ lemon\n• 1 tsp raw honey\n• Optional: slice of fresh ginger',steps:['Boil water. Cool to 40–50°C.','Squeeze lemon juice in.','Add honey and stir until dissolved.','Add ginger if using.','Drink before your first meal each morning.'],macros:{p:0,f:0,c:12},cal:45,time:'3 min'},
+  {id:26,emoji:'🍷',name:'Fresh Grape Juice of the Vine',pillar:'spirit',ref:'John 15:1',tags:['drink','antioxidant','celebration'],goal:['energy','fast'],science:'Fresh grape juice contains resveratrol, quercetin and anthocyanins. Together they reduce oxidative stress and lower blood pressure.',ingredients:'• 400g fresh red grapes\n• Dash of lemon juice\n• Ice\n• Fresh mint',steps:['Wash grapes. Remove from stems.','Blend until completely smooth.','Strain through a fine mesh sieve.','Add a dash of lemon juice.','Serve over ice with fresh mint.'],macros:{p:2,f:0,c:28},cal:120,time:'10 min'},
+  {id:27,emoji:'🥖',name:'Unleavened Flatbread',pillar:'spirit',ref:'Exodus 12:39',tags:['bread','simple','clean'],goal:['energy','build'],science:'Unleavened bread has a lower glycaemic index than leavened bread. Simpler to digest with no added sugars or preservatives.',ingredients:'• 200g whole wheat or spelt flour\n• ½ tsp sea salt\n• 4 tbsp extra virgin olive oil\n• 80ml warm water',steps:['Mix flour and salt.','Add olive oil and mix until crumbly.','Add water until dough comes together.','Divide into 6. Roll paper-thin.','Cook in dry hot pan 1–2 minutes per side.'],macros:{p:10,f:22,c:68},cal:350,time:'20 min'},
+  {id:28,emoji:'🌿',name:'Mint & Coriander Herb Sauce',pillar:'soul',ref:'Matthew 23:23',tags:['sauce','digestive','calming'],goal:['lose','energy'],science:'Mint relaxes intestinal smooth muscle, reducing bloating. Coriander has been shown to match diazepam in reducing anxiety with no side effects.',ingredients:'• 40g fresh mint\n• 40g fresh coriander\n• 2 garlic cloves\n• 2 tbsp lemon juice\n• 4 tbsp olive oil\n• Pinch of cumin and sea salt',steps:['Wash herbs thoroughly. Pat dry.','Place all ingredients in a blender.','Blend to a rough paste.','Adjust lemon and salt to taste.','Use as sauce with fish, lamb or vegetables.'],macros:{p:2,f:38,c:6},cal:160,time:'5 min'},
+  {id:29,emoji:'🍑',name:'Dried Fruit & Nut Plate',pillar:'spirit',ref:'1 Samuel 25:18',tags:['snack','mineral-rich','portable'],goal:['energy','lose'],science:'Dried fruits retain all minerals and polyphenols in concentrated form. With nuts provide magnesium, potassium, selenium and iron.',ingredients:'• 30g raisins\n• 20g dried figs\n• 15g dates\n• 25g walnuts\n• 20g almonds\n• 15g pistachios',steps:['Use highest quality dried fruits — no added sugar.','Soak raisins 10 minutes to rehydrate.','Arrange all fruits and nuts on a plate.','Drizzle honey if desired.','Eat slowly and mindfully.'],macros:{p:10,f:40,c:50},cal:360,time:'5 min'},
+  {id:30,emoji:'🍲',name:"Abraham's Curds & Milk",pillar:'temple',ref:'Genesis 18:8',tags:['probiotic','protein','breakfast'],goal:['energy','build'],science:'Fermented dairy contains live probiotic cultures that colonise the gut microbiome, improving digestion, immunity and mental health.',ingredients:'• 200g full-fat natural yoghurt\n• 1 tbsp raw honey\n• Fresh mint leaves\n• Pinch of cinnamon\n• Pomegranate seeds and walnuts',steps:['Use full-fat yoghurt — fat carries vitamins.','Spoon into a bowl.','Pour honey into the centre.','Scatter mint, cinnamon, pomegranate and walnuts.','Eat before the honey mixes in.'],macros:{p:14,f:28,c:38},cal:320,time:'5 min'},
+  {id:31,emoji:'🌅',name:'Fast-Breaking Water & Figs',pillar:'fast',ref:'1 Samuel 30:12',tags:['fast-break','gentle','first-meal'],goal:['fast'],science:'Figs are 72% water, easy to digest after fasting. Natural sugars restore blood glucose gradually — preventing post-fast fatigue.',ingredients:'• 2 fresh figs or 3 dried figs\n• 1 large glass of water\n• 1 tsp raw honey\n• 5 almonds',steps:['Always break a fast with water first.','Wait 5 minutes for digestion to awaken.','Eat figs slowly — chew completely.','Add honey for additional quick energy.','Wait 20–30 minutes before full meal.'],macros:{p:4,f:8,c:56},cal:200,time:'5 min'},
+  {id:32,emoji:'🥗',name:'Cucumber & Herb Salad',pillar:'soul',ref:'Numbers 11:5',tags:['salad','hydrating','light'],goal:['lose','energy'],science:'Cucumbers are 96% water with anti-inflammatory cucurbitacins. High-volume, low-calorie meal that activates fullness receptors.',ingredients:'• 2 large cucumbers\n• Fresh mint and parsley\n• 2 spring onions\n• 3 tbsp olive oil\n• 2 tbsp lemon juice\n• Sea salt and black pepper',steps:['Slice cucumbers thinly.','Salt and leave 15 minutes. Rinse and dry.','Chop herbs. Add with spring onions.','Whisk oil and lemon. Pour over.','Toss gently. Eat immediately.'],macros:{p:4,f:36,c:20},cal:180,time:'20 min'},
+  {id:33,emoji:'🫓',name:'Spelt Flatbread with Olive Oil',pillar:'temple',ref:'Ezekiel 4:9',tags:['bread','ancient-grain','digestive'],goal:['energy','build'],science:'Spelt has higher protein content (15%) than modern wheat and more minerals — magnesium, zinc and iron. More soluble fibre for gut health.',ingredients:'• 200g spelt flour\n• ½ tsp sea salt\n• 1 tsp dried rosemary\n• 3 tbsp olive oil\n• 90ml warm water',steps:['Mix flour, salt and rosemary.','Add olive oil until breadcrumb texture.','Add warm water until soft dough.','Divide into 4. Rest 10 minutes.','Roll to 3mm thickness. Cook 2 minutes per side.'],macros:{p:12,f:24,c:64},cal:360,time:'25 min'},
+  {id:34,emoji:'🥜',name:'Roasted Seeds & Grain Mix',pillar:'temple',ref:'Ruth 2:14',tags:['snack','minerals','crunchy'],goal:['energy','lose'],science:'Blend of seeds provides zinc, magnesium, selenium and vitamin E — four most commonly deficient micronutrients in modern diets.',ingredients:'• 40g pumpkin seeds\n• 30g sunflower seeds\n• 20g sesame seeds\n• 20g roasted barley\n• 1 tsp olive oil\n• Sea salt',steps:['Heat a dry pan until hot.','Add seeds and grain. Toss constantly.','Cook 3–4 minutes until pumpkin seeds pop.','Add olive oil and salt.','Cool on a flat surface.'],macros:{p:18,f:52,c:30},cal:340,time:'10 min'},
+  {id:35,emoji:'🍠',name:'Roasted Sweet Potato with Cinnamon',pillar:'soul',ref:'Numbers 11:5',tags:['carbs','vitamins','comfort'],goal:['energy','build'],science:'Sweet potatoes have a glycaemic index of 44 when baked — much lower than white potato. Rich in beta-carotene for immune function.',ingredients:'• 2 medium sweet potatoes\n• 2 tbsp olive oil\n• 1 tsp cinnamon\n• 1 tsp raw honey\n• Pinch sea salt',steps:['Preheat oven to 200°C.','Prick sweet potatoes with a fork.','Rub with olive oil and sea salt.','Bake 40–50 minutes until completely soft.','Split open. Drizzle honey and cinnamon.'],macros:{p:4,f:18,c:78},cal:320,time:'50 min'},
+  {id:36,emoji:'🥬',name:'Braised Greens with Garlic & Oil',pillar:'temple',ref:'Proverbs 15:17',tags:['greens','iron','folate'],goal:['lose','energy'],science:'Dark leafy greens contain folate, vitamin K2 and nitrates. Nitrates directly improve blood flow and athletic endurance.',ingredients:'• 300g dark leafy greens\n• 4 garlic cloves, sliced\n• 3 tbsp olive oil\n• Juice of ½ lemon\n• Sea salt and red pepper flakes',steps:['Wash greens. Remove thick stalks.','Heat olive oil over medium heat.','Cook garlic 2–3 minutes until golden.','Add greens. Toss to coat. Cover 5 minutes.','Squeeze lemon. Season and serve.'],macros:{p:6,f:38,c:14},cal:220,time:'15 min'},
+  {id:37,emoji:'🌾',name:'Parched Grain — Warrior Food',pillar:'temple',ref:'1 Samuel 17:17',tags:['snack','portable','ancient'],goal:['energy','build'],science:'Dry-roasting partially gelatinises the starch, making it more digestible with a lower glycaemic response than raw grain.',ingredients:'• 100g whole spelt or barley berries\n• 1 tbsp olive oil\n• Sea salt\n• Fresh thyme and rosemary',steps:['Soak grain overnight. Drain and dry.','Heat heavy pan until very hot.','Add grain with no oil. Stir constantly.','After 4–5 minutes when golden, add oil and herbs.','Season with salt. Spread to cool.'],macros:{p:14,f:18,c:68},cal:330,time:'15 min'},
+  {id:38,emoji:'🐐',name:'Goat Cheese & Herb Plate',pillar:'soul',ref:'Proverbs 27:27',tags:['cheese','probiotic','light'],goal:['energy','lose'],science:'Goat milk fat globules are smaller and more similar to human breast milk — faster breakdown and digestion. Rich in medium-chain fatty acids for energy.',ingredients:'• 150g fresh goat cheese\n• Fresh herbs: thyme, mint\n• 2 tbsp honey\n• 20g walnuts, crushed\n• Black pepper\n• Barley bread',steps:['Remove goat cheese from fridge 30 minutes before.','Place on a serving plate.','Press fresh herbs into the surface.','Drizzle honey generously.','Scatter walnuts and black pepper.'],macros:{p:18,f:44,c:22},cal:390,time:'5 min'},
+  {id:39,emoji:'🥘',name:'Lamb & Herb Stuffed Flatbread',pillar:'temple',ref:'Exodus 12:8',tags:['protein','complete','meal'],goal:['build','energy'],science:'Combining lamb with flatbread and fresh herbs creates a complete macronutrient profile. Herbs provide polyphenols reducing exercise oxidative stress.',ingredients:'• 200g minced lamb\n• 1 onion, grated\n• 2 garlic cloves\n• 1 tsp cumin, ½ tsp cinnamon\n• Fresh parsley, mint\n• 4 flatbreads\n• Natural yoghurt and lemon',steps:['Mix lamb with grated onion, garlic, spices and herbs.','Form into small patties.','Cook in hot pan 3–4 minutes each side.','Warm flatbreads in the same pan.','Assemble with herbs, lemon and yoghurt.'],macros:{p:36,f:30,c:34},cal:440,time:'25 min'},
+  {id:40,emoji:'🌻',name:'Tahini & Sesame Dressing',pillar:'temple',ref:'Isaiah 28:25',tags:['sauce','calcium','fat'],goal:['energy','lose'],science:'Sesame seeds contain sesamin and sesamolin which reduce blood pressure and LDL cholesterol. Tahini is richer in calcium per gram than cow milk.',ingredients:'• 3 tbsp tahini\n• 2 tbsp lemon juice\n• 1 garlic clove\n• 4 tbsp warm water\n• Pinch sea salt and cumin',steps:['Place tahini in a bowl.','Add lemon juice — it will seize. Normal.','Add garlic and salt.','Add warm water one tablespoon at a time.','Whisk vigorously until creamy and pourable.'],macros:{p:8,f:52,c:18},cal:300,time:'5 min'},
+  {id:41,emoji:'🥣',name:'Date & Cinnamon Energy Pudding',pillar:'fast',ref:'2 Samuel 16:1',tags:['fast-break','pre-workout','sweet'],goal:['fast','energy'],science:'Dates have a unique 1:1 glucose to fructose ratio — most effective natural food for restoring both muscle and liver glycogen.',ingredients:'• 6 Medjool dates, pitted\n• 200ml coconut milk\n• 1 tsp cinnamon\n• ¼ tsp cardamom\n• 1 tbsp tahini',steps:['Pit dates. Soak 20 minutes if dry.','Blend dates, coconut milk, spices and salt until smooth.','Add tahini. Blend 30 more seconds.','Serve in small cups.','Ideal as fast-breaking meal or before training.'],macros:{p:6,f:28,c:66},cal:350,time:'10 min'},
+  {id:42,emoji:'🧅',name:'Caramelised Onion Broth',pillar:'soul',ref:'Numbers 11:5',tags:['broth','warm','prebiotic'],goal:['lose','fast'],science:'Onions contain quercetin — a neuroprotective antioxidant reducing neuroinflammation. Slow caramelisation creates prebiotic compounds feeding Bifidobacterium.',ingredients:'• 4 large onions, thinly sliced\n• 2 tbsp olive oil\n• 1L water or broth\n• 3 garlic cloves\n• Fresh thyme, bay leaf\n• Sea salt',steps:['Heat olive oil on very low heat.','Add sliced onions. Season with salt.','Cook 45–60 minutes, stirring every 10 minutes.','Add garlic and thyme for last 10 minutes.','Add water. Simmer 20 more minutes.'],macros:{p:4,f:18,c:24},cal:160,time:'75 min'},
+  {id:43,emoji:'🫕',name:'Barley & Vegetable Soup',pillar:'temple',ref:'2 Kings 4:38',tags:['soup','beta-glucan','filling'],goal:['lose','energy'],science:'Barley maintains beta-glucan in liquid, making barley soup superior to barley bread for blood sugar management.',ingredients:'• 100g pearl barley\n• 2 carrots, diced\n• 2 celery stalks\n• 1 onion\n• 3 garlic cloves\n• 1.5L water or broth\n• 2 tbsp olive oil\n• Fresh parsley',steps:['Rinse barley under cold water.','Sauté onion, carrot and celery 8 minutes.','Add garlic. Cook 1 minute.','Add barley and water. Bring to a boil.','Simmer 40–45 minutes until barley is tender.'],macros:{p:10,f:16,c:74},cal:290,time:'55 min'},
+  {id:44,emoji:'🫐',name:'Mixed Berry & Nut Plate',pillar:'soul',ref:'Song of Solomon 2:5',tags:['antioxidant','brain','snack'],goal:['energy','lose'],science:'Berries have the highest antioxidant density of any commonly eaten food. Blueberries improve memory and attention by 10–15% in adults.',ingredients:'• 100g blueberries or grapes\n• 50g pomegranate seeds\n• 30g walnuts\n• 1 tbsp raw honey\n• Fresh mint\n• 1 fig, sliced',steps:['Wash all fresh berries gently.','Arrange in a wide bowl.','Scatter pomegranate seeds and figs.','Add walnuts.','Drizzle raw honey. Add mint.'],macros:{p:8,f:32,c:60},cal:280,time:'5 min'},
+  {id:45,emoji:'🌿',name:'Parsley & Mint Tabbouleh',pillar:'soul',ref:'Matthew 23:23',tags:['salad','herb','calming'],goal:['lose','energy'],science:'Parsley contains the highest concentration of apigenin of any food — binds to GABA receptors producing calming effect without sedation.',ingredients:'• 60g bulgur wheat or barley\n• 60g fresh parsley, finely chopped\n• 30g fresh mint\n• 3 tomatoes, finely diced\n• 4 spring onions\n• 4 tbsp olive oil\n• 3 tbsp lemon juice',steps:['Pour boiling water over bulgur. Rest 20 minutes.','Fluff and spread to cool completely.','Finely chop parsley and mint.','Combine with cooled grain, tomatoes and spring onions.','Dress with olive oil and lemon. Season.'],macros:{p:8,f:36,c:56},cal:300,time:'25 min'},
+  {id:46,emoji:'🌊',name:'Cumin & Coriander Spiced Fish',pillar:'temple',ref:'Isaiah 28:25',tags:['spiced','protein','metabolism'],goal:['lose','build'],science:'Cumin contains thymoquinone improving insulin sensitivity similarly to metformin. Combined with fish omega-3s — a powerful metabolic meal.',ingredients:'• 200g white fish fillet\n• 1 tsp ground cumin\n• 1 tsp ground coriander\n• ½ tsp turmeric\n• 2 tbsp olive oil\n• 2 garlic cloves\n• Lemon and fresh coriander',steps:['Mix cumin, coriander, turmeric and salt.','Rub spice mix all over the fish.','Marinate 15–30 minutes.','Heat olive oil on medium-high.','Cook fish 4–5 minutes first side. Flip. 3 more minutes.'],macros:{p:40,f:28,c:4},cal:290,time:'25 min'},
+  {id:47,emoji:'🍯',name:'Honey & Cinnamon Healing Paste',pillar:'spirit',ref:'Proverbs 16:24',tags:['tonic','metabolic','anti-inflammatory'],goal:['energy','lose'],science:'Raw honey is antimicrobial, anti-inflammatory and prebiotic. Ceylon cinnamon improves insulin sensitivity and reduces fasting blood glucose by 10–29%.',ingredients:'• 2 tbsp raw honey\n• ½ tsp Ceylon cinnamon\n• Optional: pinch of black pepper\n• Optional: pinch of turmeric',steps:['Never heat raw honey above 40°C.','Mix raw honey with cinnamon.','Add black pepper — increases absorption.','Take 1 tsp daily on empty stomach.','Or spread on warm (not hot) barley bread.'],macros:{p:0,f:0,c:18},cal:70,time:'2 min'},
+  {id:48,emoji:'🌾',name:'Seven Species Harvest Bowl',pillar:'spirit',ref:'Deuteronomy 8:8',tags:['complete','biblical','celebration'],goal:['energy','build'],science:'God described the Promised Land by its seven species — each chosen for specific nutritional properties. Together they form a complete nutritional profile.',ingredients:'• 50g cooked barley\n• 1 fig, chopped\n• Handful grapes or raisins\n• 1 tbsp pomegranate seeds\n• 3 olives, sliced\n• 1 tsp raw honey\n• 1 tbsp olive oil\n• Lemon juice and salt',steps:['Cook barley until tender. Cool completely.','Arrange in a wide bowl as a base.','Scatter figs, grapes, pomegranate and olives.','Whisk olive oil, lemon and salt.','Drizzle dressing. Finish with raw honey.'],macros:{p:8,f:28,c:64},cal:330,time:'15 min'},
+  {id:49,emoji:'🥗',name:'Roasted Tomato & Herb Sauce',pillar:'soul',ref:'Numbers 11:5',tags:['sauce','lycopene','antioxidant'],goal:['lose','energy'],science:'Cooking tomatoes increases lycopene bioavailability — linked to 50% reduced cancer risk in high consumers. Olive oil increases lycopene absorption by 300%.',ingredients:'• 500g ripe tomatoes, halved\n• 4 garlic cloves, unpeeled\n• 3 tbsp olive oil\n• Fresh basil and thyme\n• Sea salt and black pepper\n• 1 tsp raw honey',steps:['Preheat oven to 180°C.','Arrange tomatoes cut side up.','Tuck in garlic cloves.','Drizzle olive oil. Season. Scatter thyme.','Roast 40–45 minutes.'],macros:{p:4,f:38,c:22},cal:280,time:'50 min'},
+  {id:50,emoji:'🔥',name:'Fire-Roasted Whole Fish — Elijah Style',pillar:'spirit',ref:'1 Kings 19:6',tags:['protein','festive','complete'],goal:['build','energy'],science:'The meal God provided Elijah for a 40-day journey. Whole roasted fish is the most complete single-food protein source available.',ingredients:'• 1 whole fish (400–500g)\n• Generous olive oil\n• 4 garlic cloves\n• Fresh herbs: rosemary, thyme, lemon slices\n• Sea salt and black pepper',steps:['Score fish 4–5 times on each side.','Season generously inside and out.','Stuff cavity with garlic, lemon and herbs.','Rub all over with olive oil.','Cook 6–8 minutes each side on high heat.'],macros:{p:44,f:32,c:0},cal:400,time:'25 min'}
+];
+
+// ═══ GOAL PLANS ═══
+// For each goal, curated meal slot assignments from the 50 meals
+const GOAL_PLANS={
+  lose:{
+    name:'Weight Loss',cal:1400,breakfast:[10,11,21,25,32],lunch:[2,5,13,36,45,15],dinner:[1,14,23,43,46],snack:[9,22,34,44]
+  },
+  energy:{
+    name:'Boost Energy',cal:1800,breakfast:[10,11,16,30,3],lunch:[5,15,18,48,45],dinner:[1,7,24,43,39],snack:[9,17,29,44]
+  },
+  build:{
+    name:'Build Strength',cal:2200,breakfast:[16,8,30,33,3],lunch:[4,39,50,7,46],dinner:[18,1,43,24,4],snack:[15,17,29,34]
+  },
+  fast:{
+    name:'Fasting Day',cal:800,breakfast:[12,31,25,22],lunch:[13,32,23],dinner:[23,42,25],snack:[12,41,22]
+  }
+};
+
+// ═══ INIT ═══
+lp();
+initHeader();
+renderWaterTracker();
+renderSavedPlans();
+
+let selectedGoal='energy';
+let ifEnabled=true;
+
+function initHeader(){
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const d=new Date();
+  document.getElementById('header-day').textContent=`${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
+
+  // Daily verse
+  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
+  const v=VERSES[doy%VERSES.length];
+  document.getElementById('daily-verse').textContent=`"${v.text}"`;
+  document.getElementById('daily-verse-ref').textContent=v.ref;
+
+  // IF times from main app
+  try{
+    const main=localStorage.getItem('gh_app_v2');
+    if(main){
+      const s=JSON.parse(main);
+      if(s.wake)updateIFWindow(s.wake,s.fastHours||16);
+    }
+  }catch(e){}
+}
+
+function selectGoal(goal,el){
+  selectedGoal=goal;
+  document.querySelectorAll('.goal-card').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  // Hide fasting window for fasting day
+  document.getElementById('if-window-card').style.display=goal==='fast'?'none':'block';
+}
+
+function toggleIF(){
+  const btn=document.getElementById('if-toggle');
+  ifEnabled=!ifEnabled;
+  btn.classList.toggle('on',ifEnabled);
+  document.getElementById('if-window-card').style.display=ifEnabled?'block':'none';
+}
+
+function updateIFWindow(wake,hours){
+  const [wh,wm]=wake.split(':').map(Number);
+  const wakeMin=wh*60+wm;
+  const offsets={12:120,14:120,16:180,18:240};
+  const offset=offsets[hours]||180;
+  const openMin=(wakeMin+offset)%1440;
+  const closeMin=(openMin+(24-hours)*60)%1440;
+
+  const fmt=(m)=>{const h=Math.floor(m/60)%24,min=m%60;return`${h%12||12}:${String(min).padStart(2,'0')} ${h>=12?'PM':'AM'}`;};
+  document.getElementById('if-first-meal').textContent=fmt(openMin);
+  document.getElementById('if-last-meal').textContent=fmt(closeMin);
+  document.getElementById('if-open-time').textContent=fmt(openMin);
+  document.getElementById('if-close-time').textContent=fmt(closeMin);
+
+  // Timeline visual
+  const nowMin=new Date().getHours()*60+new Date().getMinutes();
+  const eatDuration=(24-hours)*60;
+  document.getElementById('if-eating-bar').style.left=(openMin/1440*100)+'%';
+  document.getElementById('if-eating-bar').style.width=(eatDuration/1440*100)+'%';
+  document.getElementById('if-now-line').style.left=(nowMin/1440*100)+'%';
+}
+
+function generatePlan(){
+  const plan=GOAL_PLANS[selectedGoal];
+  const today=todayStr();
+
+  // Pick random meals from each slot
+  const pick=(arr,n=1)=>{
+    const shuffled=[...arr].sort(()=>Math.random()-.5);
+    return shuffled.slice(0,n).map(id=>ALL_MEALS.find(m=>m.id===id)).filter(Boolean);
+  };
+
+  const isFast=selectedGoal==='fast';
+  const slots=isFast?[
+    {name:'Break Fast',badge:'breakfast',meals:pick(plan.breakfast,1)},
+    {name:'Light Lunch',badge:'lunch',meals:pick(plan.lunch,1)},
+    {name:'Light Dinner',badge:'dinner',meals:pick(plan.dinner,1)},
+  ]:[
+    {name:'Breakfast',badge:'breakfast',meals:pick(plan.breakfast,1)},
+    {name:'Lunch',badge:'lunch',meals:pick(plan.lunch,1)},
+    {name:'Dinner',badge:'dinner',meals:pick(plan.dinner,1)},
+    {name:'Snack',badge:'snack',meals:pick(plan.snack,1)},
+  ];
+
+  // Total macros
+  let totalP=0,totalF=0,totalC=0,totalCal=0;
+  slots.forEach(s=>s.meals.forEach(m=>{
+    totalP+=m.macros.p;totalF+=m.macros.f;totalC+=m.macros.c;totalCal+=m.cal;
+  }));
+  const macroTotal=totalP+totalF+totalC;
+
+  const out=document.getElementById('plan-output');
+  out.innerHTML=`
+    <div class="plan-header">
+      <div class="plan-title">${plan.name} Plan</div>
+      <div class="plan-date">${todayStr()}</div>
+    </div>
+    <div class="plan-macros">
+      <span class="macro-pill cal">~${totalCal} kcal</span>
+      <span class="macro-pill p">Protein ${Math.round(totalP/macroTotal*100)}%</span>
+      <span class="macro-pill f">Fat ${Math.round(totalF/macroTotal*100)}%</span>
+      <span class="macro-pill c">Carbs ${Math.round(totalC/macroTotal*100)}%</span>
+    </div>
+    ${slots.map((slot,si)=>slot.meals.map(meal=>`
+      <div class="meal-slot" id="ms-${meal.id}">
+        <div class="meal-slot-header" onclick="toggleMealSlot(${meal.id})">
+          <span class="meal-time-badge ${slot.badge}">${slot.name}</span>
+          <div class="meal-slot-info">
+            <div class="meal-slot-name">${meal.name}</div>
+            <div class="meal-slot-ref">${meal.ref} · ${meal.time}</div>
+          </div>
+          <div class="meal-slot-emoji">${meal.emoji}</div>
+          <div class="meal-slot-chevron">▼</div>
+        </div>
+        <div class="meal-slot-body">
+          <div class="meal-body-label">Why This Meal</div>
+          <div class="meal-science-box">${meal.science}</div>
+          <div class="meal-body-label">Ingredients</div>
+          <div class="meal-ingredients-text">${meal.ingredients.replace(/\n/g,'<br>')}</div>
+          <div class="meal-body-label">How to Make It</div>
+          <ol class="meal-steps-list">${meal.steps.map((s,i)=>`<li class="meal-step-item"><div class="meal-step-num">${i+1}</div><div>${s}</div></li>`).join('')}</ol>
+          <div class="meal-macros-row">
+            <span class="meal-macro p">Protein ~${meal.macros.p}%</span>
+            <span class="meal-macro f">Fat ~${meal.macros.f}%</span>
+            <span class="meal-macro c">Carbs ~${meal.macros.c}%</span>
+          </div>
+          <button class="swap-btn" onclick="swapMeal(${meal.id},'${slot.badge}',${JSON.stringify(plan[slot.badge+'s'===slot.badge?slot.badge:slot.badge.toLowerCase()+'s']||[]).replace(/"/g,"'")})">🔄 Swap this meal</button>
+        </div>
+      </div>`).join('')).join('')}
+  `;
+
+  // Save plan
+  P.savedPlans=P.savedPlans||[];
+  P.savedPlans.unshift({date:today,goal:selectedGoal,goalName:plan.name,mealIds:slots.flatMap(s=>s.meals.map(m=>m.id))});
+  if(P.savedPlans.length>7)P.savedPlans=P.savedPlans.slice(0,7);
+  sp();
+
+  // Show water tracker
+  document.getElementById('water-tracker').style.display='block';
+  renderWaterTracker();
+  renderSavedPlans();
+
+  showToast('🌿 Your biblical meal plan is ready!');
+
+  // Scroll to plan
+  setTimeout(()=>out.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+function toggleMealSlot(id){
+  document.getElementById('ms-'+id)?.classList.toggle('open');
+}
+
+function swapMeal(currentId,badge,pool){
+  const available=(pool||[]).filter(id=>id!==currentId);
+  if(!available.length){showToast('No more meals to swap to');return;}
+  const newId=available[Math.floor(Math.random()*available.length)];
+  const newMeal=ALL_MEALS.find(m=>m.id===newId);
+  if(!newMeal){return;}
+  const slot=document.getElementById('ms-'+currentId);
+  if(!slot)return;
+  // Update the slot header name and emoji
+  slot.querySelector('.meal-slot-name').textContent=newMeal.name;
+  slot.querySelector('.meal-slot-ref').textContent=`${newMeal.ref} · ${newMeal.time}`;
+  slot.querySelector('.meal-slot-emoji').textContent=newMeal.emoji;
+  slot.querySelector('.meal-science-box').textContent=newMeal.science;
+  slot.querySelector('.meal-ingredients-text').innerHTML=newMeal.ingredients.replace(/\n/g,'<br>');
+  slot.querySelector('.meal-steps-list').innerHTML=newMeal.steps.map((s,i)=>`<li class="meal-step-item"><div class="meal-step-num">${i+1}</div><div>${s}</div></li>`).join('');
+  slot.id='ms-'+newId;
+  showToast(`Swapped to ${newMeal.name}`);
+}
+
+// ═══ WATER TRACKER ═══
+function renderWaterTracker(){
+  const today=todayStr();
+  const filled=P.water[today]||0;
+  const glasses=document.getElementById('water-glasses');
+  glasses.innerHTML=Array.from({length:8},(_,i)=>`
+    <span class="water-glass ${i<filled?'filled':''}" onclick="logWater(${i+1})">💧</span>
+  `).join('');
+  const msgs=['Start your day with water — drink your first glass now!','Good start! Keep drinking throughout the day.','Halfway there! Your cells are grateful.','6 glasses — almost there. Keep going!','7 glasses — one more!','8 glasses — God is pleased with how you steward your temple! 🙏'];
+  document.getElementById('water-info').textContent=`${filled} of 8 glasses — ${msgs[Math.min(filled,5)]}`;
+}
+
+function logWater(n){
+  const today=todayStr();
+  const current=P.water[today]||0;
+  P.water[today]=n>current?n:n===current?n-1:n;
+  sp();renderWaterTracker();
+  if(P.water[today]===8)showToast('💧 8 glasses done — well done!');
+}
+
+// ═══ SAVED PLANS ═══
+function renderSavedPlans(){
+  const saved=P.savedPlans||[];
+  const section=document.getElementById('saved-section');
+  const list=document.getElementById('saved-plans-list');
+  if(!saved.length){section.style.display='none';return;}
+  section.style.display='block';
+  const goalEmojis={lose:'🔥',energy:'⚡',build:'🏛️',fast:'✝️'};
+  list.innerHTML=saved.map((p,i)=>`
+    <div class="saved-plan-item" onclick="loadSavedPlan(${i})">
+      <div>
+        <div class="saved-plan-date">${goalEmojis[p.goal]||''} ${p.goalName} — ${p.date}</div>
+        <div class="saved-plan-goal">${p.mealIds?.length||0} meals planned</div>
+      </div>
+      <div class="saved-plan-arrow">→</div>
+    </div>`).join('');
+}
+
+function loadSavedPlan(idx){
+  const plan=P.savedPlans[idx];
+  if(!plan)return;
+  // Just regenerate with same goal
+  selectedGoal=plan.goal;
+  document.querySelectorAll('.goal-card').forEach(c=>c.classList.remove('active'));
+  document.querySelector('.goal-card.'+plan.goal)?.classList.add('active');
+  generatePlan();
+}
+</script>
+</body>
+</html>

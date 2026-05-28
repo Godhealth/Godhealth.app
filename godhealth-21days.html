@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0D1F0D">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<title>GodHealth — 21 Day Arise Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F9F6F0;--bg2:#FFFFFF;--bg3:#F2EDE4;
+  --border:#E8E0D0;--border2:#D4C9B0;
+  --ink:#1A1410;--ink2:#5C4F3A;--ink3:#9A8E7A;
+  --temple:#C4573A;--temple-light:#FAF0ED;
+  --soul:#4A7FA5;--soul-light:#EEF4F9;
+  --spirit:#6B8F5E;--spirit-light:#EFF4EE;
+  --gold:#B8912A;--gold-light:#FBF5E6;
+  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:flex;flex-direction:column;}
+
+/* HEADER */
+.app-header{background:#0D1F0D;border-bottom:1px solid rgba(107,143,94,.25);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.3);}
+.header-left{display:flex;align-items:center;gap:10px;}
+.back-btn{background:rgba(245,237,216,.1);border:1px solid rgba(245,237,216,.15);color:#F5EDD8;font-size:16px;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;}
+.header-logo{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#F5EDD8;}
+.header-logo em{font-style:italic;color:var(--gold);}
+.header-right{display:flex;align-items:center;gap:6px;}
+.day-badge{background:rgba(184,145,42,.18);border:1px solid rgba(184,145,42,.35);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--gold);}
+
+/* SCROLL */
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll-area::-webkit-scrollbar{width:0;}
+.content{padding:16px;}
+
+/* HERO */
+.program-hero{background:linear-gradient(135deg,#1A0E00,#2A1800);border:1px solid rgba(184,145,42,.3);border-radius:var(--radius);padding:20px;margin-bottom:16px;position:relative;overflow:hidden;}
+.program-hero::before{content:'21';position:absolute;right:-10px;top:-10px;font-family:'Playfair Display',serif;font-size:120px;font-weight:700;color:rgba(184,145,42,.06);line-height:1;}
+.program-hero-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(184,145,42,.7);margin-bottom:6px;}
+.program-hero-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#F5EDD8;line-height:1.15;margin-bottom:8px;}
+.program-hero-title em{font-style:italic;color:var(--gold);}
+.program-hero-desc{font-size:12px;color:rgba(245,237,216,.55);line-height:1.65;margin-bottom:14px;}
+.program-hero-verse{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:rgba(184,145,42,.7);line-height:1.6;}
+
+/* PROGRESS BAR */
+.progress-section{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;box-shadow:var(--shadow-sm);}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.progress-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.progress-fraction{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);}
+.progress-bar-track{background:var(--bg3);border-radius:100px;height:10px;overflow:hidden;margin-bottom:8px;}
+.progress-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--spirit),var(--gold));transition:width .8s ease;}
+.progress-phases{display:flex;justify-content:space-between;font-size:9px;color:var(--ink3);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.phase-marker{text-align:center;}
+
+/* PHASE CARDS */
+.phase-header{display:flex;align-items:center;gap:10px;margin:16px 0 10px;}
+.phase-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.phase-label{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;}
+.phase-desc{font-size:11px;color:var(--ink3);margin-left:auto;font-style:italic;}
+
+/* DAY CARDS */
+.day-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow-sm);transition:all .2s;}
+.day-card.completed{border-color:rgba(107,143,94,.35);background:var(--spirit-light);}
+.day-card.today-card{border-color:rgba(184,145,42,.4);box-shadow:0 0 0 3px rgba(184,145,42,.1),var(--shadow-sm);}
+.day-card.locked{opacity:.45;}
+.day-card-header{padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;}
+.day-num{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;flex-shrink:0;}
+.day-num.done{background:var(--spirit);color:#fff;}
+.day-num.active{background:var(--gold);color:#fff;}
+.day-num.upcoming{background:var(--bg3);color:var(--ink3);}
+.day-num.locked-num{background:var(--bg3);color:var(--border2);}
+.day-info{flex:1;}
+.day-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.day-card.completed .day-title{color:var(--spirit);}
+.day-pillar-tags{display:flex;gap:4px;}
+.day-tag{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:20px;}
+.day-tag.temple{background:var(--temple-light);color:var(--temple);}
+.day-tag.soul{background:var(--soul-light);color:var(--soul);}
+.day-tag.spirit{background:var(--spirit-light);color:var(--spirit);}
+.day-status{font-size:16px;flex-shrink:0;}
+.day-chevron{font-size:11px;color:var(--ink3);transition:transform .25s;flex-shrink:0;}
+.day-card.open .day-chevron{transform:rotate(180deg);}
+
+/* DAY BODY */
+.day-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border);}
+.day-card.open .day-body{display:block;}
+.day-section-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:12px 0 8px;}
+.day-verse-box{background:var(--gold-light);border:1px solid rgba(184,145,42,.2);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+.day-verse-text{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--ink);line-height:1.65;margin-bottom:4px;}
+.day-verse-ref{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+.day-tasks{list-style:none;}
+.day-task{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;padding:10px 12px;background:var(--bg3);border-radius:9px;border:1px solid var(--border);}
+.day-task-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.day-task-body{flex:1;}
+.day-task-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.day-task-desc{font-size:11px;color:var(--ink3);line-height:1.5;}
+.day-task-pillar{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;border-radius:20px;display:inline-block;margin-top:4px;}
+.day-task-pillar.temple{background:var(--temple-light);color:var(--temple);}
+.day-task-pillar.soul{background:var(--soul-light);color:var(--soul);}
+.day-task-pillar.spirit{background:var(--spirit-light);color:var(--spirit);}
+.day-reflection{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:9px;color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;line-height:1.65;padding:10px 12px;resize:vertical;min-height:70px;outline:none;transition:border-color .25s;margin-top:4px;}
+.day-reflection:focus{border-color:var(--gold);}
+.day-reflection::placeholder{color:var(--ink3);opacity:.55;}
+.complete-day-btn{width:100%;background:var(--gold);color:#fff;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border:none;border-radius:10px;cursor:pointer;transition:all .25s;margin-top:12px;}
+.complete-day-btn:hover{background:#9A7020;box-shadow:0 4px 16px rgba(184,145,42,.3);}
+.complete-day-btn.done{background:var(--spirit);cursor:default;}
+.day-completed-msg{background:var(--spirit-light);border:1px solid rgba(107,143,94,.2);border-radius:9px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--spirit);font-weight:700;text-align:center;}
+
+/* CELEBRATION */
+.celebration{background:linear-gradient(135deg,#1A0E00,#2A1800);border:1px solid rgba(184,145,42,.4);border-radius:var(--radius);padding:20px;margin-bottom:16px;text-align:center;display:none;}
+.celebration-emoji{font-size:48px;margin-bottom:10px;}
+.celebration-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:6px;}
+.celebration-verse{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:rgba(245,237,216,.6);line-height:1.6;}
+
+/* START MODAL */
+.start-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:none;align-items:flex-end;justify-content:center;}
+.start-overlay.open{display:flex;}
+.start-sheet{background:var(--bg2);border-radius:20px 20px 0 0;padding:24px 22px 40px;width:100%;max-width:480px;}
+.start-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.start-subtitle{font-size:13px;color:var(--ink3);line-height:1.65;margin-bottom:20px;}
+.start-commitment{background:var(--gold-light);border:1px solid rgba(184,145,42,.25);border-radius:10px;padding:14px;margin-bottom:18px;}
+.start-commitment-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.start-commitment-text{font-size:13px;color:var(--ink2);line-height:1.65;}
+.start-name-input{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;margin-bottom:12px;transition:border-color .25s;}
+.start-name-input:focus{border-color:var(--gold);}
+.start-btn{width:100%;background:var(--gold);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:15px;border:none;border-radius:10px;cursor:pointer;transition:all .25s;}
+.start-btn:hover{background:#9A7020;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;padding:10px 20px;border-radius:100px;z-index:999;opacity:0;transition:all .35s;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@keyframes riseUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{0%{transform:scale(.8)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+
+/* ACCESSIBILITY */
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #B8912A;outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="header-left">
+    <a class="back-btn" href="index.html" onclick="ghGoBack(event)" aria-label="Back to home">←</a>
+    <div class="header-logo">God<em>Health</em> — 21 Days</div>
+  </div>
+  <div class="header-right">
+    <div class="day-badge" id="header-day-badge">Day 0 / 21</div>
+  </div>
+</div>
+
+<div class="scroll-area">
+  <div class="content">
+
+    <!-- CELEBRATION (shown when complete) -->
+    <div class="celebration" id="celebration">
+      <div class="celebration-emoji">👑</div>
+      <div class="celebration-title">21 Days Complete!</div>
+      <div class="celebration-verse">"I can do all things through Christ which strengtheneth me." — Philippians 4:13 (KJV)</div>
+    </div>
+
+    <!-- HERO -->
+    <div class="program-hero">
+      <div class="program-hero-label">GodHealth Programme</div>
+      <div class="program-hero-title">The 21-Day<br><em>Arise Challenge</em></div>
+      <div class="program-hero-desc">21 days of daily assignments — one for your Temple, one for your Soul, one for your Spirit. Every day builds on the last. By day 21, you will not be the same person who started.</div>
+      <div class="program-hero-verse">"Arise, shine; for thy light is come, and the glory of the LORD is risen upon thee." — Isaiah 60:1 (KJV)</div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-section" id="progress-section" style="display:none;">
+      <div class="progress-top">
+        <div class="progress-title">Your Progress</div>
+        <div class="progress-fraction"><span id="days-done">0</span><span style="font-size:14px;color:var(--ink3);">/21</span></div>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%;"></div>
+      </div>
+      <div class="progress-phases">
+        <div class="phase-marker">Week 1<br>Foundation</div>
+        <div class="phase-marker">Week 2<br>Discipline</div>
+        <div class="phase-marker">Week 3<br>Transformation</div>
+      </div>
+    </div>
+
+    <!-- DAYS LIST -->
+    <div id="days-container"></div>
+
+    <!-- START BUTTON (if not started) -->
+    <div id="start-section">
+      <button class="complete-day-btn" onclick="openStartModal()" style="background:var(--spirit);margin-top:0;">
+        ✝️ Begin the 21-Day Arise Challenge
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- START MODAL -->
+<div class="start-overlay" id="start-overlay">
+  <div class="start-sheet">
+    <div class="start-title">Make Your Commitment</div>
+    <div class="start-subtitle">Before you begin, make a covenant with God and yourself. This is not a programme — it is a declaration of who you are becoming.</div>
+    <div class="start-commitment">
+      <div class="start-commitment-title">Your Covenant</div>
+      <div class="start-commitment-text">"I commit to 21 days of faithful discipline for my Temple, my Soul, and my Spirit. I will not quit. I will not compromise. I begin today, in the name of Jesus Christ."</div>
+    </div>
+    <input type="text" class="start-name-input" id="start-name" placeholder="Write your name to seal the covenant..." maxlength="40"/>
+    <button class="start-btn" onclick="startProgram()">I Commit — Begin Day 1</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ STATE ═══
+let A={started:false,startDate:null,name:'',completedDays:{},reflections:{}};
+function la(){try{const s=localStorage.getItem('gh_21days_v1');if(s)A=JSON.parse(s);}catch(e){}}
+function sa(){try{localStorage.setItem('gh_21days_v1',JSON.stringify(A));return true;}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}}
+function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+// ═══ 21 DAYS DATA ═══
+const DAYS=[
+  // ── WEEK 1: FOUNDATION ──
+  {
+    day:1,title:'The First Step',theme:'Foundation',
+    verse:{text:'The steps of a good man are ordered by the LORD: and he delighteth in his way.',ref:'Psalm 37:23 (KJV)'},
+    tasks:[
+      {icon:'🙏',name:'Pray for 10 minutes before anything else',desc:'Before your phone, before coffee, before anyone else — speak to God first. Thank Him for this new beginning. Ask Him to lead every step of this 21 days.',pillar:'spirit'},
+      {icon:'💧',name:'Drink 2 litres of water today',desc:'Place a bottle by your bed tonight so it is the first thing you see tomorrow. Today marks the beginning of stewarding your temple well.',pillar:'temple'},
+      {icon:'✍️',name:'Write your WHY',desc:'In your journal, write exactly why you are doing this. What pain are you leaving behind? What future are you stepping into? Be brutally honest. This WHY will carry you through the hard days.',pillar:'soul'},
+    ],
+    reflection:'What is your WHY? Write it as a prayer to God.'
+  },
+  {
+    day:2,title:'No Phone Before God',theme:'Foundation',
+    verse:{text:'In the morning will I direct my prayer unto thee, and will look up.',ref:'Psalm 5:3 (KJV)'},
+    tasks:[
+      {icon:'📵',name:'No phone for the first 60 minutes after waking',desc:'Your phone is a weapon your enemy uses to steal your morning. The first 60 minutes belong to God. Starting today, this is a non-negotiable rule.',pillar:'soul'},
+      {icon:'🌅',name:'Go outside within 30 minutes of waking',desc:'Morning sunlight resets your entire hormonal system for the day. It is not optional — it is biological design. No sunglasses. Face towards the light.',pillar:'temple'},
+      {icon:'📖',name:'Read 1 chapter of Scripture out loud',desc:'Read it out loud. Hearing the Word with your own voice engages more of your brain than silent reading. Choose Proverbs or Romans to begin.',pillar:'spirit'},
+    ],
+    reflection:'What was hardest about today? What did God speak to you in the morning?'
+  },
+  {
+    day:3,title:'The Body is a Temple',theme:'Foundation',
+    verse:{text:'Know ye not that your body is the temple of the Holy Ghost which is in you?',ref:'1 Corinthians 6:19 (KJV)'},
+    tasks:[
+      {icon:'⚡',name:'Train for 30 minutes minimum',desc:'You do not need a gym. Push-ups, squats, lunges, running — move your body as an act of worship. Every rep is saying: I honour God with this temple.',pillar:'temple'},
+      {icon:'🥗',name:'Eat only biblical foods today',desc:'No processed food. No sugar. Only whole foods from God\'s earth. Today you prove you have authority over your appetite.',pillar:'temple'},
+      {icon:'✍️',name:'Write 3 things you are grateful to God for',desc:'Specific things — not general gratitude. "I am grateful for the strength in my legs that carried me through training today." Specificity is the key.',pillar:'spirit'},
+    ],
+    reflection:'How did your body feel after training? What did God show you about the Temple today?'
+  },
+  {
+    day:4,title:'The Renewing of Your Mind',theme:'Foundation',
+    verse:{text:'Be not conformed to this world: but be ye transformed by the renewing of your mind.',ref:'Romans 12:2 (KJV)'},
+    tasks:[
+      {icon:'📚',name:'Read 20 pages of a book on health, faith or discipline',desc:'Leaders are readers. Paul wrote "bring the books" from prison. Knowledge is a weapon — arm yourself. No social media today as a replacement.',pillar:'soul'},
+      {icon:'🧘',name:'10 minutes of deep breathing or meditation on Scripture',desc:'Sit in silence. Focus on one verse. Breathe in for 4 counts, hold 4, out 4, hold 4. Do this 10 times. This is not yoga — this is biblical contemplation.',pillar:'spirit'},
+      {icon:'🥗',name:'Prepare your meals in advance for tomorrow',desc:'Discipline tomorrow starts with preparation today. Cook tonight. Pack it. Know exactly what you will eat tomorrow. Remove the decision.',pillar:'temple'},
+    ],
+    reflection:'What mindset pattern do you most need God to renew in you?'
+  },
+  {
+    day:5,title:'Fasting and Prayer',theme:'Foundation',
+    verse:{text:'Is not this the fast that I have chosen? to loose the bands of wickedness, to undo the heavy burdens.',ref:'Isaiah 58:6 (KJV)'},
+    tasks:[
+      {icon:'✝️',name:'Complete a 16-hour fast today',desc:'If you are not fasting yet — begin today. Your last meal was last night. Your first meal will be at least 16 hours later. Drink water, black coffee or herbal tea. When hunger comes — pray.',pillar:'spirit'},
+      {icon:'🙏',name:'Write a list of 5 people to pray for today',desc:'Not yourself. Five other people. Pray for each one specifically. This is the secret of transformation: when you serve others first, God serves you.',pillar:'spirit'},
+      {icon:'💤',name:'Sleep before 10:30pm tonight',desc:'Sleep is not weakness — it is stewardship. Growth hormone is released in the first sleep cycle. God designed the night for repair. Honour it.',pillar:'temple'},
+    ],
+    reflection:'What did God reveal to you during the fast? What old burden feels lighter?'
+  },
+  {
+    day:6,title:'Iron Sharpens Iron',theme:'Foundation',
+    verse:{text:'Iron sharpeneth iron; so a man sharpeneth the countenance of his friend.',ref:'Proverbs 27:17 (KJV)'},
+    tasks:[
+      {icon:'👥',name:'Tell one person about the 21-Day Arise Challenge',desc:'Accountability changes everything. You cannot grow in isolation. Today, invite one person to join you or hold you accountable. Send them a message right now.',pillar:'soul'},
+      {icon:'⚡',name:'Train with higher intensity than Day 3',desc:'Progressive overload is the principle of growth — in the gym and in life. Push harder than your last session. Your temple is getting stronger.',pillar:'temple'},
+      {icon:'📖',name:'Memorise one Bible verse today',desc:'Write it on a card. Read it 5 times this morning and 5 times tonight. By tomorrow you will know it. This verse will stay with you for life.',pillar:'spirit'},
+    ],
+    reflection:'Who did you reach out to today? How did it feel to share your commitment?'
+  },
+  {
+    day:7,title:'The Sabbath — Rest and Review',theme:'Foundation',
+    verse:{text:'And on the seventh day God ended his work which he had made; and he rested.',ref:'Genesis 2:2 (KJV)'},
+    tasks:[
+      {icon:'🌿',name:'Rest completely from training and work today',desc:'This is not laziness — it is obedience. Even God rested. Your body rebuilds during rest, not during effort. Protect this day.',pillar:'temple'},
+      {icon:'📖',name:'Read through your journal entries from Days 1–6',desc:'What has God done in one week? What patterns do you see? What has surprised you? Review is how you extract the full value from the journey.',pillar:'soul'},
+      {icon:'🙏',name:'Spend 20 minutes in unstructured prayer',desc:'No list today. No agenda. Just sit with God and let Him speak. This is the relationship — not a transaction but a conversation.',pillar:'spirit'},
+    ],
+    reflection:'What is the most significant thing God has shown you in Week 1?'
+  },
+
+  // ── WEEK 2: DISCIPLINE ──
+  {
+    day:8,title:'Discipline is Freedom',theme:'Discipline',
+    verse:{text:'Now no chastening for the present seemeth to be joyous, but grievous: nevertheless afterward it yieldeth the peaceable fruit of righteousness.',ref:'Hebrews 12:11 (KJV)'},
+    tasks:[
+      {icon:'⏰',name:'Wake up at the same time as yesterday — no exceptions',desc:'Discipline starts with your alarm. The moment you override your alarm, you tell your brain that your feelings are in control. Today, your decision is in control.',pillar:'soul'},
+      {icon:'🏃',name:'30 minutes of Zone 2 cardio — walk, cycle, swim',desc:'Zone 2 is the pace where you can hold a conversation but feel breathed. This is the most effective fat-burning training method known to science.',pillar:'temple'},
+      {icon:'✝️',name:'Write a prayer of surrender for your biggest struggle',desc:'Name it honestly before God. The area where you struggle most is the area where God wants to do the most work. Surrender is not weakness — it is wisdom.',pillar:'spirit'},
+    ],
+    reflection:'What does discipline feel like today compared to Day 1?'
+  },
+  {
+    day:9,title:'What You Eat is Who You Become',theme:'Discipline',
+    verse:{text:'Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God.',ref:'1 Corinthians 10:31 (KJV)'},
+    tasks:[
+      {icon:'🌿',name:'Use the GodHealth Kitchen to plan all 3 meals today',desc:'Open the Meal Plan module. Choose your goal. Generate your plan. Follow it exactly. Today you eat with intention, not impulse.',pillar:'temple'},
+      {icon:'💧',name:'No sugar or processed food today — zero exceptions',desc:'Sugar is the most addictive substance in the modern diet. Every time you say no to sugar, you are building a neural pathway of self-mastery.',pillar:'temple'},
+      {icon:'📖',name:'Read Daniel 1 and journal what it means for your life',desc:'Daniel refused the king\'s food and was found ten times better. What "king\'s food" are you consuming that is diminishing your excellence?',pillar:'spirit'},
+    ],
+    reflection:'What food choices do you need God\'s help to change permanently?'
+  },
+  {
+    day:10,title:'Deep Work — No Distraction',theme:'Discipline',
+    verse:{text:'Commit thy works unto the LORD, and thy thoughts shall be established.',ref:'Proverbs 16:3 (KJV)'},
+    tasks:[
+      {icon:'🎯',name:'90 minutes of deep, focused work with phone completely off',desc:'Find the most important thing you should be doing and do only that for 90 minutes. Phone in another room. No music with lyrics. This is sacred time.',pillar:'soul'},
+      {icon:'📵',name:'Delete one social media app from your phone for 7 days',desc:'Not forever — 7 days. Notice what happens to your mind. Notice how much time you reclaim. Notice how your focus improves.',pillar:'soul'},
+      {icon:'⚡',name:'HIIT training today — 20 minutes maximum',desc:'4 rounds: 40 seconds maximum effort (burpees, sprint, jump squats), 20 seconds rest. This is all you need. Short, brutal, done.',pillar:'temple'},
+    ],
+    reflection:'What did you discover about your focus and attention today?'
+  },
+  {
+    day:11,title:'The Power of Gratitude',theme:'Discipline',
+    verse:{text:'In every thing give thanks: for this is the will of God in Christ Jesus concerning you.',ref:'1 Thessalonians 5:18 (KJV)'},
+    tasks:[
+      {icon:'✍️',name:'Write 10 specific things you are grateful to God for',desc:'Not 3 today — 10. Force yourself past the obvious ones. Number 7, 8, 9 and 10 will change you. Specificity is the engine of gratitude.',pillar:'spirit'},
+      {icon:'💌',name:'Send a message of encouragement to one person in your life',desc:'Not a generic text — a specific, heartfelt message about what you appreciate about them. This is love in action. It will change both of you.',pillar:'soul'},
+      {icon:'🧘',name:'5 minutes of box breathing before every meal today',desc:'4 in — hold 4 — 4 out — hold 4. Do this before breakfast, lunch and dinner. It activates the parasympathetic nervous system for better digestion.',pillar:'temple'},
+    ],
+    reflection:'What surprised you in your gratitude list? What did God show you about your life?'
+  },
+  {
+    day:12,title:'Forgiveness — Release the Weight',theme:'Discipline',
+    verse:{text:'And forgive us our debts, as we forgive our debtors.',ref:'Matthew 6:12 (KJV)'},
+    tasks:[
+      {icon:'🕊️',name:'Write the names of people you have not fully forgiven',desc:'Unforgiveness doubles cortisol levels and creates chronic inflammation. It is not just spiritual — it is making you physically sick. Write their names. Pray for each one.',pillar:'spirit'},
+      {icon:'⚡',name:'Train for 45 minutes today — your longest session yet',desc:'Week 2 means higher standards. Push beyond what you did in Week 1. Your body has adapted. Now make it adapt again.',pillar:'temple'},
+      {icon:'📖',name:'Read Matthew 18:21-35 — the parable of the unforgiving servant',desc:'Jesus said 70 times 7. Forgiveness is not optional for the follower of Christ. Journal what God speaks to you through this passage.',pillar:'spirit'},
+    ],
+    reflection:'Who have you been carrying that God is calling you to release?'
+  },
+  {
+    day:13,title:'Sleep is Sacred',theme:'Discipline',
+    verse:{text:'He giveth his beloved sleep.',ref:'Psalm 127:2 (KJV)'},
+    tasks:[
+      {icon:'🌙',name:'Be in bed by 10pm with all screens off',desc:'For one night — prove you can do it. No phone, no screen, no compromise. Read Scripture until you are tired. Your body will thank you tomorrow.',pillar:'temple'},
+      {icon:'📝',name:'Write your goals for the next 90 days',desc:'What does your life look like in 90 days if you continue this path? Write it in present tense as if it is already done. Vision is the engine of discipline.',pillar:'soul'},
+      {icon:'🙏',name:'Evening prayer — give thanks for every day of this challenge',desc:'Name each day by day and thank God for carrying you through it. Remember where you started. Feel how far you have come.',pillar:'spirit'},
+    ],
+    reflection:'What needs to change about your sleep habits permanently?'
+  },
+  {
+    day:14,title:'Two Weeks — You Are Different Now',theme:'Discipline',
+    verse:{text:'I have fought a good fight, I have finished my course, I have kept the faith.',ref:'2 Timothy 4:7 (KJV)'},
+    tasks:[
+      {icon:'📊',name:'Review your vitality scores from Week 1 vs Week 2',desc:'Open the GodHealth Tracker. Compare your energy, sleep, joy and connection with God scores. The data does not lie. You are growing.',pillar:'soul'},
+      {icon:'⚡',name:'Train at your personal best intensity today',desc:'14 days in. Your body is different. Your capacity is higher. Today you find out exactly how much stronger you have become.',pillar:'temple'},
+      {icon:'✝️',name:'Spend 30 minutes in extended worship',desc:'Not asking — just worshipping. Put on music, kneel, stand, walk — however your body expresses gratitude to God. This is the turning point.',pillar:'spirit'},
+    ],
+    reflection:'Compare Day 1 you to Day 14 you. What is the most significant change?'
+  },
+
+  // ── WEEK 3: TRANSFORMATION ──
+  {
+    day:15,title:'You Are Who You Practice Being',theme:'Transformation',
+    verse:{text:'For we are his workmanship, created in Christ Jesus unto good works.',ref:'Ephesians 2:10 (KJV)'},
+    tasks:[
+      {icon:'🏛️',name:'Complete every single habit in the GodHealth app today',desc:'All 11 habits. No exceptions. This is the day you run the full race. Spirit first, Temple second, Soul third. By tonight you will feel the power of a complete day.',pillar:'temple'},
+      {icon:'📖',name:'Read your favourite Psalm out loud — twice',desc:'Once for information. Once for transformation. The second reading is where God speaks. Notice what shifts in your spirit between the first and second reading.',pillar:'spirit'},
+      {icon:'✍️',name:'Write a letter to yourself on Day 21',desc:'Write to who you will be in 7 days. Tell them what you have learned. Tell them what you are proud of. Seal it in your journal and open it on Day 21.',pillar:'soul'},
+    ],
+    reflection:'What kind of person are you becoming? Describe them specifically.'
+  },
+  {
+    day:16,title:'Community is Medicine',theme:'Transformation',
+    verse:{text:'Two are better than one; because they have a good reward for their labour.',ref:'Ecclesiastes 4:9 (KJV)'},
+    tasks:[
+      {icon:'👥',name:'Check in with your accountability partner today',desc:'Call them. Not message — call. Tell them exactly where you are. What is hard. What God is doing. Let them speak into your life.',pillar:'soul'},
+      {icon:'🌿',name:'Cook a biblical meal and share it with someone',desc:'Food is covenant. In Scripture, eating together is never just eating — it is relationship. Cook something from the GodHealth Kitchen and invite someone to share it.',pillar:'temple'},
+      {icon:'🙏',name:'Pray specifically for 3 people who are far from God',desc:'Not just believers — three people you know who need Christ. Pray for them by name, specifically, for 5 minutes each. This is the heartbeat of the Kingdom.',pillar:'spirit'},
+    ],
+    reflection:'How has community shaped your transformation in these 16 days?'
+  },
+  {
+    day:17,title:'The Discipline of Simplicity',theme:'Transformation',
+    verse:{text:'Godliness with contentment is great gain.',ref:'1 Timothy 6:6 (KJV)'},
+    tasks:[
+      {icon:'🧹',name:'Declutter one area of your physical space',desc:'Your environment shapes your mind. Desk, bedroom, kitchen — choose one area and clear everything unnecessary. Physical order creates mental order.',pillar:'soul'},
+      {icon:'⚡',name:'Do your hardest workout of the 21 days today',desc:'Week 3 is transformation week. Your body has 16 days of adaptation. Today you find your new ceiling. Go further than you thought you could.',pillar:'temple'},
+      {icon:'📵',name:'24-hour social media fast today',desc:'No Instagram, no TikTok, no YouTube. Replace every moment of scrolling with prayer, Scripture or movement. Notice what the silence reveals.',pillar:'spirit'},
+    ],
+    reflection:'What does simplicity feel like? What have you been holding onto that you can release?'
+  },
+  {
+    day:18,title:'Serving Others — The Paradox of Growth',theme:'Transformation',
+    verse:{text:'For even the Son of man came not to be ministered unto, but to minister.',ref:'Mark 10:45 (KJV)'},
+    tasks:[
+      {icon:'❤️',name:'Do one significant act of service today',desc:'Not easy service — significant service. Give your time, your money or your energy to someone who cannot repay you. This is how Jesus lived.',pillar:'spirit'},
+      {icon:'💪',name:'Write down everything you have achieved in 18 days',desc:'Every training session, every healthy meal, every morning prayer, every journal entry. Count it up. The list will astonish you.',pillar:'soul'},
+      {icon:'🌅',name:'Watch the sunrise tomorrow morning',desc:'Set your alarm 30 minutes earlier than usual. Go outside before the sun comes up. Watch God paint the sky. You have earned this moment of awe.',pillar:'temple'},
+    ],
+    reflection:'How has serving others changed something in you in these 18 days?'
+  },
+  {
+    day:19,title:'Declare Your Transformation',theme:'Transformation',
+    verse:{text:'Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.',ref:'Matthew 5:16 (KJV)'},
+    tasks:[
+      {icon:'📣',name:'Share your GodHealth journey on social media',desc:'Not to boast — to be a light. Share what God has done in 19 days. One post can plant a seed in someone who is desperate for what you have found.',pillar:'soul'},
+      {icon:'⚡',name:'Train outdoors today if possible',desc:'Take your workout outside. Fresh air, natural light, God\'s creation as your gym. Movement in creation is the most ancient form of worship.',pillar:'temple'},
+      {icon:'✍️',name:'Write a vision for your physical, mental and spiritual health in 1 year',desc:'Not a wish list — a declaration. In present tense. As if it is already done. Read it out loud after you write it. This is prophecy over your own life.',pillar:'spirit'},
+    ],
+    reflection:'What story is your transformation telling? Who might be watching and being inspired?'
+  },
+  {
+    day:20,title:'The Last Push',theme:'Transformation',
+    verse:{text:'And let us not be weary in well doing: for in due season we shall reap, if we faint not.',ref:'Galatians 6:9 (KJV)'},
+    tasks:[
+      {icon:'🏛️',name:'Complete every habit in the app — for the last time in this challenge',desc:'Tomorrow is the final day. Today is the last full day of the challenge. Honour it with your full effort. Not almost — everything.',pillar:'temple'},
+      {icon:'📖',name:'Read through every journal entry from the 21 days',desc:'All 20 days. See the journey from Day 1 to today. God has been working in every entry. You could not see it then. You can see it now.',pillar:'soul'},
+      {icon:'🙏',name:'Write a prayer of thanksgiving for who you have become',desc:'Thank God for the specific things He has grown in you. Name them one by one. This prayer is the altar of your transformation.',pillar:'spirit'},
+    ],
+    reflection:'What are you most grateful to God for from these 21 days?'
+  },
+  {
+    day:21,title:'Day 21 — You Are Transformed',theme:'Transformation',
+    verse:{text:'I can do all things through Christ which strengtheneth me.',ref:'Philippians 4:13 (KJV)'},
+    tasks:[
+      {icon:'👑',name:'Open the letter you wrote to yourself on Day 15',desc:'Read it slowly. Every word. See who you were becoming on Day 15. You are now that person. Let the reality of that sink deeply.',pillar:'soul'},
+      {icon:'🔥',name:'Celebrate with a biblical feast meal',desc:'Open the GodHealth Kitchen. Choose the Seven Species Harvest Bowl or Fire-Roasted Whole Fish — Elijah Style. This meal is your covenant meal of completion.',pillar:'temple'},
+      {icon:'✝️',name:'Renew your commitment to continue beyond 21 days',desc:'21 days built the foundation. The rest of your life is the building. Make a new covenant with God — not to do another 21 days but to live this way permanently.',pillar:'spirit'},
+    ],
+    reflection:'Read your Day 1 WHY. Read your Day 15 letter. Write: who are you now?'
+  },
+];
+
+const PHASE_COLORS={Foundation:'var(--spirit)',Discipline:'var(--soul)',Transformation:'var(--gold)'};
+
+// ═══ INIT ═══
+la();
+renderPage();
+
+function renderPage(){
+  const started=A.started;
+  document.getElementById('start-section').style.display=started?'none':'block';
+  document.getElementById('progress-section').style.display=started?'block':'none';
+
+  if(started){
+    // Load name from main app if not set
+    if(!A.name){
+      try{const m=JSON.parse(localStorage.getItem('gh_app_v2')||'{}');A.name=m.name||'Warrior';}catch(e){}
+    }
+    renderProgress();
+    renderCelebration();
+  }
+  renderDays();
+}
+
+function renderProgress(){
+  const done=Object.keys(A.completedDays).filter(d=>A.completedDays[d]).length;
+  document.getElementById('days-done').textContent=done;
+  document.getElementById('progress-fill').style.width=(done/21*100)+'%';
+  document.getElementById('header-day-badge').textContent=`Day ${done} / 21`;
+}
+
+function renderCelebration(){
+  const done=Object.keys(A.completedDays).filter(d=>A.completedDays[d]).length;
+  document.getElementById('celebration').style.display=done>=21?'block':'none';
+}
+
+function getCurrentProgramDay(){
+  if(!A.startDate)return 0;
+  const start=new Date(A.startDate);start.setHours(0,0,0,0);
+  const today=new Date();today.setHours(0,0,0,0);
+  const diff=Math.floor((today-start)/(1000*60*60*24));
+  return Math.min(diff+1,21);
+}
+
+function renderDays(){
+  const container=document.getElementById('days-container');
+  const currentDay=A.started?getCurrentProgramDay():0;
+  let lastPhase='';
+  let html='';
+
+  DAYS.forEach(d=>{
+    // Phase header
+    if(d.theme!==lastPhase){
+      lastPhase=d.theme;
+      const week=d.theme==='Foundation'?1:d.theme==='Discipline'?2:3;
+      const color=PHASE_COLORS[d.theme];
+      html+=`<div class="phase-header">
+        <div class="phase-dot" style="background:${color};"></div>
+        <div class="phase-label" style="color:${color};">Week ${week} — ${d.theme}</div>
+      </div>`;
+    }
+
+    const isDone=A.completedDays[d.day];
+    const isToday=A.started&&d.day===currentDay;
+    const isLocked=A.started&&d.day>currentDay&&!isDone;
+    const isUpcoming=!A.started||(d.day<currentDay&&!isDone);
+
+    const numClass=isDone?'done':isToday?'active':isLocked?'locked-num':'upcoming';
+    const cardClass=`day-card${isDone?' completed':''}${isToday?' today-card':''}${isLocked?' locked':''}`;
+    const statusIcon=isDone?'✅':isToday?'▶️':isLocked?'🔒':'';
+
+    html+=`<div class="${cardClass}" id="dc-${d.day}">
+      <div class="day-card-header" onclick="${isLocked?'showToast(\'Complete previous days first\')':'toggleDayCard('+d.day+')'}">
+        <div class="day-num ${numClass}">${isDone?'✓':d.day}</div>
+        <div class="day-info">
+          <div class="day-title">${d.title}</div>
+          <div class="day-pillar-tags">
+            <span class="day-tag spirit">Spirit</span>
+            <span class="day-tag temple">Temple</span>
+            <span class="day-tag soul">Soul</span>
+          </div>
+        </div>
+        <div class="day-status">${statusIcon}</div>
+        <div class="day-chevron">${isLocked?'':'▼'}</div>
+      </div>
+      <div class="day-body">
+        <div class="day-verse-box">
+          <div class="day-verse-text">"${d.verse.text}"</div>
+          <div class="day-verse-ref">${d.verse.ref}</div>
+        </div>
+        <div class="day-section-label">Today's Three Assignments</div>
+        <ul class="day-tasks">
+          ${d.tasks.map(t=>`<li class="day-task">
+            <div class="day-task-icon">${t.icon}</div>
+            <div class="day-task-body">
+              <div class="day-task-name">${t.name}</div>
+              <div class="day-task-desc">${t.desc}</div>
+              <span class="day-task-pillar ${t.pillar}">${t.pillar.charAt(0).toUpperCase()+t.pillar.slice(1)}</span>
+            </div>
+          </li>`).join('')}
+        </ul>
+        <div class="day-section-label">Reflection Question</div>
+        <textarea class="day-reflection" id="ref-${d.day}" placeholder="${d.reflection}" oninput="saveReflection(${d.day},this.value)">${A.reflections[d.day]||''}</textarea>
+        ${isDone
+          ?`<div class="day-completed-msg">✅ Day ${d.day} Complete — Well done, faithful servant!</div>`
+          :`<button class="complete-day-btn" onclick="completeDay(${d.day})" id="btn-${d.day}">✓ Mark Day ${d.day} as Complete</button>`
+        }
+      </div>
+    </div>`;
+  });
+
+  container.innerHTML=html;
+
+  // Auto-open today's day
+  if(A.started){
+    const today=getCurrentProgramDay();
+    if(today>=1&&today<=21&&!A.completedDays[today]){
+      setTimeout(()=>{
+        const card=document.getElementById('dc-'+today);
+        if(card)card.classList.add('open');
+        card?.scrollIntoView({behavior:'smooth',block:'start'});
+      },300);
+    }
+  }
+}
+
+function toggleDayCard(day){
+  const card=document.getElementById('dc-'+day);
+  if(!card)return;
+  // Close all others
+  document.querySelectorAll('.day-card.open').forEach(c=>{
+    if(c!==card)c.classList.remove('open');
+  });
+  card.classList.toggle('open');
+}
+
+function saveReflection(day,val){
+  A.reflections[day]=val;
+  sa();
+}
+
+function completeDay(day){
+  const currentDay=getCurrentProgramDay();
+  if(day!==currentDay){showToast('Complete today\'s day first');return;}
+  A.completedDays[day]=true;sa();
+  renderProgress();renderCelebration();
+
+  // Update the card
+  const card=document.getElementById('dc-'+day);
+  if(card){
+    card.classList.add('completed');
+    card.classList.remove('today-card');
+    const numEl=card.querySelector('.day-num');
+    if(numEl){numEl.className='day-num done';numEl.textContent='✓';}
+    const titleEl=card.querySelector('.day-title');
+    if(titleEl)titleEl.style.color='var(--spirit)';
+    const btn=document.getElementById('btn-'+day);
+    if(btn){btn.textContent=`✅ Day ${day} Complete`;btn.className='complete-day-btn done';}
+    const body=card.querySelector('.day-body');
+    if(body){
+      const msg=document.createElement('div');
+      msg.className='day-completed-msg';
+      msg.textContent=`✅ Day ${day} Complete — Well done, faithful servant!`;
+      btn?.replaceWith(msg);
+    }
+  }
+
+  if(day===21){
+    showToast('🎉 21 Days Complete — You are transformed!');
+    setTimeout(()=>document.getElementById('celebration').style.display='block',500);
+  } else {
+    const verses={
+      1:'Day 1 done. The journey has begun. 🙏',
+      3:'3 days in. Habits are forming. 🔥',
+      7:'One week complete. You are different now. 👑',
+      14:'Two weeks done. Discipline is becoming identity. ⚡',
+      21:'21 days. Transformation complete. 💎'
+    };
+    showToast(verses[day]||`Day ${day} complete — press forward! ✓`);
+  }
+
+  // Open next day
+  if(day<21){
+    setTimeout(()=>{
+      const nextCard=document.getElementById('dc-'+(day+1));
+      if(nextCard){
+        nextCard.classList.remove('locked');
+        nextCard.classList.add('today-card','open');
+        nextCard.querySelector('.day-num').className='day-num active';
+        nextCard.querySelector('.day-num').textContent=day+1;
+        nextCard.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    },600);
+  }
+}
+
+// ═══ START MODAL ═══
+function openStartModal(){
+  // Pre-fill name from main app
+  try{const m=JSON.parse(localStorage.getItem('gh_app_v2')||'{}');
+    if(m.name)document.getElementById('start-name').value=m.name;}catch(e){}
+  document.getElementById('start-overlay').classList.add('open');
+}
+
+function startProgram(){
+  const name=document.getElementById('start-name').value.trim();
+  if(!name){showToast('Write your name to seal the covenant');return;}
+  A.started=true;
+  A.startDate=todayStr();
+  A.name=name;
+  sa();
+  document.getElementById('start-overlay').classList.remove('open');
+  renderPage();
+  showToast(`${name} — your 21 days begin now. 🙏`);
+}
+</script>
+</body>
+</html>

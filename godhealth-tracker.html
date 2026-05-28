@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0D1F0D">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<title>GodHealth Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F9F6F0;--bg2:#FFFFFF;--bg3:#F2EDE4;
+  --border:#E8E0D0;--border2:#D4C9B0;
+  --ink:#1A1410;--ink2:#5C4F3A;--ink3:#9A8E7A;
+  --temple:#C4573A;--temple-light:#FAF0ED;
+  --soul:#4A7FA5;--soul-light:#EEF4F9;
+  --spirit:#6B8F5E;--spirit-light:#EFF4EE;
+  --gold:#B8912A;--gold-light:#FBF5E6;
+  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);font-size:15px;display:flex;flex-direction:column;}
+
+/* HEADER */
+.app-header{background:#0D1F0D;border-bottom:1px solid rgba(107,143,94,.25);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.3);}
+.header-left{display:flex;align-items:center;gap:10px;}
+.back-btn{background:rgba(245,237,216,.1);border:1px solid rgba(245,237,216,.15);color:#F5EDD8;font-size:14px;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.header-logo{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#F5EDD8;}
+.header-logo em{font-style:italic;color:var(--gold);}
+.header-badge{display:flex;align-items:center;gap:4px;background:rgba(184,145,42,.18);border:1px solid rgba(184,145,42,.35);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--gold);}
+
+/* SCROLL */
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll-area::-webkit-scrollbar{width:0;}
+.page-content{padding:16px;}
+
+/* NAV TABS */
+.tab-nav{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px;}
+.tab-btn{background:var(--bg2);border:1.5px solid var(--border);color:var(--ink3);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.tab-btn.active{background:var(--ink);border-color:var(--ink);color:#fff;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* CARDS */
+.card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.card h4{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px;}
+.card-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+
+/* STREAK HERO */
+.streak-hero{background:linear-gradient(135deg,#1A1000,#2A1A00);border:1px solid rgba(184,145,42,.3);border-radius:var(--radius);padding:20px;margin-bottom:12px;text-align:center;position:relative;overflow:hidden;}
+.streak-hero::before{content:'✝';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:80px;opacity:.05;color:var(--gold);}
+.streak-num{font-family:'Playfair Display',serif;font-size:72px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:4px;}
+.streak-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(184,145,42,.6);font-weight:700;margin-bottom:12px;}
+.streak-verse{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:rgba(245,237,216,.6);line-height:1.6;max-width:280px;margin:0 auto;}
+
+/* STREAK WEEK */
+.streak-week{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:16px;}
+.streak-day{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.streak-day-name{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);}
+.streak-day-dot{width:100%;aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;border:1.5px solid var(--border);background:var(--bg3);transition:all .3s;}
+.streak-day-dot.done{background:var(--gold-light);border-color:rgba(184,145,42,.4);}
+.streak-day-dot.today{border-color:var(--gold);box-shadow:0 0 0 2px rgba(184,145,42,.2);}
+.streak-day-dot.future{opacity:.3;}
+
+/* BADGES */
+.badges-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.badge-item{background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;transition:all .3s;}
+.badge-item.earned{background:var(--gold-light);border-color:rgba(184,145,42,.35);box-shadow:0 2px 12px rgba(184,145,42,.15);}
+.badge-item.earned .badge-lock{display:none;}
+.badge-emoji{font-size:28px;margin-bottom:5px;filter:grayscale(1);opacity:.3;transition:all .3s;}
+.badge-item.earned .badge-emoji{filter:none;opacity:1;}
+.badge-name{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:2px;}
+.badge-item.earned .badge-name{color:var(--gold);}
+.badge-req{font-size:9px;color:var(--ink3);}
+.badge-lock{font-size:10px;color:var(--ink3);margin-top:3px;}
+
+/* WEIGHT TRACKER */
+.weight-input-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:12px;}
+.weight-field{flex:1;}
+.weight-field label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;}
+.weight-field input{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:16px;font-weight:700;padding:10px 12px;border-radius:9px;outline:none;transition:border-color .25s;}
+.weight-field input:focus{border-color:var(--gold);}
+.weight-field select{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;padding:10px 12px;border-radius:9px;outline:none;}
+.log-btn{background:var(--gold);color:#fff;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:11px 16px;border:none;border-radius:9px;cursor:pointer;white-space:nowrap;transition:all .25s;flex-shrink:0;}
+.log-btn:hover{background:#9A7020;}
+
+/* CHART */
+.chart-wrap{position:relative;height:180px;margin:8px 0 4px;}
+.chart-canvas{width:100%;height:100%;}
+.chart-empty{display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;color:var(--ink3);font-style:italic;}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
+.stat-box{background:var(--bg3);border-radius:10px;padding:12px 8px;text-align:center;border:1.5px solid var(--border);}
+.stat-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;line-height:1;margin-bottom:3px;}
+.stat-lbl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);}
+.stat-trend{font-size:10px;font-weight:700;margin-top:2px;}
+.trend-down{color:var(--spirit);}
+.trend-up{color:var(--temple);}
+.trend-same{color:var(--ink3);}
+
+/* VITALITY SLIDERS */
+.vitality-row{margin-bottom:14px;}
+.vitality-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.vitality-name{font-size:12px;font-weight:700;color:var(--ink);}
+.vitality-val{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;}
+.vitality-slider{width:100%;-webkit-appearance:none;height:5px;border-radius:100px;outline:none;cursor:pointer;margin-bottom:3px;}
+.vitality-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.vitality-desc{font-size:10px;color:var(--ink3);}
+
+/* HISTORY LIST */
+.history-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
+.history-item:last-child{border-bottom:none;}
+.history-date{font-size:11px;color:var(--ink3);}
+.history-val{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);}
+.history-trend{font-size:11px;font-weight:700;}
+
+/* NOTIFICATIONS */
+.notif-card{background:var(--spirit-light);border:1.5px solid rgba(107,143,94,.25);border-radius:var(--radius);padding:16px;margin-bottom:12px;}
+.notif-icon{font-size:32px;margin-bottom:8px;}
+.notif-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.notif-desc{font-size:12px;color:var(--ink3);line-height:1.6;margin-bottom:14px;}
+.notif-btn{width:100%;background:var(--spirit);color:#fff;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:12px;border:none;border-radius:9px;cursor:pointer;transition:all .25s;}
+.notif-btn:hover{background:#5a7a4e;}
+.notif-btn.enabled{background:var(--gold);cursor:default;}
+.time-picker-row{display:flex;gap:8px;margin-bottom:12px;}
+.time-picker-box{flex:1;}
+.time-picker-box label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;}
+.time-picker-box input{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:14px;padding:9px 12px;border-radius:9px;outline:none;transition:border-color .25s;}
+.time-picker-box input:focus{border-color:var(--gold);}
+.verse-preview{background:var(--gold-light);border:1px solid rgba(184,145,42,.2);border-radius:10px;padding:12px;margin-bottom:12px;}
+.verse-preview-text{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--ink);line-height:1.6;margin-bottom:4px;}
+.verse-preview-ref{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+
+/* MILESTONE */
+.milestone-card{background:linear-gradient(135deg,#1A1000,#2A1A00);border:1px solid rgba(184,145,42,.3);border-radius:var(--radius);padding:18px;margin-bottom:10px;display:flex;gap:14px;align-items:center;}
+.milestone-icon{font-size:36px;flex-shrink:0;}
+.milestone-body{flex:1;}
+.milestone-days{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:3px;}
+.milestone-title{font-size:12px;font-weight:700;color:rgba(245,237,216,.8);margin-bottom:3px;}
+.milestone-verse{font-size:11px;font-style:italic;color:rgba(245,237,216,.45);line-height:1.5;}
+.milestone-locked{opacity:.4;}
+
+/* SAVE BTN */
+.save-btn{width:100%;background:var(--gold);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border:none;border-radius:10px;cursor:pointer;transition:all .25s;margin-top:4px;}
+.save-btn:hover{background:#9A7020;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;padding:10px 20px;border-radius:100px;z-index:999;opacity:0;transition:all .35s;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@keyframes riseUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{0%{transform:scale(.8)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+.pop{animation:popIn .4s ease both;}
+
+/* ACCESSIBILITY */
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #B8912A;outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="header-left">
+    <button class="back-btn" onclick="goBack()" aria-label="Back to home">←</button>
+    <div class="header-logo">God<em>Health</em> Tracker</div>
+  </div>
+  <div class="header-badge">🔥 <span id="header-streak">0</span> day streak</div>
+</div>
+
+<div class="scroll-area">
+  <div class="page-content">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('streak',this)">🔥 Streak</button>
+      <button class="tab-btn" onclick="switchTab('weight',this)">⚖️ Weight</button>
+      <button class="tab-btn" onclick="switchTab('vitality',this)">✨ Vitality</button>
+      <button class="tab-btn" onclick="switchTab('badges',this)">🏆 Badges</button>
+      <button class="tab-btn" onclick="switchTab('notify',this)">🔔 Reminders</button>
+    </div>
+
+    <!-- STREAK TAB -->
+    <div class="tab-panel active" id="tab-streak">
+
+      <div class="streak-hero">
+        <div class="streak-num" id="streak-display">0</div>
+        <div class="streak-label">Day Streak</div>
+        <div class="streak-verse" id="streak-verse">"Well done, thou good and faithful servant." — Matthew 25:21 (KJV)</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">This Week</div>
+        <div class="streak-week" id="streak-week"></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:4px;">
+          <span id="week-done-count">0 of 7 days complete</span>
+          <span id="week-pct">0%</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Milestones</div>
+        <div id="milestones-list"></div>
+      </div>
+
+      <div class="card" style="text-align:center;padding:20px;">
+        <div style="font-size:13px;color:var(--ink3);margin-bottom:14px;line-height:1.6;">Open the main GodHealth app, complete your habits and save today to grow your streak.</div>
+        <button class="save-btn" onclick="markTodayDone()" id="mark-done-btn">✓ Mark Today as Done</button>
+      </div>
+
+    </div>
+
+    <!-- WEIGHT TAB -->
+    <div class="tab-panel" id="tab-weight">
+
+      <div class="stats-row" id="weight-stats">
+        <div class="stat-box">
+          <div class="stat-num" id="stat-start">—</div>
+          <div class="stat-lbl">Start</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="stat-current">—</div>
+          <div class="stat-lbl">Current</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="stat-change" style="color:var(--spirit);">—</div>
+          <div class="stat-lbl">Change</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Log Your Weight</div>
+        <div class="weight-input-row">
+          <div class="weight-field">
+            <label>Weight</label>
+            <input type="number" id="weight-input" placeholder="75.5" step="0.1" min="30" max="300"/>
+          </div>
+          <div class="weight-field" style="max-width:80px;">
+            <label>Unit</label>
+            <select id="weight-unit">
+              <option value="kg">kg</option>
+              <option value="lbs">lbs</option>
+            </select>
+          </div>
+          <button class="log-btn" onclick="logWeight()">Log</button>
+        </div>
+        <div style="font-size:11px;color:var(--ink3);">Log every week on the same day for accurate results.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Progress Chart</div>
+        <div class="chart-wrap">
+          <canvas id="weight-chart" class="chart-canvas"></canvas>
+          <div class="chart-empty" id="chart-empty">Log at least 2 entries to see your progress chart.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">History</div>
+        <div id="weight-history"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Goal Weight</div>
+        <div class="weight-input-row">
+          <div class="weight-field">
+            <label>My goal weight</label>
+            <input type="number" id="goal-weight-input" placeholder="70.0" step="0.1" min="30" max="300"/>
+          </div>
+          <button class="log-btn" onclick="saveGoalWeight()">Save</button>
+        </div>
+        <div id="goal-progress-bar" style="margin-top:10px;display:none;">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-bottom:4px;">
+            <span>Progress to goal</span>
+            <span id="goal-pct-label">0%</span>
+          </div>
+          <div style="background:var(--bg3);border-radius:100px;height:8px;overflow:hidden;">
+            <div id="goal-bar-fill" style="height:100%;border-radius:100px;background:var(--spirit);transition:width .6s ease;width:0%;"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VITALITY TAB -->
+    <div class="tab-panel" id="tab-vitality">
+
+      <div class="card">
+        <div class="card-label">How Do You Feel Today?</div>
+        <p style="font-size:12px;color:var(--ink3);margin-bottom:16px;line-height:1.55;">Rate yourself honestly. These scores track your overall transformation — not just physical.</p>
+
+        <div class="vitality-row">
+          <div class="vitality-header">
+            <span class="vitality-name">⚡ Energy Level</span>
+            <span class="vitality-val" id="vval-energy" style="color:var(--temple);">5</span>
+          </div>
+          <input type="range" class="vitality-slider" id="vslider-energy" min="1" max="10" value="5"
+            style="accent-color:var(--temple);" oninput="updateVitality('energy',this.value)">
+          <div class="vitality-desc">How energetic do you feel right now?</div>
+        </div>
+
+        <div class="vitality-row">
+          <div class="vitality-header">
+            <span class="vitality-name">🌙 Sleep Quality</span>
+            <span class="vitality-val" id="vval-sleep" style="color:var(--soul);">5</span>
+          </div>
+          <input type="range" class="vitality-slider" id="vslider-sleep" min="1" max="10" value="5"
+            style="accent-color:var(--soul);" oninput="updateVitality('sleep',this.value)">
+          <div class="vitality-desc">How well did you sleep last night?</div>
+        </div>
+
+        <div class="vitality-row">
+          <div class="vitality-header">
+            <span class="vitality-name">✝️ With God</span>
+            <span class="vitality-val" id="vval-god" style="color:var(--spirit);">5</span>
+          </div>
+          <input type="range" class="vitality-slider" id="vslider-god" min="1" max="10" value="5"
+            style="accent-color:var(--spirit);" oninput="updateVitality('god',this.value)">
+          <div class="vitality-desc">How close do you feel to God today?</div>
+        </div>
+
+        <div class="vitality-row">
+          <div class="vitality-header">
+            <span class="vitality-name">🌅 Morning Freshness</span>
+            <span class="vitality-val" id="vval-fresh" style="color:var(--gold);">5</span>
+          </div>
+          <input type="range" class="vitality-slider" id="vslider-fresh" min="1" max="10" value="5"
+            style="accent-color:var(--gold);" oninput="updateVitality('fresh',this.value)">
+          <div class="vitality-desc">How fresh did you wake up this morning?</div>
+        </div>
+
+        <div class="vitality-row">
+          <div class="vitality-header">
+            <span class="vitality-name">😊 Joy & Purpose</span>
+            <span class="vitality-val" id="vval-joy" style="color:var(--spirit);">5</span>
+          </div>
+          <input type="range" class="vitality-slider" id="vslider-joy" min="1" max="10" value="5"
+            style="accent-color:var(--spirit);" oninput="updateVitality('joy',this.value)">
+          <div class="vitality-desc">How much joy and peace do you feel today?</div>
+        </div>
+
+        <button class="save-btn" onclick="saveVitality()">Save Today's Scores</button>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Your Averages This Week</div>
+        <div id="vitality-averages"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Vitality Over Time</div>
+        <div class="chart-wrap">
+          <canvas id="vitality-chart" class="chart-canvas"></canvas>
+          <div class="chart-empty" id="vitality-chart-empty">Log at least 3 days to see your vitality trend.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BADGES TAB -->
+    <div class="tab-panel" id="tab-badges">
+
+      <div class="card">
+        <div class="card-label">Your Badges</div>
+        <p style="font-size:12px;color:var(--ink3);margin-bottom:14px;line-height:1.55;">Each badge represents a milestone in your transformation journey. Earn them by staying consistent.</p>
+        <div class="badges-grid" id="badges-grid"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Milestone Messages</div>
+        <div id="milestone-messages"></div>
+      </div>
+
+    </div>
+
+    <!-- NOTIFICATIONS TAB -->
+    <div class="tab-panel" id="tab-notify">
+
+      <div class="notif-card">
+        <div class="notif-icon">🌅</div>
+        <div class="notif-title">Morning Verse & Motivation</div>
+        <div class="notif-desc">Receive a biblical verse and motivational message every morning to start your day with God. This is the most powerful habit for consistency.</div>
+        <button class="notif-btn" id="notif-btn" onclick="requestNotifications()">Enable Morning Reminders</button>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Reminder Times</div>
+        <div class="time-picker-row">
+          <div class="time-picker-box">
+            <label>Morning reminder</label>
+            <input type="time" id="morning-time" value="06:30" onchange="saveNotifSettings()"/>
+          </div>
+          <div class="time-picker-box">
+            <label>Evening reminder</label>
+            <input type="time" id="evening-time" value="21:00" onchange="saveNotifSettings()"/>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--ink3);line-height:1.6;">Morning: daily verse + motivation. Evening: reminder to complete your habits and save the day.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Today's Morning Verse</div>
+        <div class="verse-preview" id="daily-verse-preview">
+          <div class="verse-preview-text" id="preview-verse-text">Loading...</div>
+          <div class="verse-preview-ref" id="preview-verse-ref"></div>
+        </div>
+        <div style="font-size:11px;color:var(--ink3);line-height:1.6;">This is what your morning notification will look like. A new verse every day, automatically.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">What You Will Receive</div>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.75;">
+          <p style="margin-bottom:8px;">🌅 <strong>Every morning at your chosen time:</strong> A biblical verse selected for that day, with a one-sentence motivational message to start your day strong.</p>
+          <p style="margin-bottom:8px;">🌙 <strong>Every evening at your chosen time:</strong> A gentle reminder to complete your habits, save your day, and write your journal reflection.</p>
+          <p style="font-style:italic;color:var(--ink3);">"Evening, and morning, and at noon, will I pray." — Psalm 55:17 (KJV)</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ STATE ═══
+let T={
+  streak:0,
+  lastDone:null,
+  doneDays:{},
+  weights:[],
+  goalWeight:null,
+  weightUnit:'kg',
+  vitality:{},
+  notifEnabled:false,
+  morningTime:'06:30',
+  eveningTime:'21:00'
+};
+
+function ls(){try{const s=localStorage.getItem('gh_tracker_v1');if(s)T=JSON.parse(s);}catch(e){}}
+function ss(){try{localStorage.setItem('gh_tracker_v1',JSON.stringify(T));return true;}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}}
+function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function goBack(){if(window.history.length>1&&document.referrer&&new URL(document.referrer).pathname!==location.pathname){history.back();}else{location.href='index.html';}}
+
+// ═══ VERSES ═══
+const VERSES=[
+  {text:"I can do all things through Christ which strengtheneth me.",ref:"Philippians 4:13 (KJV)"},
+  {text:"But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles.",ref:"Isaiah 40:31 (KJV)"},
+  {text:"Know ye not that your body is the temple of the Holy Ghost?",ref:"1 Corinthians 6:19 (KJV)"},
+  {text:"Be not conformed to this world: but be ye transformed by the renewing of your mind.",ref:"Romans 12:2 (KJV)"},
+  {text:"And let us not be weary in well doing: for in due season we shall reap, if we faint not.",ref:"Galatians 6:9 (KJV)"},
+  {text:"The LORD is my strength and my shield; my heart trusted in him, and I am helped.",ref:"Psalm 28:7 (KJV)"},
+  {text:"I will praise thee; for I am fearfully and wonderfully made.",ref:"Psalm 139:14 (KJV)"},
+  {text:"She girdeth her loins with strength, and strengtheneth her arms.",ref:"Proverbs 31:17 (KJV)"},
+  {text:"His mercies are new every morning: great is thy faithfulness.",ref:"Lamentations 3:23 (KJV)"},
+  {text:"This is the day which the LORD hath made; we will rejoice and be glad in it.",ref:"Psalm 118:24 (KJV)"},
+  {text:"Well done, thou good and faithful servant.",ref:"Matthew 25:21 (KJV)"},
+  {text:"I have fought a good fight, I have finished my course, I have kept the faith.",ref:"2 Timothy 4:7 (KJV)"},
+  {text:"Commit thy works unto the LORD, and thy thoughts shall be established.",ref:"Proverbs 16:3 (KJV)"},
+  {text:"Be strong and of a good courage; for the LORD thy God is with thee.",ref:"Joshua 1:9 (KJV)"},
+  {text:"Pray without ceasing.",ref:"1 Thessalonians 5:17 (KJV)"},
+  {text:"In every thing give thanks: for this is the will of God.",ref:"1 Thessalonians 5:18 (KJV)"},
+  {text:"Write the vision, and make it plain upon tables.",ref:"Habakkuk 2:2 (KJV)"},
+  {text:"Iron sharpeneth iron; so a man sharpeneth the countenance of his friend.",ref:"Proverbs 27:17 (KJV)"},
+  {text:"Two are better than one; because they have a good reward for their labour.",ref:"Ecclesiastes 4:9 (KJV)"},
+  {text:"Bodily exercise profiteth little: but godliness is profitable unto all things.",ref:"1 Timothy 4:8 (KJV)"},
+  {text:"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God.",ref:"1 Corinthians 10:31 (KJV)"},
+  {text:"Casting all your care upon him; for he careth for you.",ref:"1 Peter 5:7 (KJV)"},
+  {text:"Now no chastening for the present seemeth to be joyous, but grievous: nevertheless afterward it yieldeth the peaceable fruit of righteousness.",ref:"Hebrews 12:11 (KJV)"},
+  {text:"Come unto me, all ye that labour and are heavy laden, and I will give you rest.",ref:"Matthew 11:28 (KJV)"},
+  {text:"For I know the thoughts that I think toward you, saith the LORD, thoughts of peace.",ref:"Jeremiah 29:11 (KJV)"},
+  {text:"Trust in the LORD with all thine heart; and lean not unto thine own understanding.",ref:"Proverbs 3:5 (KJV)"},
+  {text:"He giveth his beloved sleep.",ref:"Psalm 127:2 (KJV)"},
+  {text:"Delight thyself also in the LORD; and he shall give thee the desires of thine heart.",ref:"Psalm 37:4 (KJV)"},
+  {text:"The heavens declare the glory of God; and the firmament sheweth his handywork.",ref:"Psalm 19:1 (KJV)"},
+  {text:"Thy word is a lamp unto my feet, and a light unto my path.",ref:"Psalm 119:105 (KJV)"},
+];
+
+const STREAK_VERSES=[
+  {min:0,text:'"Every journey begins with a single step of faith."',ref:''},
+  {min:3,text:'"And let us not be weary in well doing." — Galatians 6:9 (KJV)',ref:''},
+  {min:7,text:'"They that wait upon the LORD shall renew their strength." — Isaiah 40:31 (KJV)',ref:''},
+  {min:14,text:'"I have fought a good fight, I have finished my course." — 2 Timothy 4:7 (KJV)',ref:''},
+  {min:21,text:'"Now no chastening for the present seemeth to be joyous, but grievous: nevertheless afterward it yieldeth the peaceable fruit." — Hebrews 12:11 (KJV)',ref:''},
+  {min:30,text:'"Well done, thou good and faithful servant." — Matthew 25:21 (KJV)',ref:''},
+  {min:60,text:'"Be not conformed to this world: but be ye transformed by the renewing of your mind." — Romans 12:2 (KJV)',ref:''},
+  {min:90,text:'"I can do all things through Christ which strengtheneth me." — Philippians 4:13 (KJV)',ref:''},
+];
+
+const MILESTONES=[
+  {days:1,emoji:'🌱',title:'First Step',verse:'"The journey of transformation begins with one decision." — GodHealth'},
+  {days:3,emoji:'🔥',title:'3-Day Fire',verse:'"And let us not be weary in well doing." — Galatians 6:9'},
+  {days:7,emoji:'✝️',title:'One Week Faithful',verse:'"They that wait upon the LORD shall renew their strength." — Isaiah 40:31'},
+  {days:14,emoji:'⚡',title:'Two Weeks Strong',verse:'"I have fought a good fight, I have finished my course." — 2 Timothy 4:7'},
+  {days:21,emoji:'🏛️',title:'21 Days — New Habits',verse:'"Now no chastening for the present seemeth to be joyous, but grievous: nevertheless afterward it yieldeth the peaceable fruit." — Hebrews 12:11'},
+  {days:30,emoji:'👑',title:'30 Days — Faithful Servant',verse:'"Well done, thou good and faithful servant." — Matthew 25:21'},
+  {days:60,emoji:'🦅',title:'60 Days — Eagles Wings',verse:'"They shall mount up with wings as eagles." — Isaiah 40:31'},
+  {days:90,emoji:'💎',title:'90 Days — Transformed',verse:'"I can do all things through Christ which strengtheneth me." — Philippians 4:13'},
+];
+
+const BADGES=[
+  {id:'first',emoji:'🌱',name:'First Step',req:'Day 1',days:1},
+  {id:'week',emoji:'🔥',name:'7 Days',req:'7 day streak',days:7},
+  {id:'fortnight',emoji:'⚡',name:'14 Days',req:'14 day streak',days:14},
+  {id:'habit',emoji:'🏛️',name:'21 Days',req:'21 day streak',days:21},
+  {id:'month',emoji:'👑',name:'30 Days',req:'30 day streak',days:30},
+  {id:'weight',emoji:'⚖️',name:'First Log',req:'Log your weight',special:'weight'},
+  {id:'vitality',emoji:'✨',name:'Vitality',req:'Log vitality scores',special:'vitality'},
+  {id:'eagle',emoji:'🦅',name:'60 Days',req:'60 day streak',days:60},
+  {id:'diamond',emoji:'💎',name:'90 Days',req:'90 day streak',days:90},
+];
+
+// ═══ INIT ═══
+ls();
+initStreak();
+renderStreakTab();
+renderWeightTab();
+renderVitalityTab();
+renderBadges();
+renderNotifyTab();
+
+function initStreak(){
+  // Sync with main app
+  try{
+    const mainState=localStorage.getItem('gh_app_v2');
+    if(mainState){
+      const s=JSON.parse(mainState);
+      // Count streak from main app saved days
+      const days=s.days||{};
+      let streak=0;
+      const d=new Date();d.setHours(0,0,0,0);
+      while(true){
+        const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        if(days[k]?.saved){streak++;d.setDate(d.getDate()-1);}
+        else break;
+      }
+      T.streak=streak;
+      // Sync done days
+      Object.keys(days).forEach(k=>{if(days[k]?.saved)T.doneDays[k]=true;});
+    }
+  }catch(e){}
+  document.getElementById('header-streak').textContent=T.streak;
+}
+
+// ═══ TAB SWITCHING ═══
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+id)?.classList.add('active');
+}
+
+// ═══ STREAK TAB ═══
+function renderStreakTab(){
+  const streak=T.streak;
+  document.getElementById('streak-display').textContent=streak;
+  document.getElementById('header-streak').textContent=streak;
+
+  // Verse based on streak
+  const sv=[...STREAK_VERSES].reverse().find(v=>streak>=v.min)||STREAK_VERSES[0];
+  document.getElementById('streak-verse').textContent=sv.text;
+
+  // Week grid
+  const grid=document.getElementById('streak-week');
+  const days=['S','M','T','W','T','F','S'];
+  const today=new Date();today.setHours(0,0,0,0);
+  const startOfWeek=new Date(today);startOfWeek.setDate(today.getDate()-today.getDay());
+  let doneCnt=0;
+  grid.innerHTML=Array.from({length:7},(_,i)=>{
+    const d=new Date(startOfWeek);d.setDate(startOfWeek.getDate()+i);
+    const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const isToday=d.toDateString()===today.toDateString();
+    const isDone=T.doneDays[k];
+    const isFuture=d>today;
+    if(isDone)doneCnt++;
+    const emoji=isDone?'✓':isToday?'•':'';
+    return `<div class="streak-day">
+      <div class="streak-day-name">${days[i]}</div>
+      <div class="streak-day-dot ${isDone?'done':''} ${isToday?'today':''} ${isFuture?'future':''}">${emoji}</div>
+    </div>`;
+  }).join('');
+
+  const pct=Math.round((doneCnt/7)*100);
+  document.getElementById('week-done-count').textContent=`${doneCnt} of 7 days complete`;
+  document.getElementById('week-pct').textContent=`${pct}%`;
+
+  // Milestones
+  const ml=document.getElementById('milestones-list');
+  ml.innerHTML=MILESTONES.map(m=>{
+    const earned=streak>=m.days;
+    return`<div class="milestone-card ${earned?'':'milestone-locked'}">
+      <div class="milestone-icon">${earned?m.emoji:'🔒'}</div>
+      <div class="milestone-body">
+        <div class="milestone-days">${m.days} ${m.days===1?'day':'days'} ${earned?'✓':''}</div>
+        <div class="milestone-title">${m.title}</div>
+        <div class="milestone-verse">${earned?m.verse:'Complete '+m.days+(m.days===1?' day':' days')+' to unlock'}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Mark done button
+  const todayKey=todayStr();
+  const btn=document.getElementById('mark-done-btn');
+  if(T.doneDays[todayKey]){
+    btn.textContent='✓ Today is Complete';
+    btn.style.background='var(--spirit)';
+    btn.style.pointerEvents='none';
+  }
+}
+
+function markTodayDone(){
+  const k=todayStr();
+  if(T.doneDays[k]){showToast('Already marked today as done!');return;}
+  T.doneDays[k]=true;
+  // Recalculate streak
+  let streak=0;
+  const d=new Date();d.setHours(0,0,0,0);
+  while(true){
+    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if(T.doneDays[key]){streak++;d.setDate(d.getDate()-1);}
+    else break;
+  }
+  T.streak=streak;ss();
+  renderStreakTab();renderBadges();
+  const el=document.getElementById('streak-display');
+  el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
+  showToast(`🔥 ${streak} day streak — well done!`);
+}
+
+// ═══ WEIGHT TAB ═══
+function renderWeightTab(){
+  const weights=T.weights||[];
+  const unit=T.weightUnit||'kg';
+  document.getElementById('weight-unit').value=unit;
+
+  // Stats
+  if(weights.length>0){
+    const first=weights[0].val;
+    const last=weights[weights.length-1].val;
+    const change=last-first;
+    document.getElementById('stat-start').textContent=first.toFixed(1)+unit;
+    document.getElementById('stat-current').textContent=last.toFixed(1)+unit;
+    const changeEl=document.getElementById('stat-change');
+    changeEl.textContent=(change>0?'+':'')+change.toFixed(1)+unit;
+    changeEl.style.color=change<0?'var(--spirit)':change>0?'var(--temple)':'var(--ink3)';
+  }
+
+  // Goal weight
+  if(T.goalWeight){
+    document.getElementById('goal-weight-input').value=T.goalWeight;
+    updateGoalProgress();
+  }
+
+  // Chart
+  drawWeightChart();
+
+  // History
+  const hist=document.getElementById('weight-history');
+  if(!weights.length){
+    hist.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;padding:8px 0;">No entries yet. Log your first weight above.</div>';
+    return;
+  }
+  const sorted=[...weights].reverse();
+  hist.innerHTML=sorted.map((w,i)=>{
+    const prev=sorted[i+1];
+    const diff=prev?w.val-prev.val:0;
+    const trend=diff<0?`<span class="history-trend trend-down">▼ ${Math.abs(diff).toFixed(1)}</span>`:
+                diff>0?`<span class="history-trend trend-up">▲ ${diff.toFixed(1)}</span>`:'';
+    return`<div class="history-item">
+      <div class="history-date">${formatDate(w.date)}</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        ${trend}
+        <div class="history-val">${w.val.toFixed(1)} ${w.unit}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function logWeight(){
+  const val=parseFloat(document.getElementById('weight-input').value);
+  const unit=document.getElementById('weight-unit').value;
+  if(isNaN(val)||val<20||val>500){showToast('Enter a valid weight');return;}
+  T.weights=T.weights||[];
+  T.weightUnit=unit;
+  T.weights.push({val,unit,date:todayStr()});
+  ss();renderWeightTab();renderBadges();
+  document.getElementById('weight-input').value='';
+  showToast('⚖️ Weight logged — keep going!');
+}
+
+function saveGoalWeight(){
+  const val=parseFloat(document.getElementById('goal-weight-input').value);
+  if(isNaN(val)){showToast('Enter a valid goal weight');return;}
+  T.goalWeight=val;ss();
+  updateGoalProgress();showToast('Goal saved');
+}
+
+function updateGoalProgress(){
+  const weights=T.weights||[];
+  if(!T.goalWeight||!weights.length)return;
+  const start=weights[0].val;
+  const current=weights[weights.length-1].val;
+  const goal=T.goalWeight;
+  const totalNeeded=Math.abs(start-goal);
+  const done=Math.abs(start-current);
+  const pct=totalNeeded>0?Math.min(Math.round((done/totalNeeded)*100),100):100;
+  const bar=document.getElementById('goal-progress-bar');
+  bar.style.display='block';
+  document.getElementById('goal-pct-label').textContent=pct+'%';
+  document.getElementById('goal-bar-fill').style.width=pct+'%';
+}
+
+function drawWeightChart(){
+  const canvas=document.getElementById('weight-chart');
+  const empty=document.getElementById('chart-empty');
+  const weights=T.weights||[];
+  if(weights.length<2){empty.style.display='flex';canvas.style.display='none';return;}
+  empty.style.display='none';canvas.style.display='block';
+  const ctx=canvas.getContext('2d');
+  const w=canvas.offsetWidth,h=canvas.offsetHeight;
+  canvas.width=w*window.devicePixelRatio;canvas.height=h*window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio,window.devicePixelRatio);
+  ctx.clearRect(0,0,w,h);
+  const vals=weights.map(x=>x.val);
+  const min=Math.min(...vals)-2,max=Math.max(...vals)+2;
+  const pad={l:40,r:16,t:16,b:30};
+  const cw=w-pad.l-pad.r,ch=h-pad.t-pad.b;
+  const toX=i=>(pad.l+i/(weights.length-1)*cw);
+  const toY=v=>(pad.t+ch-(v-min)/(max-min)*ch);
+  // Grid lines
+  ctx.strokeStyle='rgba(26,20,16,.06)';ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=pad.t+i*(ch/4);
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+cw,y);ctx.stroke();
+    const label=(max-(i/4)*(max-min)).toFixed(1);
+    ctx.fillStyle='rgba(26,20,16,.4)';ctx.font='9px Lato';ctx.textAlign='right';
+    ctx.fillText(label,pad.l-4,y+3);
+  }
+  // Line
+  const grad=ctx.createLinearGradient(pad.l,0,pad.l+cw,0);
+  grad.addColorStop(0,'var(--soul)');grad.addColorStop(1,'var(--spirit)');
+  ctx.beginPath();ctx.strokeStyle='#4A7FA5';ctx.lineWidth=2.5;ctx.lineJoin='round';
+  weights.forEach((w2,i)=>{i===0?ctx.moveTo(toX(i),toY(w2.val)):ctx.lineTo(toX(i),toY(w2.val));});
+  ctx.stroke();
+  // Area fill
+  ctx.beginPath();
+  weights.forEach((w2,i)=>{i===0?ctx.moveTo(toX(i),toY(w2.val)):ctx.lineTo(toX(i),toY(w2.val));});
+  ctx.lineTo(toX(weights.length-1),pad.t+ch);ctx.lineTo(pad.l,pad.t+ch);ctx.closePath();
+  const areaGrad=ctx.createLinearGradient(0,pad.t,0,pad.t+ch);
+  areaGrad.addColorStop(0,'rgba(74,127,165,.15)');areaGrad.addColorStop(1,'rgba(74,127,165,0)');
+  ctx.fillStyle=areaGrad;ctx.fill();
+  // Dots
+  weights.forEach((w2,i)=>{
+    ctx.beginPath();ctx.arc(toX(i),toY(w2.val),4,0,Math.PI*2);
+    ctx.fillStyle='#4A7FA5';ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+  });
+  // Date labels
+  ctx.fillStyle='rgba(26,20,16,.4)';ctx.font='9px Lato';ctx.textAlign='center';
+  const step=Math.max(1,Math.floor(weights.length/5));
+  weights.forEach((w2,i)=>{
+    if(i%step===0||i===weights.length-1){
+      const d=w2.date.slice(5);
+      ctx.fillText(d,toX(i),h-6);
+    }
+  });
+}
+
+function formatDate(str){
+  const d=new Date(str+'T00:00:00');
+  return d.toLocaleDateString('en',{month:'short',day:'numeric'});
+}
+
+// ═══ VITALITY TAB ═══
+const VITALITY_KEYS=['energy','sleep','god','fresh','joy'];
+const VITALITY_COLORS={energy:'var(--temple)',sleep:'var(--soul)',god:'var(--spirit)',fresh:'var(--gold)',joy:'var(--spirit)'};
+
+function updateVitality(key,val){
+  document.getElementById('vval-'+key).textContent=val;
+}
+
+function saveVitality(){
+  const k=todayStr();
+  T.vitality=T.vitality||{};
+  T.vitality[k]={};
+  VITALITY_KEYS.forEach(key=>{
+    T.vitality[k][key]=parseInt(document.getElementById('vslider-'+key).value);
+  });
+  ss();renderVitalityTab();renderBadges();
+  showToast('✨ Vitality scores saved');
+}
+
+function renderVitalityTab(){
+  // Restore today's scores
+  const k=todayStr();
+  const today=T.vitality?.[k]||{};
+  VITALITY_KEYS.forEach(key=>{
+    const val=today[key]||5;
+    document.getElementById('vslider-'+key).value=val;
+    document.getElementById('vval-'+key).textContent=val;
+  });
+
+  // Weekly averages
+  const avgs=document.getElementById('vitality-averages');
+  const entries=Object.values(T.vitality||{});
+  if(!entries.length){
+    avgs.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">No scores logged yet.</div>';
+  } else {
+    const names={energy:'⚡ Energy',sleep:'🌙 Sleep',god:'✝️ With God',fresh:'🌅 Freshness',joy:'😊 Joy'};
+    avgs.innerHTML=VITALITY_KEYS.map(key=>{
+      const sum=entries.reduce((a,e)=>a+(e[key]||0),0);
+      const avg=(sum/entries.length).toFixed(1);
+      const pct=(avg/10)*100;
+      const color=VITALITY_COLORS[key];
+      return`<div style="margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+          <span style="font-size:12px;color:var(--ink2);">${names[key]}</span>
+          <span style="font-size:13px;font-weight:700;color:${color};">${avg}/10</span>
+        </div>
+        <div style="background:var(--bg3);border-radius:100px;height:6px;overflow:hidden;">
+          <div style="height:100%;border-radius:100px;background:${color};width:${pct}%;transition:width .6s;"></div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Vitality chart
+  drawVitalityChart();
+}
+
+function drawVitalityChart(){
+  const canvas=document.getElementById('vitality-chart');
+  const empty=document.getElementById('vitality-chart-empty');
+  const entries=Object.entries(T.vitality||{}).sort((a,b)=>a[0].localeCompare(b[0]));
+  if(entries.length<3){empty.style.display='flex';canvas.style.display='none';return;}
+  empty.style.display='none';canvas.style.display='block';
+  const ctx=canvas.getContext('2d');
+  const w=canvas.offsetWidth,h=canvas.offsetHeight;
+  canvas.width=w*window.devicePixelRatio;canvas.height=h*window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio,window.devicePixelRatio);
+  ctx.clearRect(0,0,w,h);
+  const pad={l:28,r:16,t:16,b:30};
+  const cw=w-pad.l-pad.r,ch=h-pad.t-pad.b;
+  // Draw each metric as a line
+  const metrics=[
+    {key:'energy',color:'#C4573A'},
+    {key:'god',color:'#6B8F5E'},
+    {key:'joy',color:'#B8912A'},
+  ];
+  // Grid
+  ctx.strokeStyle='rgba(26,20,16,.06)';ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){
+    const y=pad.t+i*(ch/5);
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+cw,y);ctx.stroke();
+    ctx.fillStyle='rgba(26,20,16,.35)';ctx.font='8px Lato';ctx.textAlign='right';
+    ctx.fillText(10-i*2,pad.l-3,y+3);
+  }
+  metrics.forEach(m=>{
+    const vals=entries.map(([,v])=>v[m.key]||5);
+    ctx.beginPath();ctx.strokeStyle=m.color;ctx.lineWidth=2;ctx.lineJoin='round';
+    vals.forEach((v,i)=>{
+      const x=pad.l+i/(entries.length-1)*cw;
+      const y=pad.t+ch-(v/10)*ch;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+  });
+  // Legend
+  const legendY=h-8;
+  metrics.forEach((m,i)=>{
+    const names={energy:'Energy',god:'God',joy:'Joy'};
+    ctx.fillStyle=m.color;ctx.fillRect(pad.l+i*70,legendY-6,10,6);
+    ctx.fillStyle='rgba(26,20,16,.5)';ctx.font='8px Lato';ctx.textAlign='left';
+    ctx.fillText(names[m.key],pad.l+i*70+13,legendY);
+  });
+}
+
+// ═══ BADGES ═══
+function renderBadges(){
+  const streak=T.streak||0;
+  const weights=T.weights||[];
+  const vitalityDays=Object.keys(T.vitality||{}).length;
+
+  const grid=document.getElementById('badges-grid');
+  grid.innerHTML=BADGES.map(b=>{
+    let earned=false;
+    if(b.days)earned=streak>=b.days;
+    if(b.special==='weight')earned=weights.length>0;
+    if(b.special==='vitality')earned=vitalityDays>0;
+    return`<div class="badge-item ${earned?'earned':''}">
+      <div class="badge-emoji">${b.emoji}</div>
+      <div class="badge-name">${b.name}</div>
+      <div class="badge-req">${b.req}</div>
+      ${earned?'':`<div class="badge-lock">🔒</div>`}
+    </div>`;
+  }).join('');
+
+  // Milestone messages
+  const msgs=document.getElementById('milestone-messages');
+  const earned=MILESTONES.filter(m=>streak>=m.days);
+  if(!earned.length){
+    msgs.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">Complete your first day to unlock your first milestone message.</div>';
+    return;
+  }
+  msgs.innerHTML=earned.reverse().map(m=>`
+    <div style="background:var(--gold-light);border:1px solid rgba(184,145,42,.2);border-radius:10px;padding:14px;margin-bottom:8px;">
+      <div style="font-size:20px;margin-bottom:6px;">${m.emoji}</div>
+      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:4px;">${m.title}</div>
+      <div style="font-size:11px;font-style:italic;color:var(--ink3);line-height:1.6;">${m.verse}</div>
+    </div>`).join('');
+}
+
+// ═══ NOTIFICATIONS ═══
+function renderNotifyTab(){
+  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
+  const v=VERSES[doy%VERSES.length];
+  document.getElementById('preview-verse-text').textContent=`"${v.text}"`;
+  document.getElementById('preview-verse-ref').textContent=v.ref;
+
+  if(T.morningTime)document.getElementById('morning-time').value=T.morningTime;
+  if(T.eveningTime)document.getElementById('evening-time').value=T.eveningTime;
+
+  const btn=document.getElementById('notif-btn');
+  if(T.notifEnabled||Notification?.permission==='granted'){
+    btn.textContent='✓ Reminders Enabled';
+    btn.classList.add('enabled');
+  }
+}
+
+function saveNotifSettings(){
+  T.morningTime=document.getElementById('morning-time').value;
+  T.eveningTime=document.getElementById('evening-time').value;
+  ss();showToast('Reminder times saved');
+}
+
+function requestNotifications(){
+  if(!('Notification' in window)){
+    showToast('Notifications not supported in this browser');
+    return;
+  }
+  Notification.requestPermission().then(perm=>{
+    if(perm==='granted'){
+      T.notifEnabled=true;ss();
+      const btn=document.getElementById('notif-btn');
+      btn.textContent='✓ Reminders Enabled';
+      btn.classList.add('enabled');
+      // Show a test notification
+      const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
+      const v=VERSES[doy%VERSES.length];
+      new Notification('GodHealth 🙏',{
+        body:`"${v.text.slice(0,80)}..." — ${v.ref}`,
+        icon:'https://emoji.aranja.com/static/emoji-data/img-apple-160/271d.png'
+      });
+      showToast('✓ Reminders enabled — God bless you!');
+    } else {
+      showToast('Please allow notifications in your browser settings');
+    }
+  });
+}
+
+// Resize charts on orientation change
+window.addEventListener('resize',()=>{
+  setTimeout(()=>{drawWeightChart();drawVitalityChart();},100);
+});
+</script>
+</body>
+</html>

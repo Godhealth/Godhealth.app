@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0D1F0D">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<title>GodHealth — Prayer Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F9F6F0;--bg2:#FFFFFF;--bg3:#F2EDE4;
+  --border:#E8E0D0;--border2:#D4C9B0;
+  --ink:#1A1410;--ink2:#5C4F3A;--ink3:#9A8E7A;
+  --temple:#C4573A;--temple-light:#FAF0ED;
+  --soul:#4A7FA5;--soul-light:#EEF4F9;
+  --spirit:#6B8F5E;--spirit-light:#EFF4EE;
+  --gold:#B8912A;--gold-light:#FBF5E6;
+  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:flex;flex-direction:column;}
+
+/* HEADER */
+.app-header{background:#0D1F0D;border-bottom:1px solid rgba(107,143,94,.25);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.3);}
+.header-left{display:flex;align-items:center;gap:10px;}
+.back-btn{background:rgba(245,237,216,.1);border:1px solid rgba(245,237,216,.15);color:#F5EDD8;font-size:16px;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;}
+.header-logo{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#F5EDD8;}
+.header-logo em{font-style:italic;color:var(--gold);}
+.header-streak{background:rgba(184,145,42,.18);border:1px solid rgba(184,145,42,.35);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--gold);}
+
+/* SCROLL */
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll-area::-webkit-scrollbar{width:0;}
+.content{padding:16px;}
+
+/* TABS */
+.tab-row{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px;}
+.tab-btn{background:var(--bg2);border:1.5px solid var(--border);color:var(--ink3);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.tab-btn.active{background:var(--spirit);border-color:var(--spirit);color:#fff;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* HERO */
+.prayer-hero{background:linear-gradient(135deg,#0A1A0A,#142014);border:1px solid rgba(107,143,94,.3);border-radius:var(--radius);padding:20px;margin-bottom:16px;position:relative;overflow:hidden;}
+.prayer-hero::before{content:'✝';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:90px;opacity:.05;color:var(--spirit);}
+.prayer-hero-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(107,143,94,.7);margin-bottom:6px;}
+.prayer-hero-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#F5EDD8;line-height:1.15;margin-bottom:8px;}
+.prayer-hero-title em{font-style:italic;color:var(--gold);}
+.prayer-hero-verse{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:rgba(245,237,216,.5);line-height:1.65;}
+
+/* TIMER */
+.timer-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;text-align:center;box-shadow:var(--shadow-sm);}
+.timer-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.timer-ring{position:relative;width:140px;height:140px;margin:0 auto 16px;}
+.timer-ring svg{width:140px;height:140px;transform:rotate(-90deg);}
+.timer-ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.timer-time{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--ink);line-height:1;}
+.timer-phase{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-top:4px;}
+.timer-phase-name{font-size:12px;font-weight:700;color:var(--spirit);margin-top:3px;}
+.timer-btn-row{display:flex;gap:8px;justify-content:center;}
+.timer-btn{padding:10px 24px;border-radius:10px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;transition:all .22s;}
+.timer-start{background:var(--spirit);color:#fff;}
+.timer-start:hover{background:#5a7a4e;}
+.timer-pause{background:var(--gold);color:#fff;}
+.timer-reset{background:var(--bg3);border:1.5px solid var(--border);color:var(--ink3);}
+.timer-duration-row{display:flex;gap:6px;justify-content:center;margin-bottom:14px;}
+.timer-dur-btn{padding:5px 12px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink3);cursor:pointer;transition:all .2s;}
+.timer-dur-btn.active{background:var(--spirit-light);border-color:rgba(107,143,94,.4);color:var(--spirit);}
+
+/* PRAYER PHASES */
+.phase-guide{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.phase-guide-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.prayer-phase-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);}
+.prayer-phase-item:last-child{border-bottom:none;}
+.phase-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px;}
+.phase-body{flex:1;}
+.phase-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.phase-duration{font-size:10px;color:var(--gold);font-weight:700;margin-bottom:3px;}
+.phase-desc{font-size:11px;color:var(--ink3);line-height:1.55;}
+
+/* PRAYER CARDS */
+.prayer-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow-sm);}
+.prayer-card-header{padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;}
+.prayer-card-icon{font-size:24px;flex-shrink:0;}
+.prayer-card-info{flex:1;}
+.prayer-card-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.prayer-card-sub{font-size:10px;color:var(--ink3);}
+.prayer-card-chevron{font-size:11px;color:var(--ink3);transition:transform .25s;}
+.prayer-card.open .prayer-card-chevron{transform:rotate(180deg);}
+.prayer-card-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border);}
+.prayer-card.open .prayer-card-body{display:block;}
+.prayer-section-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:12px 0 7px;}
+.prayer-verse-box{background:var(--gold-light);border-left:3px solid var(--gold);border-radius:0 9px 9px 0;padding:10px 12px;margin-bottom:10px;}
+.prayer-verse-text{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--ink);line-height:1.65;margin-bottom:3px;}
+.prayer-verse-ref{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+.prayer-guide-text{font-size:13px;color:var(--ink2);line-height:1.75;margin-bottom:10px;}
+.prayer-prompt{background:var(--spirit-light);border-left:3px solid var(--spirit);border-radius:0 8px 8px 0;padding:10px 12px;margin-bottom:8px;}
+.prayer-prompt-label{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--spirit);margin-bottom:4px;}
+.prayer-prompt-text{font-size:12px;color:var(--ink2);line-height:1.55;font-style:italic;}
+.prayer-textarea{width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:9px;color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;line-height:1.65;padding:10px 12px;resize:vertical;min-height:70px;outline:none;transition:border-color .25s;margin-top:6px;}
+.prayer-textarea:focus{border-color:var(--gold);}
+.prayer-textarea::placeholder{color:var(--ink3);opacity:.55;}
+
+/* INTERCESSION */
+.intercession-list{list-style:none;}
+.intercession-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.intercession-item:last-child{border-bottom:none;}
+.intercession-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .2s;}
+.intercession-check.done{background:var(--spirit);border-color:var(--spirit);color:#fff;font-size:12px;}
+.intercession-name{font-size:13px;color:var(--ink);flex:1;}
+.intercession-name.done{text-decoration:line-through;color:var(--ink3);}
+.add-intercession-row{display:flex;gap:8px;margin-top:10px;}
+.add-intercession-input{flex:1;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;padding:9px 12px;border-radius:8px;outline:none;transition:border-color .25s;}
+.add-intercession-input:focus{border-color:var(--spirit);}
+.add-intercession-btn{background:var(--spirit);color:#fff;border:none;padding:9px 14px;border-radius:8px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;cursor:pointer;}
+
+/* ANSWERED PRAYERS */
+.answered-prayer-item{background:var(--spirit-light);border:1px solid rgba(107,143,94,.2);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.answered-prayer-date{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--spirit);font-weight:700;margin-bottom:4px;}
+.answered-prayer-text{font-size:13px;color:var(--ink2);line-height:1.6;}
+.answered-prayer-answer{font-size:11px;color:var(--spirit);font-weight:700;margin-top:5px;}
+.mark-answered-btn{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border-radius:20px;background:var(--spirit-light);border:1px solid rgba(107,143,94,.25);color:var(--spirit);cursor:pointer;font-family:'Lato',sans-serif;margin-top:6px;}
+
+/* PRAYER HISTORY */
+.history-day-item{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.history-day-date{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;}
+.history-day-text{font-size:12px;color:var(--ink2);line-height:1.6;font-style:italic;}
+
+/* STREAK ROW */
+.prayer-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
+.prayer-stat{background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;box-shadow:var(--shadow-sm);}
+.prayer-stat-num{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--spirit);line-height:1;margin-bottom:3px;}
+.prayer-stat-lbl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);}
+
+/* SAVE BTN */
+.save-btn{width:100%;background:var(--spirit);color:#fff;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:12px;border:none;border-radius:9px;cursor:pointer;transition:all .25s;margin-top:10px;}
+.save-btn:hover{background:#5a7a4e;}
+
+/* VERSE OF DAY */
+.daily-prayer-verse{background:linear-gradient(135deg,#0A1A0A,#142014);border:1px solid rgba(107,143,94,.25);border-radius:var(--radius);padding:16px;margin-bottom:16px;}
+.dpv-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(107,143,94,.7);margin-bottom:8px;}
+.dpv-text{font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:#F5EDD8;line-height:1.65;margin-bottom:6px;}
+.dpv-ref{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(184,145,42,.6);font-weight:700;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;padding:10px 20px;border-radius:100px;z-index:999;opacity:0;transition:all .35s;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@keyframes riseUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ACCESSIBILITY */
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #B8912A;outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="header-left">
+    <a class="back-btn" href="index.html" onclick="ghGoBack(event)" aria-label="Back to home">←</a>
+    <div class="header-logo">God<em>Health</em> Prayer</div>
+  </div>
+  <div class="header-streak" id="prayer-streak-badge">🙏 0 day streak</div>
+</div>
+
+<div class="scroll-area">
+  <div class="content">
+
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="switchTab('guide',this)">🙏 Guide</button>
+      <button class="tab-btn" onclick="switchTab('timer',this)">⏱ Timer</button>
+      <button class="tab-btn" onclick="switchTab('intercession',this)">❤️ Intercession</button>
+      <button class="tab-btn" onclick="switchTab('journal',this)">📖 Journal</button>
+      <button class="tab-btn" onclick="switchTab('answered',this)">✅ Answered</button>
+    </div>
+
+    <!-- GUIDE TAB -->
+    <div class="tab-panel active" id="tab-guide">
+
+      <div class="daily-prayer-verse">
+        <div class="dpv-label">Today's Prayer Verse</div>
+        <div class="dpv-text" id="daily-prayer-verse-text"></div>
+        <div class="dpv-ref" id="daily-prayer-verse-ref"></div>
+      </div>
+
+      <div class="prayer-stats-row">
+        <div class="prayer-stat"><div class="prayer-stat-num" id="stat-streak">0</div><div class="prayer-stat-lbl">Day Streak</div></div>
+        <div class="prayer-stat"><div class="prayer-stat-num" id="stat-total">0</div><div class="prayer-stat-lbl">Total Days</div></div>
+        <div class="prayer-stat"><div class="prayer-stat-num" id="stat-answered">0</div><div class="prayer-stat-lbl">Answered</div></div>
+      </div>
+
+      <div class="prayer-hero">
+        <div class="prayer-hero-label">GodHealth Prayer</div>
+        <div class="prayer-hero-title">How to Pray<br><em>With Power</em></div>
+        <div class="prayer-hero-verse">"But thou, when thou prayest, enter into thy closet, and when thou hast shut thy door, pray to thy Father which is in secret." — Matthew 6:6 (KJV)</div>
+      </div>
+
+      <!-- 6 PRAYER TYPES -->
+      <div class="phase-guide">
+        <div class="phase-guide-title">The Biblical Prayer Structure — ACTS</div>
+        <div class="prayer-phase-item">
+          <div class="phase-num" style="background:var(--gold);">A</div>
+          <div class="phase-body">
+            <div class="phase-name">Adoration — Worship God</div>
+            <div class="phase-duration">2–3 minutes</div>
+            <div class="phase-desc">Begin by declaring who God is — not what He can do for you, but who He is. His character, His names, His greatness. This positions your heart correctly before everything else.</div>
+          </div>
+        </div>
+        <div class="prayer-phase-item">
+          <div class="phase-num" style="background:var(--temple);">C</div>
+          <div class="phase-body">
+            <div class="phase-name">Confession — Honest Before God</div>
+            <div class="phase-duration">2–3 minutes</div>
+            <div class="phase-desc">Be specific. Not "forgive my sins" — name them. The blood of Jesus covers every confession. Unconfessed sin blocks the flow of prayer. Honesty is the price of access.</div>
+          </div>
+        </div>
+        <div class="prayer-phase-item">
+          <div class="phase-num" style="background:var(--spirit);">T</div>
+          <div class="phase-body">
+            <div class="phase-name">Thanksgiving — Name What God Has Done</div>
+            <div class="phase-duration">2–3 minutes</div>
+            <div class="phase-desc">Specific thanksgiving — not general. Name what God did yesterday, this week, this year. Gratitude opens the gates of heaven. "Enter into his gates with thanksgiving." — Psalm 100:4</div>
+          </div>
+        </div>
+        <div class="prayer-phase-item">
+          <div class="phase-num" style="background:var(--soul);">S</div>
+          <div class="phase-body">
+            <div class="phase-name">Supplication — Ask for Others First</div>
+            <div class="phase-duration">3–5 minutes</div>
+            <div class="phase-desc">Pray for others before yourself. This is the order of the Kingdom — those who intercede for others receive grace for themselves. Use your intercession list in the Intercession tab.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STRUCTURED PRAYER GUIDES -->
+      <div class="prayer-card" id="pg-morning">
+        <div class="prayer-card-header" onclick="togglePrayerCard('morning')">
+          <div class="prayer-card-icon">🌅</div>
+          <div class="prayer-card-info">
+            <div class="prayer-card-title">Morning Prayer Guide</div>
+            <div class="prayer-card-sub">10–15 minutes · Before anything else</div>
+          </div>
+          <div class="prayer-card-chevron">▼</div>
+        </div>
+        <div class="prayer-card-body">
+          <div class="prayer-verse-box">
+            <div class="prayer-verse-text">"In the morning will I direct my prayer unto thee, and will look up."</div>
+            <div class="prayer-verse-ref">Psalm 5:3 (KJV)</div>
+          </div>
+          <div class="prayer-guide-text">The morning prayer sets the spiritual tone for your entire day. Before your phone, before coffee, before anyone else — God first. This is not religious obligation — it is spiritual strategy.</div>
+          <div class="prayer-section-label">Step 1 — Adoration (2 min)</div>
+          <div class="prayer-prompt"><div class="prayer-prompt-label">Pray this out loud</div><div class="prayer-prompt-text">"Lord, You are [name three of His attributes]. You are greater than anything I face today. I worship You before I ask You for anything..."</div></div>
+          <div class="prayer-section-label">Step 2 — Confession (2 min)</div>
+          <div class="prayer-prompt"><div class="prayer-prompt-label">Be specific</div><div class="prayer-prompt-text">"Lord, yesterday I fell short when I [specific failure]. I confess this and receive Your forgiveness. Cleanse me today by the blood of Jesus..."</div></div>
+          <div class="prayer-section-label">Step 3 — Surrender Your Day (3 min)</div>
+          <div class="prayer-prompt"><div class="prayer-prompt-label">Give Him the agenda</div><div class="prayer-prompt-text">"Lord, I surrender today to You. My body, my mind, my time, my plans. Lead me. Speak to me. Use me for Your glory today. Let me not walk one step without You..."</div></div>
+          <div class="prayer-section-label">Step 4 — Intercession (3 min)</div>
+          <div class="prayer-prompt"><div class="prayer-prompt-label">Pray for others first</div><div class="prayer-prompt-text">Open the Intercession tab. Pray for 3 people by name today. Be specific about their needs.</div></div>
+          <div class="prayer-section-label">Write what God spoke to you this morning</div>
+          <textarea class="prayer-textarea" id="morning-prayer-notes" placeholder="What did God speak to you this morning? A thought, a verse, a impression — write it here..." oninput="saveNotes('morning',this.value)"></textarea>
+          <button class="save-btn" onclick="markPrayed('morning')">✓ Morning Prayer Complete</button>
+        </div>
+      </div>
+
+      <div class="prayer-card" id="pg-midday">
+        <div class="prayer-card-header" onclick="togglePrayerCard('midday')">
+          <div class="prayer-card-icon">☀️</div>
+          <div class="prayer-card-info">
+            <div class="prayer-card-title">Midday Prayer — 2 Minutes</div>
+            <div class="prayer-card-sub">A pause in the day to acknowledge God</div>
+          </div>
+          <div class="prayer-card-chevron">▼</div>
+        </div>
+        <div class="prayer-card-body">
+          <div class="prayer-verse-box">
+            <div class="prayer-verse-text">"Evening, and morning, and at noon, will I pray, and cry aloud: and he shall hear my voice."</div>
+            <div class="prayer-verse-ref">Psalm 55:17 (KJV)</div>
+          </div>
+          <div class="prayer-guide-text">Daniel prayed three times a day — even when it was illegal and punishable by death. The midday prayer does not need to be long. It is an anchor. A reminder that God is with you in the middle of the day.</div>
+          <div class="prayer-prompt"><div class="prayer-prompt-label">Midday prayer — say this wherever you are</div><div class="prayer-prompt-text">"Lord, I acknowledge You in the middle of this day. I am not alone. You are with me right now. Guide my thoughts, my words and my actions for the rest of this day. In Jesus' name."</div></div>
+          <div class="prayer-section-label">One thing to give God right now</div>
+          <textarea class="prayer-textarea" id="midday-prayer-notes" placeholder="What is weighing on you right now? Give it to God in writing..." oninput="saveNotes('midday',this.value)"></textarea>
+          <button class="save-btn" onclick="markPrayed('midday')">✓ Midday Prayer Complete</button>
+        </div>
+      </div>
+
+      <div class="prayer-card" id="pg-evening">
+        <div class="prayer-card-header" onclick="togglePrayerCard('evening')">
+          <div class="prayer-card-icon">🌙</div>
+          <div class="prayer-card-info">
+            <div class="prayer-card-title">Evening Prayer Guide</div>
+            <div class="prayer-card-sub">10 minutes · Before sleep</div>
+          </div>
+          <div class="prayer-card-chevron">▼</div>
+        </div>
+        <div class="prayer-card-body">
+          <div class="prayer-verse-box">
+            <div class="prayer-verse-text">"He giveth his beloved sleep."</div>
+            <div class="prayer-verse-ref">Psalm 127:2 (KJV)</div>
+          </div>
+          <div class="prayer-guide-text">The evening prayer closes your day with God. You review the day together. You confess what fell short. You give thanks for what was given. And you entrust tomorrow to Him before you sleep.</div>
+          <div class="prayer-section-label">Step 1 — Review the day with God</div>
+          <div class="prayer-prompt"><div class="prayer-prompt-label">The Examen Prayer</div><div class="prayer-prompt-text">"Lord, walk me through this day. Where did I sense Your presence? Where did I ignore You? Where were You working that I almost missed?..."</div></div>
+          <div class="prayer-section-label">Step 2 — Thanksgiving</div>
+          <div class="prayer-prompt"><div class="prayer-prompt-label">Name three specific things</div><div class="prayer-prompt-text">"Lord, today I am specifically grateful for [1], [2], and [3]. Thank You for being present in each of these..."</div></div>
+          <div class="prayer-section-label">Step 3 — Entrust tomorrow</div>
+          <div class="prayer-prompt"><div class="prayer-prompt-label">Release the day</div><div class="prayer-prompt-text">"Lord, I release this day into Your hands. I cannot carry it to tomorrow. I entrust tomorrow to You. Let me sleep in the peace of a child who knows their Father is awake..."</div></div>
+          <div class="prayer-section-label">Write your evening prayer</div>
+          <textarea class="prayer-textarea" id="evening-prayer-notes" placeholder="Write your evening prayer to God. What do you want to say to Him tonight?" oninput="saveNotes('evening',this.value)"></textarea>
+          <button class="save-btn" onclick="markPrayed('evening')">✓ Evening Prayer Complete</button>
+        </div>
+      </div>
+
+      <div class="prayer-card" id="pg-fasting">
+        <div class="prayer-card-header" onclick="togglePrayerCard('fasting')">
+          <div class="prayer-card-icon">✝️</div>
+          <div class="prayer-card-info">
+            <div class="prayer-card-title">Fasting Prayer Guide</div>
+            <div class="prayer-card-sub">When hunger comes — pray</div>
+          </div>
+          <div class="prayer-card-chevron">▼</div>
+        </div>
+        <div class="prayer-card-body">
+          <div class="prayer-verse-box">
+            <div class="prayer-verse-text">"Is not this the fast that I have chosen? to loose the bands of wickedness, to undo the heavy burdens, and to let the oppressed go free."</div>
+            <div class="prayer-verse-ref">Isaiah 58:6 (KJV)</div>
+          </div>
+          <div class="prayer-guide-text">Fasting without prayer is just dieting. The power of fasting is in the spiritual redirection — every time hunger arises, you redirect that energy to prayer. This is why Jesus said "when you fast" not "if you fast."</div>
+          <div class="prayer-section-label">When hunger arises — pray this</div>
+          <div class="prayer-prompt"><div class="prayer-prompt-label">The hunger prayer</div><div class="prayer-prompt-text">"Lord, this hunger reminds me that I need You more than food. Man does not live by bread alone but by every word that proceedeth out of the mouth of God. Feed me now with Your presence..."</div></div>
+          <div class="prayer-section-label">What to pray for during a fast</div>
+          <div class="prayer-guide-text" style="margin-bottom:6px;">1. A specific breakthrough you are believing God for<br>2. Spiritual clarity over a decision or direction<br>3. Someone who is far from God<br>4. Healing — physical, emotional or spiritual<br>5. Your nation and its leaders</div>
+          <div class="prayer-section-label">Write your fasting prayer intention</div>
+          <textarea class="prayer-textarea" id="fasting-prayer-notes" placeholder="What are you specifically believing God for in this fast?" oninput="saveNotes('fasting',this.value)"></textarea>
+          <button class="save-btn" onclick="markPrayed('fasting')">✓ Fasting Prayer Complete</button>
+        </div>
+      </div>
+
+      <div class="prayer-card" id="pg-crisis">
+        <div class="prayer-card-header" onclick="togglePrayerCard('crisis')">
+          <div class="prayer-card-icon">⚡</div>
+          <div class="prayer-card-info">
+            <div class="prayer-card-title">Crisis Prayer — When Everything is Hard</div>
+            <div class="prayer-card-sub">For your darkest moments</div>
+          </div>
+          <div class="prayer-card-chevron">▼</div>
+        </div>
+        <div class="prayer-card-body">
+          <div class="prayer-verse-box">
+            <div class="prayer-verse-text">"God is our refuge and strength, a very present help in trouble."</div>
+            <div class="prayer-verse-ref">Psalm 46:1 (KJV)</div>
+          </div>
+          <div class="prayer-guide-text">Some days the carefully structured prayer falls apart. You are too tired, too hurt, too confused. These are the most important prayers of your life. God does not need your eloquence — He needs your honesty.</div>
+          <div class="prayer-prompt"><div class="prayer-prompt-label">The honest prayer — say exactly this</div><div class="prayer-prompt-text">"Lord, I don't know how to pray right now. I am [tired / afraid / angry / confused / heartbroken]. I am coming to You exactly as I am. I cannot carry this alone. I need You to show up. I trust You even when I cannot feel You. In Jesus' name."</div></div>
+          <div class="prayer-section-label">Three crisis verses — read them out loud</div>
+          <div class="prayer-verse-box" style="margin-bottom:8px;">
+            <div class="prayer-verse-text">"Cast all your anxiety on him because he cares for you."</div>
+            <div class="prayer-verse-ref">1 Peter 5:7 (KJV)</div>
+          </div>
+          <div class="prayer-verse-box" style="margin-bottom:8px;">
+            <div class="prayer-verse-text">"I can do all things through Christ which strengtheneth me."</div>
+            <div class="prayer-verse-ref">Philippians 4:13 (KJV)</div>
+          </div>
+          <div class="prayer-verse-box">
+            <div class="prayer-verse-text">"And we know that all things work together for good to them that love God."</div>
+            <div class="prayer-verse-ref">Romans 8:28 (KJV)</div>
+          </div>
+          <div class="prayer-section-label">Write what you cannot carry alone</div>
+          <textarea class="prayer-textarea" id="crisis-prayer-notes" placeholder="Write it here. God sees every word. You are not alone." oninput="saveNotes('crisis',this.value)"></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TIMER TAB -->
+    <div class="tab-panel" id="tab-timer">
+
+      <div class="timer-card">
+        <div class="timer-label">Prayer Timer</div>
+        <div class="timer-duration-row">
+          <button class="timer-dur-btn active" onclick="setDuration(10,this)">10 min</button>
+          <button class="timer-dur-btn" onclick="setDuration(15,this)">15 min</button>
+          <button class="timer-dur-btn" onclick="setDuration(20,this)">20 min</button>
+          <button class="timer-dur-btn" onclick="setDuration(30,this)">30 min</button>
+        </div>
+        <div class="timer-ring">
+          <svg viewBox="0 0 140 140">
+            <circle fill="none" stroke="rgba(107,143,94,.12)" stroke-width="10" cx="70" cy="70" r="58"/>
+            <circle id="timer-ring-fill" fill="none" stroke="var(--spirit)" stroke-width="10" stroke-linecap="round" cx="70" cy="70" r="58" stroke-dasharray="364.4" stroke-dashoffset="0" style="transition:stroke-dashoffset .5s linear;"/>
+          </svg>
+          <div class="timer-ring-center">
+            <div class="timer-time" id="timer-display">10:00</div>
+            <div class="timer-phase" id="timer-phase-label">Ready</div>
+            <div class="timer-phase-name" id="timer-phase-name"></div>
+          </div>
+        </div>
+        <div class="timer-btn-row">
+          <button class="timer-btn timer-reset" onclick="resetTimer()">↺ Reset</button>
+          <button class="timer-btn timer-start" id="timer-main-btn" onclick="toggleTimer()">▶ Start</button>
+        </div>
+      </div>
+
+      <div class="phase-guide">
+        <div class="phase-guide-title">Auto Prayer Phases During Timer</div>
+        <div class="prayer-phase-item">
+          <div class="phase-num" style="background:var(--gold);">1</div>
+          <div class="phase-body">
+            <div class="phase-name">Adoration</div>
+            <div class="phase-duration">First 25% of your time</div>
+            <div class="phase-desc">Worship God. Declare His names and character. Be still and acknowledge who He is before you ask anything.</div>
+          </div>
+        </div>
+        <div class="prayer-phase-item">
+          <div class="phase-num" style="background:var(--temple);">2</div>
+          <div class="phase-body">
+            <div class="phase-name">Confession</div>
+            <div class="phase-duration">Next 15% of your time</div>
+            <div class="phase-desc">Specific confession. Name what fell short. Receive forgiveness. Clean slate before you go deeper.</div>
+          </div>
+        </div>
+        <div class="prayer-phase-item">
+          <div class="phase-num" style="background:var(--spirit);">3</div>
+          <div class="phase-body">
+            <div class="phase-name">Thanksgiving</div>
+            <div class="phase-duration">Next 20% of your time</div>
+            <div class="phase-desc">Name specific blessings. What has God done? Enter His gates with thanksgiving — this is the key to the deeper place.</div>
+          </div>
+        </div>
+        <div class="prayer-phase-item">
+          <div class="phase-num" style="background:var(--soul);">4</div>
+          <div class="phase-body">
+            <div class="phase-name">Intercession</div>
+            <div class="phase-duration">Next 25% of your time</div>
+            <div class="phase-desc">Pray for others. Your list from the Intercession tab. Pray specifically and with faith for each person by name.</div>
+          </div>
+        </div>
+        <div class="prayer-phase-item">
+          <div class="phase-num" style="background:var(--ink2);">5</div>
+          <div class="phase-body">
+            <div class="phase-name">Supplication — Your Own Needs</div>
+            <div class="phase-duration">Final 15% of your time</div>
+            <div class="phase-desc">Now ask for yourself. Health, direction, provision, breakthrough. After worshipping, confessing, thanking and praying for others — your own requests come last.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- INTERCESSION TAB -->
+    <div class="tab-panel" id="tab-intercession">
+
+      <div class="phase-guide" style="margin-bottom:12px;">
+        <div class="phase-guide-title">Why Intercession Changes You</div>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.75;">
+          <p style="margin-bottom:8px;">Abraham interceded for Lot — and Lot was saved. Daniel interceded for Israel — and they were restored. Paul prayed for every church he wrote to. Intercession is the most powerful form of prayer because it aligns your heart with God's heart.</p>
+          <p style="font-style:italic;color:var(--ink3);">"I exhort therefore, that, first of all, supplications, prayers, intercessions, and giving of thanks, be made for all men." — 1 Timothy 2:1 (KJV)</p>
+        </div>
+      </div>
+
+      <div class="phase-guide">
+        <div class="phase-guide-title">Your Intercession List</div>
+        <ul class="intercession-list" id="intercession-list"></ul>
+        <div class="add-intercession-row">
+          <input type="text" class="add-intercession-input" id="new-intercession" placeholder="Add a person to pray for..." maxlength="60"/>
+          <button class="add-intercession-btn" onclick="addIntercession()">+ Add</button>
+        </div>
+      </div>
+
+      <div class="phase-guide" style="margin-top:12px;">
+        <div class="phase-guide-title">How to Pray for Each Person</div>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.75;">
+          <p style="margin-bottom:6px;"><strong>For believers:</strong> "Lord, strengthen [name] in their faith. Give them clarity, discipline and a deeper revelation of who You are."</p>
+          <p style="margin-bottom:6px;"><strong>For unbelievers:</strong> "Lord, remove the veil from [name]'s eyes. Send people across their path. Draw them to Yourself by Your Holy Spirit."</p>
+          <p><strong>For those in pain:</strong> "Lord, meet [name] in their pain right now. Be their Comforter, their Healer, their Strength."</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- JOURNAL TAB -->
+    <div class="tab-panel" id="tab-journal">
+
+      <div style="margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Prayer Journal</div>
+        <p style="font-size:12px;color:var(--ink3);line-height:1.55;">Write your prayers. Record what God speaks. A written prayer becomes a record of your relationship with God — a testimony of His faithfulness over time.</p>
+      </div>
+
+      <div class="phase-guide" style="margin-bottom:12px;">
+        <div class="phase-guide-title">Today's Prayer Journal Entry</div>
+        <div style="font-size:11px;font-weight:700;color:var(--spirit);margin-bottom:4px;">What I prayed for today</div>
+        <textarea class="prayer-textarea" id="journal-prayed" placeholder="Who did you pray for today? What did you ask God for?" oninput="saveJournal('prayed',this.value)"></textarea>
+        <div style="font-size:11px;font-weight:700;color:var(--gold);margin:10px 0 4px;">What God spoke to me</div>
+        <textarea class="prayer-textarea" id="journal-heard" placeholder="A verse, a thought, an impression, a sense of peace — write what God communicated to you..." oninput="saveJournal('heard',this.value)"></textarea>
+        <div style="font-size:11px;font-weight:700;color:var(--temple);margin:10px 0 4px;">What I want to believe God for</div>
+        <textarea class="prayer-textarea" id="journal-believe" placeholder="Write a specific prayer request you are bringing to God in faith..." oninput="saveJournal('believe',this.value)"></textarea>
+        <button class="save-btn" onclick="saveTodayJournal()">Save Today's Prayer Journal</button>
+      </div>
+
+      <div class="phase-guide">
+        <div class="phase-guide-title">Previous Entries</div>
+        <div id="prayer-journal-history"></div>
+      </div>
+
+    </div>
+
+    <!-- ANSWERED PRAYERS TAB -->
+    <div class="tab-panel" id="tab-answered">
+
+      <div style="margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--spirit);margin-bottom:4px;">Answered Prayers</div>
+        <p style="font-size:12px;color:var(--ink3);line-height:1.55;">Every answered prayer is evidence of God's faithfulness. Record them here. When doubt comes — return to this list. He has answered before. He will answer again.</p>
+      </div>
+
+      <div class="phase-guide" style="margin-bottom:12px;">
+        <div class="phase-guide-title">Record a New Answered Prayer</div>
+        <div style="font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:4px;">What I prayed for</div>
+        <textarea class="prayer-textarea" id="new-answered-prayer" placeholder="What did you specifically ask God for?" style="min-height:55px;margin-bottom:8px;"></textarea>
+        <div style="font-size:11px;font-weight:700;color:var(--spirit);margin-bottom:4px;">How God answered it</div>
+        <textarea class="prayer-textarea" id="new-answered-how" placeholder="How did God answer this prayer? Be specific..." style="min-height:55px;"></textarea>
+        <button class="save-btn" onclick="saveAnsweredPrayer()">✓ Record This Answered Prayer</button>
+      </div>
+
+      <div class="phase-guide">
+        <div class="phase-guide-title">God's Faithfulness — <span id="answered-count">0</span> Answered Prayers</div>
+        <div id="answered-prayers-list"></div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ STATE ═══
+let PR={
+  prayedDays:{},
+  notes:{},
+  intercessionList:[],
+  intercessionChecked:{},
+  journal:{},
+  answeredPrayers:[],
+  prayerStreak:0
+};
+function lpr(){try{const s=localStorage.getItem('gh_prayer_v1');if(s)PR=JSON.parse(s);}catch(e){}}
+function spr(){try{localStorage.setItem('gh_prayer_v1',JSON.stringify(PR));return true;}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}}
+function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+// ═══ VERSES ═══
+const PRAYER_VERSES=[
+  {text:"Pray without ceasing.",ref:"1 Thessalonians 5:17 (KJV)"},
+  {text:"The LORD is nigh unto all them that call upon him, to all that call upon him in truth.",ref:"Psalm 145:18 (KJV)"},
+  {text:"Call unto me, and I will answer thee, and shew thee great and mighty things.",ref:"Jeremiah 33:3 (KJV)"},
+  {text:"If ye shall ask any thing in my name, I will do it.",ref:"John 14:14 (KJV)"},
+  {text:"Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you.",ref:"Matthew 7:7 (KJV)"},
+  {text:"The effectual fervent prayer of a righteous man availeth much.",ref:"James 5:16 (KJV)"},
+  {text:"Be careful for nothing; but in every thing by prayer and supplication let your requests be made known unto God.",ref:"Philippians 4:6 (KJV)"},
+  {text:"And all things, whatsoever ye shall ask in prayer, believing, ye shall receive.",ref:"Matthew 21:22 (KJV)"},
+  {text:"Evening, and morning, and at noon, will I pray, and cry aloud: and he shall hear my voice.",ref:"Psalm 55:17 (KJV)"},
+  {text:"If my people, which are called by my name, shall humble themselves, and pray... then will I hear from heaven.",ref:"2 Chronicles 7:14 (KJV)"},
+  {text:"I will therefore that men pray every where, lifting up holy hands.",ref:"1 Timothy 2:8 (KJV)"},
+  {text:"But thou, when thou prayest, enter into thy closet, and when thou hast shut thy door, pray to thy Father which is in secret.",ref:"Matthew 6:6 (KJV)"},
+  {text:"And it shall come to pass, that before they call, I will answer; and while they are yet speaking, I will hear.",ref:"Isaiah 65:24 (KJV)"},
+  {text:"The LORD is far from the wicked: but he heareth the prayer of the righteous.",ref:"Proverbs 15:29 (KJV)"},
+];
+
+// ═══ TIMER ═══
+let timerDuration=10*60;
+let timerRemaining=10*60;
+let timerRunning=false;
+let timerInterval=null;
+const PHASES=[
+  {name:'Adoration',color:'var(--gold)',pct:.25},
+  {name:'Confession',color:'var(--temple)',pct:.15},
+  {name:'Thanksgiving',color:'var(--spirit)',pct:.20},
+  {name:'Intercession',color:'var(--soul)',pct:.25},
+  {name:'Supplication',color:'var(--ink2)',pct:.15},
+];
+
+function setDuration(mins,btn){
+  if(timerRunning)return;
+  timerDuration=mins*60;timerRemaining=mins*60;
+  document.querySelectorAll('.timer-dur-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  updateTimerDisplay();
+}
+
+function toggleTimer(){
+  if(timerRunning){
+    clearInterval(timerInterval);timerRunning=false;
+    document.getElementById('timer-main-btn').textContent='▶ Resume';
+    document.getElementById('timer-main-btn').className='timer-btn timer-start';
+  } else {
+    if(timerRemaining===0){resetTimer();return;}
+    timerRunning=true;
+    document.getElementById('timer-main-btn').textContent='⏸ Pause';
+    document.getElementById('timer-main-btn').className='timer-btn timer-pause';
+    timerInterval=setInterval(()=>{
+      timerRemaining--;
+      updateTimerDisplay();
+      if(timerRemaining<=0){
+        clearInterval(timerInterval);timerRunning=false;
+        document.getElementById('timer-main-btn').textContent='✓ Complete';
+        document.getElementById('timer-phase-label').textContent='Prayer Complete';
+        document.getElementById('timer-phase-name').textContent='';
+        showToast('🙏 Prayer time complete — well done!');
+      }
+    },1000);
+  }
+}
+
+function resetTimer(){
+  clearInterval(timerInterval);timerRunning=false;
+  timerRemaining=timerDuration;
+  updateTimerDisplay();
+  document.getElementById('timer-main-btn').textContent='▶ Start';
+  document.getElementById('timer-main-btn').className='timer-btn timer-start';
+  document.getElementById('timer-phase-label').textContent='Ready';
+  document.getElementById('timer-phase-name').textContent='';
+}
+
+function updateTimerDisplay(){
+  const m=Math.floor(timerRemaining/60);
+  const s=timerRemaining%60;
+  document.getElementById('timer-display').textContent=`${m}:${String(s).padStart(2,'0')}`;
+  // Ring
+  const pct=timerRemaining/timerDuration;
+  const circumference=364.4;
+  document.getElementById('timer-ring-fill').style.strokeDashoffset=circumference*(1-pct);
+  // Phase
+  const elapsed=timerDuration-timerRemaining;
+  const elapsedPct=elapsed/timerDuration;
+  let acc=0;let currentPhase=PHASES[0];
+  for(const p of PHASES){acc+=p.pct;if(elapsedPct<acc){currentPhase=p;break;}}
+  document.getElementById('timer-phase-label').textContent='Current Phase';
+  document.getElementById('timer-phase-name').textContent=currentPhase.name;
+  document.getElementById('timer-ring-fill').style.stroke=currentPhase.color;
+}
+
+// ═══ INIT ═══
+lpr();
+renderDailyVerse();
+renderStats();
+renderIntercessionList();
+renderJournalHistory();
+renderAnsweredPrayers();
+restoreNotes();
+restoreJournalFields();
+
+function renderDailyVerse(){
+  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
+  const v=PRAYER_VERSES[doy%PRAYER_VERSES.length];
+  document.getElementById('daily-prayer-verse-text').textContent=`"${v.text}"`;
+  document.getElementById('daily-prayer-verse-ref').textContent=v.ref;
+}
+
+function renderStats(){
+  // Streak
+  let streak=0;const d=new Date();d.setHours(0,0,0,0);
+  while(true){
+    const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if(PR.prayedDays[k]){streak++;d.setDate(d.getDate()-1);}else break;
+  }
+  PR.prayerStreak=streak;
+  document.getElementById('stat-streak').textContent=streak;
+  document.getElementById('prayer-streak-badge').textContent=`🙏 ${streak} day streak`;
+  document.getElementById('stat-total').textContent=Object.keys(PR.prayedDays).filter(k=>PR.prayedDays[k]).length;
+  document.getElementById('stat-answered').textContent=(PR.answeredPrayers||[]).length;
+  document.getElementById('answered-count').textContent=(PR.answeredPrayers||[]).length;
+}
+
+// ═══ TABS ═══
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+id)?.classList.add('active');
+}
+
+// ═══ PRAYER CARDS ═══
+function togglePrayerCard(id){
+  const card=document.getElementById('pg-'+id);
+  if(!card)return;
+  document.querySelectorAll('.prayer-card.open').forEach(c=>{if(c!==card)c.classList.remove('open');});
+  card.classList.toggle('open');
+}
+
+// ═══ NOTES ═══
+function saveNotes(type,val){
+  if(!PR.notes[todayStr()])PR.notes[todayStr()]={};
+  PR.notes[todayStr()][type]=val;
+  spr();
+}
+
+function restoreNotes(){
+  const n=PR.notes[todayStr()]||{};
+  ['morning','midday','evening','fasting','crisis'].forEach(t=>{
+    const el=document.getElementById(t+'-prayer-notes');
+    if(el&&n[t])el.value=n[t];
+  });
+}
+
+function markPrayed(type){
+  const k=todayStr();
+  if(!PR.prayedDays[k])PR.prayedDays[k]={};
+  PR.prayedDays[k][type]=true;
+  // Mark day as prayed if morning is done
+  if(type==='morning'||type==='evening')PR.prayedDays[k].prayed=true;
+  spr();renderStats();
+  showToast(type==='morning'?'🌅 Morning prayer complete — God heard you!':type==='evening'?'🌙 Evening prayer complete — rest in peace!':'🙏 Prayer marked complete');
+}
+
+// ═══ INTERCESSION ═══
+function renderIntercessionList(){
+  const list=document.getElementById('intercession-list');
+  const items=PR.intercessionList||[];
+  const checked=PR.intercessionChecked||{};
+  const today=todayStr();
+  if(!items.length){
+    list.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;padding:8px 0;">Add the first person you want to pray for...</div>';
+    return;
+  }
+  list.innerHTML=items.map((name,i)=>{
+    const isDone=checked[today]?.[i];
+    return`<li class="intercession-item">
+      <div class="intercession-check ${isDone?'done':''}" onclick="toggleIntercession(${i})">${isDone?'✓':''}</div>
+      <span class="intercession-name ${isDone?'done':''}">${name}</span>
+      <span onclick="removeIntercession(${i})" style="color:var(--border2);cursor:pointer;font-size:18px;padding:0 4px;">×</span>
+    </li>`;
+  }).join('');
+}
+
+function addIntercession(){
+  const input=document.getElementById('new-intercession');
+  const name=input.value.trim();
+  if(!name){showToast('Enter a name first');return;}
+  PR.intercessionList=PR.intercessionList||[];
+  PR.intercessionList.push(name);
+  input.value='';spr();renderIntercessionList();
+  showToast(`Added ${name} to your prayer list 🙏`);
+}
+
+function toggleIntercession(idx){
+  const today=todayStr();
+  if(!PR.intercessionChecked)PR.intercessionChecked={};
+  if(!PR.intercessionChecked[today])PR.intercessionChecked[today]={};
+  PR.intercessionChecked[today][idx]=!PR.intercessionChecked[today][idx];
+  spr();renderIntercessionList();
+  if(PR.intercessionChecked[today][idx])showToast(`Prayed for ${PR.intercessionList[idx]} ✝️`);
+}
+
+function removeIntercession(idx){
+  PR.intercessionList.splice(idx,1);spr();renderIntercessionList();
+}
+
+// ═══ JOURNAL ═══
+function saveJournal(field,val){
+  if(!PR.journal[todayStr()])PR.journal[todayStr()]={};
+  PR.journal[todayStr()][field]=val;spr();
+}
+
+function restoreJournalFields(){
+  const j=PR.journal[todayStr()]||{};
+  if(document.getElementById('journal-prayed'))document.getElementById('journal-prayed').value=j.prayed||'';
+  if(document.getElementById('journal-heard'))document.getElementById('journal-heard').value=j.heard||'';
+  if(document.getElementById('journal-believe'))document.getElementById('journal-believe').value=j.believe||'';
+}
+
+function saveTodayJournal(){
+  const prayed=document.getElementById('journal-prayed').value;
+  const heard=document.getElementById('journal-heard').value;
+  const believe=document.getElementById('journal-believe').value;
+  if(!PR.journal[todayStr()])PR.journal[todayStr()]={};
+  Object.assign(PR.journal[todayStr()],{prayed,heard,believe});
+  PR.prayedDays[todayStr()]=PR.prayedDays[todayStr()]||{};
+  PR.prayedDays[todayStr()].journal=true;
+  spr();renderJournalHistory();renderStats();
+  showToast('📖 Prayer journal saved — God sees every word');
+}
+
+function renderJournalHistory(){
+  const hist=document.getElementById('prayer-journal-history');
+  const entries=Object.entries(PR.journal||{}).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,10);
+  if(!entries.length){hist.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">Your prayer journal entries will appear here.</div>';return;}
+  hist.innerHTML=entries.map(([date,j])=>{
+    const d=new Date(date+'T00:00:00');
+    const label=d.toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'});
+    return`<div class="history-day-item">
+      <div class="history-day-date">${label}</div>
+      ${j.prayed?`<div class="history-day-text" style="margin-bottom:4px;"><strong>Prayed for:</strong> ${j.prayed.slice(0,120)}${j.prayed.length>120?'...':''}</div>`:''}
+      ${j.heard?`<div class="history-day-text"><strong>God spoke:</strong> ${j.heard.slice(0,120)}${j.heard.length>120?'...':''}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// ═══ ANSWERED PRAYERS ═══
+function saveAnsweredPrayer(){
+  const prayer=document.getElementById('new-answered-prayer').value.trim();
+  const answer=document.getElementById('new-answered-how').value.trim();
+  if(!prayer||!answer){showToast('Fill in both fields');return;}
+  PR.answeredPrayers=PR.answeredPrayers||[];
+  PR.answeredPrayers.unshift({date:todayStr(),prayer,answer});
+  document.getElementById('new-answered-prayer').value='';
+  document.getElementById('new-answered-how').value='';
+  spr();renderAnsweredPrayers();renderStats();
+  showToast('✅ Answered prayer recorded — give thanks!');
+}
+
+function renderAnsweredPrayers(){
+  const list=document.getElementById('answered-prayers-list');
+  const items=PR.answeredPrayers||[];
+  if(!items.length){list.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">Record your first answered prayer above — then watch this list grow as a testimony of God\'s faithfulness.</div>';return;}
+  list.innerHTML=items.map((p,i)=>{
+    const d=new Date(p.date+'T00:00:00');
+    const label=d.toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+    return`<div class="answered-prayer-item">
+      <div class="answered-prayer-date">✅ Answered — ${label}</div>
+      <div class="answered-prayer-text">${p.prayer}</div>
+      <div class="answered-prayer-answer">How God answered: ${p.answer}</div>
+    </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>

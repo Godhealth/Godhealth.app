@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0D1F0D">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<title>GodHealth — Training</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F9F6F0;--bg2:#FFFFFF;--bg3:#F2EDE4;
+  --border:#E8E0D0;--border2:#D4C9B0;
+  --ink:#1A1410;--ink2:#5C4F3A;--ink3:#9A8E7A;
+  --temple:#C4573A;--temple-light:#FAF0ED;
+  --soul:#4A7FA5;--soul-light:#EEF4F9;
+  --spirit:#6B8F5E;--spirit-light:#EFF4EE;
+  --gold:#B8912A;--gold-light:#FBF5E6;
+  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:flex;flex-direction:column;}
+
+/* HEADER */
+.app-header{background:#0D1F0D;border-bottom:1px solid rgba(107,143,94,.25);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.3);}
+.header-left{display:flex;align-items:center;gap:10px;}
+.back-btn{background:rgba(245,237,216,.1);border:1px solid rgba(245,237,216,.15);color:#F5EDD8;font-size:16px;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;}
+.header-logo{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#F5EDD8;}
+.header-logo em{font-style:italic;color:var(--gold);}
+.header-badge{background:rgba(196,87,58,.2);border:1px solid rgba(196,87,58,.35);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--temple);}
+
+/* SCROLL */
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll-area::-webkit-scrollbar{width:0;}
+.content{padding:16px;}
+
+/* TABS */
+.tab-row{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px;}
+.tab-btn{background:var(--bg2);border:1.5px solid var(--border);color:var(--ink3);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.tab-btn.active{background:var(--temple);border-color:var(--temple);color:#fff;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* HERO */
+.training-hero{background:linear-gradient(135deg,#1A0800,#2A1000);border:1px solid rgba(196,87,58,.3);border-radius:var(--radius);padding:20px;margin-bottom:16px;position:relative;overflow:hidden;}
+.training-hero::before{content:'⚡';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:90px;opacity:.07;}
+.hero-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(196,87,58,.7);margin-bottom:6px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#F5EDD8;line-height:1.15;margin-bottom:8px;}
+.hero-title em{font-style:italic;color:var(--gold);}
+.hero-verse{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:rgba(245,237,216,.5);line-height:1.65;}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
+.stat-box{background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;box-shadow:var(--shadow-sm);}
+.stat-num{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--temple);line-height:1;margin-bottom:3px;}
+.stat-lbl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);}
+
+/* WEEK SELECTOR */
+.week-plan-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.plan-select-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .22s;text-align:center;}
+.plan-select-card.active{background:var(--temple-light);border-color:rgba(196,87,58,.4);}
+.plan-select-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm);}
+.plan-select-emoji{font-size:24px;margin-bottom:6px;}
+.plan-select-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.plan-select-desc{font-size:10px;color:var(--ink3);line-height:1.4;}
+
+/* SCHEDULE */
+.schedule-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow-sm);}
+.schedule-header{padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;}
+.day-dot{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;font-family:'Playfair Display',serif;}
+.day-dot.rest{background:var(--spirit-light);color:var(--spirit);}
+.day-dot.train{background:var(--temple-light);color:var(--temple);}
+.day-dot.done-day{background:var(--spirit);color:#fff;}
+.day-dot.today-dot{background:var(--gold);color:#fff;box-shadow:0 0 0 3px rgba(184,145,42,.2);}
+.schedule-info{flex:1;}
+.schedule-day-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.schedule-type{font-size:10px;color:var(--ink3);}
+.schedule-type.rest-type{color:var(--spirit);}
+.schedule-type.train-type{color:var(--temple);}
+.schedule-status{font-size:18px;flex-shrink:0;}
+.schedule-chevron{font-size:11px;color:var(--ink3);transition:transform .25s;flex-shrink:0;}
+.schedule-card.open .schedule-chevron{transform:rotate(180deg);}
+.schedule-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border);}
+.schedule-card.open .schedule-body{display:block;}
+
+/* WORKOUT CONTENT */
+.workout-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:12px 0 8px;}
+.workout-verse-box{background:var(--gold-light);border-left:3px solid var(--gold);border-radius:0 9px 9px 0;padding:10px 12px;margin-bottom:12px;}
+.workout-verse-text{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--ink);line-height:1.65;margin-bottom:3px;}
+.workout-verse-ref{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+.workout-focus{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.focus-tag{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:var(--temple-light);color:var(--temple);}
+
+/* EXERCISE LIST */
+.exercise-list{list-style:none;}
+.exercise-item{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;}
+.exercise-num{width:28px;height:28px;border-radius:8px;background:var(--temple-light);color:var(--temple);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.exercise-body{flex:1;}
+.exercise-name{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.exercise-sets{font-size:11px;color:var(--temple);font-weight:700;margin-bottom:3px;}
+.exercise-desc{font-size:11px;color:var(--ink3);line-height:1.5;}
+.exercise-rest{font-size:10px;color:var(--soul);margin-top:3px;}
+
+/* WARMUP/COOLDOWN */
+.warm-cool-box{background:var(--spirit-light);border:1px solid rgba(107,143,94,.2);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.warm-cool-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--spirit);margin-bottom:6px;}
+.warm-cool-items{font-size:12px;color:var(--ink2);line-height:1.75;}
+
+/* TIMER */
+.workout-timer{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:12px;text-align:center;box-shadow:var(--shadow-sm);}
+.wt-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--temple);margin-bottom:14px;}
+.wt-display{font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:var(--ink);line-height:1;margin-bottom:6px;}
+.wt-phase{font-size:11px;color:var(--ink3);margin-bottom:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.wt-btns{display:flex;gap:8px;justify-content:center;margin-bottom:12px;}
+.wt-btn{padding:10px 20px;border-radius:10px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;transition:all .22s;}
+.wt-start{background:var(--temple);color:#fff;}
+.wt-pause{background:var(--gold);color:#fff;}
+.wt-reset{background:var(--bg3);border:1.5px solid var(--border);color:var(--ink3);}
+.wt-interval-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+.wt-int-btn{padding:5px 12px;border-radius:20px;font-size:10px;font-weight:700;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink3);cursor:pointer;transition:all .2s;}
+.wt-int-btn.active{background:var(--temple-light);border-color:rgba(196,87,58,.4);color:var(--temple);}
+.wt-progress-bar{background:var(--bg3);border-radius:100px;height:6px;overflow:hidden;margin-bottom:8px;}
+.wt-progress-fill{height:100%;border-radius:100px;background:var(--temple);transition:width .5s linear;}
+
+/* LOG */
+.log-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.log-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.log-input-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-end;}
+.log-field{flex:1;}
+.log-field label{display:block;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:4px;}
+.log-field input, .log-field select, .log-field textarea{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;padding:9px 12px;border-radius:8px;outline:none;transition:border-color .25s;}
+.log-field input:focus,.log-field select:focus,.log-field textarea:focus{border-color:var(--temple);}
+.log-btn{background:var(--temple);color:#fff;border:none;padding:10px 16px;border-radius:8px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.log-entry{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:11px 13px;margin-bottom:7px;display:flex;align-items:center;gap:10px;}
+.log-entry-date{font-size:10px;color:var(--ink3);flex-shrink:0;}
+.log-entry-info{flex:1;}
+.log-entry-name{font-size:13px;font-weight:700;color:var(--ink);}
+.log-entry-detail{font-size:11px;color:var(--ink3);}
+.log-entry-badge{background:var(--temple-light);color:var(--temple);font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:20px;flex-shrink:0;}
+
+/* COMPLETE BTN */
+.complete-workout-btn{width:100%;background:var(--temple);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px;border:none;border-radius:11px;cursor:pointer;transition:all .25s;margin-top:10px;}
+.complete-workout-btn:hover{background:#9A3020;}
+.complete-workout-btn.done{background:var(--spirit);}
+
+/* REST DAY */
+.rest-card{background:linear-gradient(135deg,var(--spirit-light),var(--bg2));border:1.5px solid rgba(107,143,94,.2);border-radius:var(--radius);padding:18px;margin-bottom:12px;}
+.rest-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.rest-desc{font-size:12px;color:var(--ink3);line-height:1.65;margin-bottom:12px;}
+.rest-activities{list-style:none;}
+.rest-activity{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--ink2);}
+.rest-activity:last-child{border-bottom:none;}
+.rest-activity-icon{font-size:16px;flex-shrink:0;}
+
+/* PRINCIPLES */
+.principle-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
+.principle-num{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--temple-light);line-height:1;margin-bottom:4px;}
+.principle-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.principle-body{font-size:13px;color:var(--ink2);line-height:1.75;margin-bottom:8px;}
+.principle-verse{background:var(--gold-light);border-left:3px solid var(--gold);padding:8px 12px;border-radius:0 7px 7px 0;font-size:11px;font-style:italic;color:var(--ink2);line-height:1.55;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;padding:10px 20px;border-radius:100px;z-index:999;opacity:0;transition:all .35s;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+@keyframes riseUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ACCESSIBILITY */
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #B8912A;outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="header-left">
+    <a class="back-btn" href="index.html" onclick="ghGoBack(event)" aria-label="Back to home">←</a>
+    <div class="header-logo">God<em>Health</em> Training</div>
+  </div>
+  <div class="header-badge" id="header-sessions">🔥 0 sessions</div>
+</div>
+
+<div class="scroll-area">
+  <div class="content">
+
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="switchTab('schedule',this)">📅 Schedule</button>
+      <button class="tab-btn" onclick="switchTab('timer',this)">⏱ Timer</button>
+      <button class="tab-btn" onclick="switchTab('log',this)">📊 Log</button>
+      <button class="tab-btn" onclick="switchTab('principles',this)">✝️ Principles</button>
+    </div>
+
+    <!-- SCHEDULE TAB -->
+    <div class="tab-panel active" id="tab-schedule">
+
+      <div class="training-hero">
+        <div class="hero-label">GodHealth Training</div>
+        <div class="hero-title">Train the<br><em>Temple</em></div>
+        <div class="hero-verse">"She girdeth her loins with strength, and strengtheneth her arms." — Proverbs 31:17 (KJV)</div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-num" id="stat-sessions">0</div><div class="stat-lbl">Sessions</div></div>
+        <div class="stat-box"><div class="stat-num" id="stat-week">0</div><div class="stat-lbl">This Week</div></div>
+        <div class="stat-box"><div class="stat-num" id="stat-streak">0</div><div class="stat-lbl">Week Streak</div></div>
+      </div>
+
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Choose Your Programme</div>
+      <div class="week-plan-selector">
+        <div class="plan-select-card active" id="plan-3day" onclick="selectPlan('3day',this)">
+          <div class="plan-select-emoji">🏛️</div>
+          <div class="plan-select-name">3-Day Programme</div>
+          <div class="plan-select-desc">Beginner to intermediate. Home or gym. Build the foundation.</div>
+        </div>
+        <div class="plan-select-card" id="plan-4day" onclick="selectPlan('4day',this)">
+          <div class="plan-select-emoji">⚡</div>
+          <div class="plan-select-name">4-Day Programme</div>
+          <div class="plan-select-desc">Intermediate to advanced. Gym recommended. Accelerate results.</div>
+        </div>
+      </div>
+
+      <div id="schedule-container"></div>
+
+    </div>
+
+    <!-- TIMER TAB -->
+    <div class="tab-panel" id="tab-timer">
+
+      <div class="workout-timer">
+        <div class="wt-label">Workout Timer</div>
+        <div class="wt-progress-bar"><div class="wt-progress-fill" id="wt-progress" style="width:100%;"></div></div>
+        <div class="wt-display" id="wt-display">00:40</div>
+        <div class="wt-phase" id="wt-phase">Ready — Choose interval</div>
+        <div class="wt-btns">
+          <button class="wt-btn wt-reset" onclick="resetWT()">↺</button>
+          <button class="wt-btn wt-start" id="wt-main-btn" onclick="toggleWT()">▶ Start</button>
+        </div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;">Interval Type</div>
+        <div class="wt-interval-row" id="wt-intervals">
+          <button class="wt-int-btn active" onclick="setInterval2(40,20,this)">40/20 — HIIT</button>
+          <button class="wt-int-btn" onclick="setInterval2(45,15,this)">45/15 — Intense</button>
+          <button class="wt-int-btn" onclick="setInterval2(30,30,this)">30/30 — Beginner</button>
+          <button class="wt-int-btn" onclick="setInterval2(60,20,this)">60/20 — Strength</button>
+          <button class="wt-int-btn" onclick="setInterval2(90,30,this)">90/30 — Zone 2</button>
+        </div>
+      </div>
+
+      <div class="log-card">
+        <div class="log-label">Round Tracker</div>
+        <div style="text-align:center;padding:10px 0;">
+          <div style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--temple);" id="round-count">0</div>
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;">Rounds Complete</div>
+          <div style="display:flex;gap:8px;justify-content:center;">
+            <button onclick="addRound()" style="background:var(--temple);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">+ Round</button>
+            <button onclick="resetRounds()" style="background:var(--bg3);border:1.5px solid var(--border);color:var(--ink3);padding:10px 16px;border-radius:9px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;cursor:pointer;">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="log-card">
+        <div class="log-label">Rest Timer</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+          <button onclick="startRestTimer(30)" style="flex:1;padding:8px;border-radius:8px;background:var(--spirit-light);border:1px solid rgba(107,143,94,.25);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;cursor:pointer;">30s Rest</button>
+          <button onclick="startRestTimer(60)" style="flex:1;padding:8px;border-radius:8px;background:var(--soul-light);border:1px solid rgba(74,127,165,.2);color:var(--soul);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;cursor:pointer;">60s Rest</button>
+          <button onclick="startRestTimer(90)" style="flex:1;padding:8px;border-radius:8px;background:var(--gold-light);border:1px solid rgba(184,145,42,.2);color:var(--gold);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;cursor:pointer;">90s Rest</button>
+          <button onclick="startRestTimer(120)" style="flex:1;padding:8px;border-radius:8px;background:var(--temple-light);border:1px solid rgba(196,87,58,.2);color:var(--temple);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;cursor:pointer;">2 min Rest</button>
+        </div>
+        <div style="text-align:center;font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--soul);" id="rest-display">—</div>
+      </div>
+
+    </div>
+
+    <!-- LOG TAB -->
+    <div class="tab-panel" id="tab-log">
+
+      <div class="log-card">
+        <div class="log-label">Log a Workout</div>
+        <div class="log-input-row">
+          <div class="log-field">
+            <label>Workout Type</label>
+            <select id="log-type">
+              <option value="Strength Training">Strength Training</option>
+              <option value="HIIT">HIIT</option>
+              <option value="Zone 2 Cardio">Zone 2 Cardio</option>
+              <option value="Holy Stretching">Holy Stretching</option>
+              <option value="Outdoor Run">Outdoor Run</option>
+              <option value="Full Body">Full Body</option>
+              <option value="Upper Body">Upper Body</option>
+              <option value="Lower Body">Lower Body</option>
+              <option value="Push Day">Push Day</option>
+              <option value="Pull Day">Pull Day</option>
+            </select>
+          </div>
+        </div>
+        <div class="log-input-row">
+          <div class="log-field">
+            <label>Duration (min)</label>
+            <input type="number" id="log-duration" placeholder="45" min="5" max="180"/>
+          </div>
+          <div class="log-field">
+            <label>Intensity (1-10)</label>
+            <input type="number" id="log-intensity" placeholder="7" min="1" max="10"/>
+          </div>
+        </div>
+        <div class="log-field" style="margin-bottom:8px;">
+          <label>Notes (optional)</label>
+          <input type="text" id="log-notes" placeholder="Personal best, how you felt, what you trained..."/>
+        </div>
+        <button class="log-btn" style="width:100%;padding:12px;" onclick="logWorkout()">⚡ Log This Workout</button>
+      </div>
+
+      <div class="log-card">
+        <div class="log-label">Training History</div>
+        <div id="workout-history"></div>
+      </div>
+
+      <div class="log-card">
+        <div class="log-label">Weekly Volume</div>
+        <div id="weekly-volume-chart" style="height:120px;position:relative;"></div>
+      </div>
+
+    </div>
+
+    <!-- PRINCIPLES TAB -->
+    <div class="tab-panel" id="tab-principles">
+
+      <div class="training-hero" style="margin-bottom:16px;">
+        <div class="hero-label">Biblical Foundation</div>
+        <div class="hero-title">Why We<br><em>Train</em></div>
+        <div class="hero-verse">"Know ye not that your body is the temple of the Holy Ghost which is in you, which ye have of God, and ye are not your own?" — 1 Corinthians 6:19 (KJV)</div>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-num">01</div>
+        <div class="principle-title">Training is Worship</div>
+        <div class="principle-body">Every repetition is an act of stewardship. God gave you this body — not to neglect it but to develop it for His purposes. When you train, you are saying: "Lord, I honour this temple You gave me." Training with this mindset transforms exercise from discipline into devotion.</div>
+        <div class="principle-verse">"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God." — 1 Corinthians 10:31 (KJV)</div>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-num">02</div>
+        <div class="principle-title">Progressive Overload — The Law of Growth</div>
+        <div class="principle-body">God designed growth through resistance. The seed pushes through soil. The muscle grows through strain. Every week you must do something slightly harder than the week before — more weight, more reps, more time. This is not optional — it is the biological law of transformation.</div>
+        <div class="principle-verse">"Now no chastening for the present seemeth to be joyous, but grievous: nevertheless afterward it yieldeth the peaceable fruit." — Hebrews 12:11 (KJV)</div>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-num">03</div>
+        <div class="principle-title">Consistency Over Intensity</div>
+        <div class="principle-body">One extraordinary workout means nothing. 300 ordinary workouts transform your body permanently. The tortoise beats the hare. David slew the lion and the bear before he slew Goliath — faithfulness in the small things qualifies you for the great ones. Show up when you do not feel like it. That is the session that counts most.</div>
+        <div class="principle-verse">"And let us not be weary in well doing: for in due season we shall reap, if we faint not." — Galatians 6:9 (KJV)</div>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-num">04</div>
+        <div class="principle-title">Rest is Not Weakness — It is Obedience</div>
+        <div class="principle-body">Muscle is not built during training — it is built during rest. God commanded the Sabbath not because He was tired but because He knew we would need it. The rest day is not a failure of discipline — it is the day your body actually grows. Protect your rest days with the same intensity you protect your training days.</div>
+        <div class="principle-verse">"He giveth his beloved sleep." — Psalm 127:2 (KJV)</div>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-num">05</div>
+        <div class="principle-title">Train Fasted — The Ancient Practice</div>
+        <div class="principle-body">Training in a fasted state (after 12–16 hours without food) maximises fat oxidation, increases growth hormone by up to 300%, and produces more BDNF for brain health. Biblical warriors trained and fought with empty stomachs. Your body runs cleaner and sharper on fat than on glucose.</div>
+        <div class="principle-verse">"Is not this the fast that I have chosen? to loose the bands of wickedness, to undo the heavy burdens." — Isaiah 58:6 (KJV)</div>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-num">06</div>
+        <div class="principle-title">Pray Before You Train</div>
+        <div class="principle-body">Before every session, spend 60 seconds in prayer. Dedicate the workout to God. Ask Him to strengthen your body and use this time for His glory. This simple practice transforms your mindset from performance to purpose. You are not training for vanity — you are training for calling.</div>
+        <div class="principle-verse">"Commit thy works unto the LORD, and thy thoughts shall be established." — Proverbs 16:3 (KJV)</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ STATE ═══
+let TR={plan:'3day',completedWorkouts:{},workoutLog:[],rounds:0};
+function lt(){try{const s=localStorage.getItem('gh_training_v1');if(s)TR=JSON.parse(s);}catch(e){}}
+function st(){try{localStorage.setItem('gh_training_v1',JSON.stringify(TR));return true;}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}}
+function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+// ═══ WORKOUT PROGRAMMES ═══
+const PROGRAMMES={
+  '3day':{
+    name:'3-Day Programme',
+    days:[
+      {
+        name:'Monday',short:'Mon',type:'train',
+        title:'Full Body — Foundation',
+        focus:['Compound Movements','Full Body','Strength'],
+        verse:{text:'She girdeth her loins with strength, and strengtheneth her arms.',ref:'Proverbs 31:17 (KJV)'},
+        warmup:'5 min light walk or jog · 10 arm circles each direction · 10 hip circles · 10 bodyweight squats · 10 push-up holds at the bottom',
+        exercises:[
+          {name:'Bodyweight Squats',sets:'4 sets × 15 reps',desc:'Feet shoulder-width apart. Sit back and down as if into a chair. Keep chest up. Drive through heels to stand.',rest:'60 seconds'},
+          {name:'Push-Ups',sets:'4 sets × 10–15 reps',desc:'Hands slightly wider than shoulders. Lower chest to floor. Keep body in a straight line from head to heels. Modifications: knees on floor.',rest:'60 seconds'},
+          {name:'Dumbbell Rows (or Bag Rows)',sets:'3 sets × 12 reps each side',desc:'Place one hand and knee on a bench or chair. Pull weight to hip, leading with elbow. Control the descent.',rest:'45 seconds'},
+          {name:'Reverse Lunges',sets:'3 sets × 10 reps each leg',desc:'Step backward, lower back knee toward floor. Keep front shin vertical. Push through front heel to return.',rest:'60 seconds'},
+          {name:'Plank Hold',sets:'3 sets × 30–60 seconds',desc:'Forearms on floor, body straight as a board. Do not let hips sag or raise. Breathe steadily throughout.',rest:'45 seconds'},
+          {name:'Glute Bridge',sets:'3 sets × 15 reps',desc:'Lie on back, knees bent. Drive hips up until body is in a straight line from shoulder to knee. Squeeze glutes at top.',rest:'45 seconds'},
+        ],
+        cooldown:'5 min slow walk · 30 sec quad stretch each side · 30 sec hamstring stretch each side · 30 sec chest stretch · 30 sec hip flexor stretch',
+        prayerNote:'Before you begin: 60 seconds of prayer. Dedicate this session to God. Ask Him to strengthen your Temple for His purposes.',
+      },
+      {
+        name:'Tuesday',short:'Tue',type:'rest',
+        title:'Active Rest',
+        restActivities:[
+          {icon:'🚶',text:'20–30 minute gentle walk outdoors — morning sunlight'},
+          {icon:'🧘',text:'10 minutes of Holy Stretching — hold each stretch 45–60 seconds'},
+          {icon:'📖',text:'Read your Bible while the muscles recover'},
+          {icon:'💧',text:'Drink extra water — 3 litres minimum on rest days'},
+          {icon:'🌙',text:'Sleep before 10:30pm — this is when growth happens'},
+        ]
+      },
+      {
+        name:'Wednesday',short:'Wed',type:'train',
+        title:'Upper Body — Strength',
+        focus:['Push & Pull','Upper Body','Hypertrophy'],
+        verse:{text:'I can do all things through Christ which strengtheneth me.',ref:'Philippians 4:13 (KJV)'},
+        warmup:'5 min walk · 15 arm swings forward · 15 arm swings backward · 10 shoulder rolls · 10 push-up holds · Band pull-aparts (or towel pull-aparts) × 15',
+        exercises:[
+          {name:'Pike Push-Ups (Shoulder Press)',sets:'4 sets × 10–12 reps',desc:'Start in downward dog position. Bend elbows to lower head toward floor. Press back up. Targets shoulders without equipment.',rest:'60 seconds'},
+          {name:'Wide Push-Ups (Chest Focus)',sets:'4 sets × 12–15 reps',desc:'Place hands 1.5× shoulder width. Lower chest between hands. Focus on feeling the chest stretch at the bottom.',rest:'60 seconds'},
+          {name:'Doorframe Rows',sets:'4 sets × 10–12 reps',desc:'Hold a doorframe or sturdy bar. Lean back at 45 degrees. Pull chest to hands. The closer to horizontal, the harder.',rest:'60 seconds'},
+          {name:'Diamond Push-Ups (Triceps)',sets:'3 sets × 8–12 reps',desc:'Place hands together forming a diamond shape. Lower chest to hands. Push back up. Keeps elbows close to body.',rest:'60 seconds'},
+          {name:'Bicep Curls (with bags or bottles)',sets:'3 sets × 15 reps',desc:'Use water bottles, bags of rice or anything with weight. Keep elbows pinned to sides. Full range of motion.',rest:'45 seconds'},
+          {name:'Superman Hold',sets:'3 sets × 30 seconds',desc:'Lie face down. Raise arms, chest and legs off floor simultaneously. Hold. Strengthens the entire posterior chain.',rest:'45 seconds'},
+        ],
+        cooldown:'5 min walk · 45 sec chest stretch in doorframe · 45 sec tricep stretch overhead · 30 sec shoulder cross-body stretch · 30 sec neck stretch',
+        prayerNote:'Remember: you are not training for vanity. You are training so your body can serve God\'s calling with maximum capacity.',
+      },
+      {
+        name:'Thursday',short:'Thu',type:'rest',
+        title:'Active Rest',
+        restActivities:[
+          {icon:'🚴',text:'20 minutes of cycling or swimming — low intensity'},
+          {icon:'🧘',text:'15 minutes Holy Stretching — focus on recovery'},
+          {icon:'🌿',text:'Eat a high-protein biblical meal — fish, eggs or lentils'},
+          {icon:'🙏',text:'Evening prayer — give thanks for the strength God gave you this week'},
+          {icon:'📊',text:'Log your workouts and review progress in the Log tab'},
+        ]
+      },
+      {
+        name:'Friday',short:'Fri',type:'train',
+        title:'Lower Body & Core — Power',
+        focus:['Legs & Glutes','Core','Power'],
+        verse:{text:'They shall run, and not be weary; and they shall walk, and not faint.',ref:'Isaiah 40:31 (KJV)'},
+        warmup:'5 min walk · 15 leg swings forward each leg · 15 leg swings sideways each leg · 10 bodyweight squats · 10 glute bridges · 10 inchworms',
+        exercises:[
+          {name:'Jump Squats',sets:'4 sets × 12 reps',desc:'Descend into a squat. Explode upward, leaving the ground. Land softly, immediately descending into the next rep. Power movement.',rest:'60 seconds'},
+          {name:'Bulgarian Split Squats',sets:'4 sets × 10 reps each leg',desc:'Rear foot elevated on chair. Front foot far forward. Lower back knee toward floor. This is one of the most effective lower body movements.',rest:'75 seconds'},
+          {name:'Glute Bridge with Hold',sets:'4 sets × 12 reps (3 sec hold at top)',desc:'Drive hips up. Squeeze glutes for 3 seconds at maximum height. Lower slowly in 3 seconds. Control every inch.',rest:'45 seconds'},
+          {name:'Mountain Climbers',sets:'3 sets × 30 seconds',desc:'Plank position. Drive knees alternately toward chest as fast as possible while keeping hips level. Cardio and core combined.',rest:'30 seconds'},
+          {name:'Calf Raises',sets:'3 sets × 20 reps',desc:'Stand on edge of step or flat floor. Rise onto toes, pause, lower slowly. Add weight by holding bottles or bags.',rest:'30 seconds'},
+          {name:'Dead Bug',sets:'3 sets × 10 reps each side',desc:'Lie on back, arms up, knees at 90°. Lower opposite arm and leg to floor simultaneously. Keep lower back pressed to floor.',rest:'45 seconds'},
+        ],
+        cooldown:'5 min walk · 45 sec quad stretch each side · 45 sec hamstring stretch · 45 sec hip flexor stretch · 30 sec calf stretch',
+        prayerNote:'Finish strong. When the last set is hard — pray out loud. "I can do all things through Christ which strengtheneth me." — Philippians 4:13',
+      },
+      {
+        name:'Saturday',short:'Sat',type:'rest',
+        title:'Active Rest',
+        restActivities:[
+          {icon:'🌅',text:'Outdoor walk or run — spend time in God\'s creation'},
+          {icon:'🤸',text:'Full body stretching routine — 20 minutes'},
+          {icon:'🏊',text:'Swimming if available — full body low-impact recovery'},
+          {icon:'🍽️',text:'Prepare your meals for next week — use the Meal Plan module'},
+          {icon:'✍️',text:'Journal reflection — what did this week build in you?'},
+        ]
+      },
+      {
+        name:'Sunday',short:'Sun',type:'rest',
+        title:'Sabbath — Complete Rest',
+        restActivities:[
+          {icon:'✝️',text:'Church and worship — this is your primary spiritual training'},
+          {icon:'🛑',text:'No training today — honour the Sabbath completely'},
+          {icon:'👨‍👩‍👧',text:'Time with family and community — relationships are health'},
+          {icon:'📖',text:'Extended Bible reading and prayer'},
+          {icon:'🌿',text:'A slow biblical meal with people you love'},
+        ]
+      },
+    ]
+  },
+  '4day':{
+    name:'4-Day Programme',
+    days:[
+      {
+        name:'Monday',short:'Mon',type:'train',
+        title:'Push Day — Chest, Shoulders, Triceps',
+        focus:['Chest','Shoulders','Triceps','Push'],
+        verse:{text:'Be strong and of a good courage; for the LORD thy God is with thee.',ref:'Joshua 1:9 (KJV)'},
+        warmup:'5 min jog · 15 arm circles · 10 shoulder rotations · 15 push-up holds at bottom · 10 band pull-aparts',
+        exercises:[
+          {name:'Incline Push-Ups',sets:'4 sets × 15 reps',desc:'Hands on elevated surface (bench, chair). Targets upper chest. Keep body in perfect alignment.',rest:'60 seconds'},
+          {name:'Standard Push-Ups',sets:'4 sets × 15 reps',desc:'Full push-up with focus on chest engagement. Slow 3-second descent.',rest:'60 seconds'},
+          {name:'Decline Push-Ups',sets:'3 sets × 10–12 reps',desc:'Feet elevated on chair. Targets upper chest and front shoulders. Advanced variation.',rest:'75 seconds'},
+          {name:'Pike Push-Ups',sets:'4 sets × 12 reps',desc:'Inverted V position. Lower head toward floor. The most effective bodyweight shoulder press.',rest:'60 seconds'},
+          {name:'Tricep Dips',sets:'4 sets × 12–15 reps',desc:'Hands on chair edge behind you. Lower until elbows reach 90°. Drive through hands to extend.',rest:'60 seconds'},
+          {name:'Lateral Raises (bottles)',sets:'3 sets × 15 reps',desc:'Arms at sides with weight. Raise to shoulder height. Slow controlled movement. No swinging.',rest:'45 seconds'},
+        ],
+        cooldown:'5 min walk · Chest stretch in doorframe 45 sec · Overhead tricep stretch 30 sec each · Cross-body shoulder stretch 30 sec each',
+        prayerNote:'Push days are a metaphor for life — you are pressing against resistance to grow. Pray before you begin.',
+      },
+      {
+        name:'Tuesday',short:'Tue',type:'train',
+        title:'Pull Day — Back & Biceps',
+        focus:['Back','Biceps','Pulling','Posture'],
+        verse:{text:'The LORD is my strength and my shield; my heart trusted in him, and I am helped.',ref:'Psalm 28:7 (KJV)'},
+        warmup:'5 min walk · 15 band pull-aparts or towel pulls · 10 doorframe rows slow · 10 scapular squeezes · Cat-cow stretch × 10',
+        exercises:[
+          {name:'Doorframe Rows',sets:'5 sets × 12 reps',desc:'Lean back at 45°, hold doorframe. Pull chest to frame. The steeper the angle the harder. This is your primary back movement.',rest:'60 seconds'},
+          {name:'Superman Holds',sets:'4 sets × 45 seconds',desc:'Lie prone. Raise arms, chest and legs simultaneously. Hold. Builds the entire posterior chain — back, glutes, hamstrings.',rest:'45 seconds'},
+          {name:'Reverse Snow Angels',sets:'3 sets × 15 reps',desc:'Lie prone, arms at sides. Sweep arms up and overhead while keeping them elevated. Returns the shoulders to correct position.',rest:'45 seconds'},
+          {name:'Bicep Curls',sets:'4 sets × 12–15 reps',desc:'Use water bottles, bags, or dumbbells. Full range of motion. 2 seconds up, 3 seconds down. Feel the muscle work.',rest:'45 seconds'},
+          {name:'Hammer Curls',sets:'3 sets × 12 reps',desc:'Same as bicep curl but palms facing each other. Targets the brachialis for thicker arms.',rest:'45 seconds'},
+          {name:'Face Pulls (band or towel)',sets:'3 sets × 15 reps',desc:'Anchor band or towel. Pull toward face with elbows high. Critical for shoulder health and posture.',rest:'45 seconds'},
+        ],
+        cooldown:'5 min walk · Lat stretch (hold doorframe, lean away) 30 sec each · Bicep stretch (arm behind back) 30 sec each · Thoracic rotation 10 each',
+        prayerNote:'Pulling movements build posture. Good posture expresses dignity and confidence — the physical expression of a person who knows who they are in Christ.',
+      },
+      {
+        name:'Wednesday',short:'Wed',type:'rest',
+        title:'Active Rest',
+        restActivities:[
+          {icon:'🚶',text:'30 min outdoor walk — Zone 2 pace, sunlight'},
+          {icon:'🧘',text:'Holy Stretching — 20 minutes full body'},
+          {icon:'💧',text:'Drink 3 litres of water — muscles are 75% water'},
+          {icon:'🌿',text:'Eat high-protein: fish, eggs, lentils, chicken'},
+          {icon:'📖',text:'Bible reading and midday prayer'},
+        ]
+      },
+      {
+        name:'Thursday',short:'Thu',type:'train',
+        title:'Legs & Glutes — Foundation',
+        focus:['Quads','Glutes','Hamstrings','Power'],
+        verse:{text:'They shall run, and not be weary; and they shall walk, and not faint.',ref:'Isaiah 40:31 (KJV)'},
+        warmup:'5 min jog · 15 leg swings each direction · 10 glute bridges · 10 bodyweight squats slow · 10 reverse lunges each side',
+        exercises:[
+          {name:'Barbell Back Squat (or Goblet Squat)',sets:'5 sets × 8–10 reps',desc:'The king of exercises. If at gym, barbell on back. At home, hold a heavy bag to chest (goblet). Depth is the key — go as deep as mobility allows.',rest:'90 seconds'},
+          {name:'Romanian Deadlift',sets:'4 sets × 10 reps',desc:'Hinge at hips, pushing them back. Feel the hamstrings lengthen. Keep back straight throughout. The most effective posterior chain builder.',rest:'75 seconds'},
+          {name:'Bulgarian Split Squat',sets:'4 sets × 10 reps each leg',desc:'Most challenging single-leg movement. Rear foot elevated. Front leg does all the work. Balance builds coordination alongside strength.',rest:'75 seconds'},
+          {name:'Hip Thrust (or Glute Bridge)',sets:'4 sets × 15 reps',desc:'Back on bench/chair edge. Drive hips up with weight across hips. Squeeze glutes maximally at top. Best glute builder available.',rest:'60 seconds'},
+          {name:'Walking Lunges',sets:'3 sets × 20 steps',desc:'Step forward and lower into lunge. Push through front heel to step into next lunge. Continuous movement develops balance and coordination.',rest:'60 seconds'},
+          {name:'Calf Raises',sets:'4 sets × 25 reps',desc:'Slow and full range of motion. Pause at top and bottom. Higher rep range for calves — they are endurance muscles.',rest:'30 seconds'},
+        ],
+        cooldown:'5 min walk · 45 sec quad stretch each · 45 sec hamstring stretch · 45 sec hip flexor stretch · 30 sec pigeon pose each side',
+        prayerNote:'Leg training is humbling. You cannot fake it. Come to it with the same humility you come to God — and He will strengthen you.',
+      },
+      {
+        name:'Friday',short:'Fri',type:'train',
+        title:'Core & Conditioning — Finish Strong',
+        focus:['Core','Conditioning','Endurance','HIIT'],
+        verse:{text:'I have fought a good fight, I have finished my course, I have kept the faith.',ref:'2 Timothy 4:7 (KJV)'},
+        warmup:'5 min jog · 10 inchworms · 10 hip circles · 15 jumping jacks · Bear crawl 20 steps forward and back',
+        exercises:[
+          {name:'Burpees',sets:'4 sets × 10 reps',desc:'The most complete conditioning movement. Squat, plank, push-up, jump. Every major muscle group. Every energy system. No excuses.',rest:'60 seconds'},
+          {name:'Mountain Climbers',sets:'4 sets × 40 seconds',desc:'Plank position. Drive knees to chest as fast as possible. Keep hips level. This is cardio and core simultaneously.',rest:'30 seconds'},
+          {name:'Plank Variations',sets:'3 sets — 40 sec each variation',desc:'Standard plank → Side plank left → Side plank right. No rest between variations. 40 seconds each.',rest:'60 seconds'},
+          {name:'V-Ups',sets:'3 sets × 15 reps',desc:'Lie flat. Simultaneously raise legs and torso to meet at the top. Touch toes if possible. The most effective abdominal exercise.',rest:'45 seconds'},
+          {name:'Russian Twists',sets:'3 sets × 20 reps (10 each side)',desc:'Sit at 45°. Feet raised. Rotate torso left and right. Add weight to increase difficulty.',rest:'30 seconds'},
+          {name:'Jump Squats',sets:'4 sets × 15 reps',desc:'Finish the week with power. Explosive squat jumps. Land soft. Go immediately into the next rep. End with everything you have left.',rest:'45 seconds'},
+        ],
+        cooldown:'5 min slow walk · Full body stretch sequence: hamstrings, quads, hip flexors, chest, shoulders, lats · 2 minutes of slow deep breathing',
+        prayerNote:'You finished the training week. Thank God for the strength He gave you. This is the day that proves discipline is building in your character.',
+      },
+      {
+        name:'Saturday',short:'Sat',type:'rest',
+        title:'Active Rest',
+        restActivities:[
+          {icon:'🌅',text:'Outdoor activity: walk, hike, cycle, swim'},
+          {icon:'🤸',text:'20 min flexibility and mobility work'},
+          {icon:'🍽️',text:'Meal prep for next week using the Meal Plan module'},
+          {icon:'✍️',text:'Training journal: what improved this week?'},
+          {icon:'💪',text:'Plan next week\'s training — progressive overload'},
+        ]
+      },
+      {
+        name:'Sunday',short:'Sun',type:'rest',
+        title:'Sabbath — Complete Rest',
+        restActivities:[
+          {icon:'✝️',text:'Church, worship and community'},
+          {icon:'🛑',text:'No training — honour the Sabbath'},
+          {icon:'👨‍👩‍👧',text:'Family time — relationships are the reward of all this discipline'},
+          {icon:'📖',text:'Extended Bible reading and prayer'},
+          {icon:'🌿',text:'A slow, celebratory biblical meal'},
+        ]
+      },
+    ]
+  }
+};
+
+// ═══ TIMER STATE ═══
+let wtRunning=false,wtInterval=null,wtWork=40,wtRest=20,wtPhase='work',wtRemaining=40,wtTotalPhase=40;
+let restTimerInterval=null,restRemaining=0;
+let rounds=0;
+
+// ═══ INIT ═══
+lt();
+renderStats();
+renderSchedule();
+renderWorkoutHistory();
+updateTimerDisplay2();
+
+function selectPlan(plan,el){
+  TR.plan=plan;st();
+  document.querySelectorAll('.plan-select-card').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderSchedule();
+}
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+id)?.classList.add('active');
+  if(id==='log')renderWorkoutHistory();
+}
+
+function renderStats(){
+  const total=(TR.workoutLog||[]).length;
+  document.getElementById('stat-sessions').textContent=total;
+  document.getElementById('header-sessions').textContent=`🔥 ${total} sessions`;
+  // This week
+  const weekStart=new Date();weekStart.setDate(weekStart.getDate()-weekStart.getDay());weekStart.setHours(0,0,0,0);
+  const weekSessions=(TR.workoutLog||[]).filter(w=>{
+    const d=new Date(w.date+'T00:00:00');return d>=weekStart;
+  }).length;
+  document.getElementById('stat-week').textContent=weekSessions;
+  document.getElementById('stat-streak').textContent=calcTrainingStreak();
+}
+
+function calcTrainingStreak(){
+  const logs=TR.workoutLog||[];
+  if(!logs.length)return 0;
+  // Count consecutive weeks with at least 1 session
+  const weekKeys=new Set(logs.map(w=>{const d=new Date(w.date+'T00:00:00');d.setDate(d.getDate()-d.getDay());return d.toISOString().slice(0,10);}));
+  let streak=0;const d=new Date();d.setDate(d.getDate()-d.getDay());d.setHours(0,0,0,0);
+  while(weekKeys.has(d.toISOString().slice(0,10))){streak++;d.setDate(d.getDate()-7);}
+  return streak;
+}
+
+function renderSchedule(){
+  const plan=PROGRAMMES[TR.plan||'3day'];
+  const container=document.getElementById('schedule-container');
+  const today=new Date().getDay();// 0=Sun,1=Mon...
+  const dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const completed=TR.completedWorkouts||{};
+  const weekStart=new Date();weekStart.setDate(weekStart.getDate()-weekStart.getDay());weekStart.setHours(0,0,0,0);
+
+  container.innerHTML=plan.days.map((d,i)=>{
+    const dayIndex=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].indexOf(d.name);
+    const actualDayIndex=(dayIndex+1)%7;// convert to JS day (0=Sun)
+    const isToday=actualDayIndex===today;
+    const dayDate=new Date(weekStart);dayDate.setDate(weekStart.getDate()+actualDayIndex);
+    const dateKey=`${dayDate.getFullYear()}-${String(dayDate.getMonth()+1).padStart(2,'0')}-${String(dayDate.getDate()).padStart(2,'0')}`;
+    const isDone=completed[dateKey];
+    const isRest=d.type==='rest';
+
+    const dotClass=isDone?'done-day':isToday?'today-dot':isRest?'rest':'train';
+    const cardClass=`schedule-card${isDone?' completed':''}`;
+
+    return`<div class="${cardClass}" id="sched-${i}">
+      <div class="schedule-header" onclick="toggleScheduleCard(${i})">
+        <div class="day-dot ${dotClass}">${isDone?'✓':d.short}</div>
+        <div class="schedule-info">
+          <div class="schedule-day-name">${d.name} — ${d.title}</div>
+          <div class="schedule-type ${isRest?'rest-type':'train-type'}">${isRest?'🌿 Rest & Recovery':'🏋️ Training Day'}</div>
+        </div>
+        <div class="schedule-status">${isDone?'✅':isToday?'▶️':isRest?'🌿':''}</div>
+        <div class="schedule-chevron">▼</div>
+      </div>
+      <div class="schedule-body">
+        ${isRest?renderRestBody(d):renderTrainBody(d,dateKey,isDone)}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Auto-open today
+  const todayIdx=plan.days.findIndex(d=>{
+    const di=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].indexOf(d.name);
+    return(di+1)%7===today;
+  });
+  if(todayIdx>=0){
+    setTimeout(()=>{
+      const card=document.getElementById('sched-'+todayIdx);
+      if(card){card.classList.add('open');card.scrollIntoView({behavior:'smooth',block:'start'});}
+    },300);
+  }
+}
+
+function renderRestBody(d){
+  return`<div class="rest-card">
+    <div class="rest-title">Active Rest Day</div>
+    <div class="rest-desc">Muscle is built during rest, not during training. Today you protect your recovery with the same discipline you bring to training.</div>
+    <ul class="rest-activities">
+      ${d.restActivities.map(a=>`<li class="rest-activity"><span class="rest-activity-icon">${a.icon}</span><span>${a.text}</span></li>`).join('')}
+    </ul>
+  </div>`;
+}
+
+function renderTrainBody(d,dateKey,isDone){
+  return`
+    <div class="workout-verse-box">
+      <div class="workout-verse-text">"${d.verse.text}"</div>
+      <div class="workout-verse-ref">${d.verse.ref}</div>
+    </div>
+    <div style="background:var(--spirit-light);border-left:3px solid var(--spirit);border-radius:0 9px 9px 0;padding:10px 12px;margin-bottom:12px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--spirit);margin-bottom:3px;">Prayer Before Training</div>
+      <div style="font-size:12px;color:var(--ink2);font-style:italic;">${d.prayerNote}</div>
+    </div>
+    <div class="workout-label">Muscle Focus</div>
+    <div class="workout-focus">${d.focus.map(f=>`<span class="focus-tag">${f}</span>`).join('')}</div>
+    <div class="workout-label">Warm-Up (5 minutes)</div>
+    <div class="warm-cool-box"><div class="warm-cool-items">${d.warmup.split(' · ').join('<br>')}</div></div>
+    <div class="workout-label">The Workout</div>
+    <ul class="exercise-list">
+      ${d.exercises.map((e,i)=>`<li class="exercise-item">
+        <div class="exercise-num">${i+1}</div>
+        <div class="exercise-body">
+          <div class="exercise-name">${e.name}</div>
+          <div class="exercise-sets">📊 ${e.sets}</div>
+          <div class="exercise-desc">${e.desc}</div>
+          <div class="exercise-rest">⏱ Rest: ${e.rest}</div>
+        </div>
+      </li>`).join('')}
+    </ul>
+    <div class="workout-label">Cool-Down (5 minutes)</div>
+    <div class="warm-cool-box"><div class="warm-cool-items">${d.cooldown.split(' · ').join('<br>')}</div></div>
+    ${isDone
+      ?`<div style="background:var(--spirit-light);border:1px solid rgba(107,143,94,.2);border-radius:10px;padding:11px;margin-top:10px;text-align:center;font-size:13px;font-weight:700;color:var(--spirit);">✅ Session Complete — well done, faithful servant!</div>`
+      :`<button class="complete-workout-btn" onclick="completeWorkout('${dateKey}','${d.title}')">✓ Session Complete</button>`
+    }`;
+}
+
+function toggleScheduleCard(i){
+  const card=document.getElementById('sched-'+i);
+  if(!card)return;
+  document.querySelectorAll('.schedule-card.open').forEach(c=>{if(c!==card)c.classList.remove('open');});
+  card.classList.toggle('open');
+}
+
+function completeWorkout(dateKey,title){
+  if(!TR.completedWorkouts)TR.completedWorkouts={};
+  TR.completedWorkouts[dateKey]=true;
+  // Auto-log
+  TR.workoutLog=TR.workoutLog||[];
+  TR.workoutLog.unshift({date:dateKey,type:title,duration:45,intensity:7,notes:'Completed from schedule'});
+  st();renderStats();renderSchedule();
+  showToast('💪 Session logged — God is pleased with this temple!');
+}
+
+// ═══ WORKOUT LOG ═══
+function logWorkout(){
+  const type=document.getElementById('log-type').value;
+  const duration=parseInt(document.getElementById('log-duration').value)||0;
+  const intensity=parseInt(document.getElementById('log-intensity').value)||5;
+  const notes=document.getElementById('log-notes').value;
+  if(!duration){showToast('Enter duration in minutes');return;}
+  TR.workoutLog=TR.workoutLog||[];
+  TR.workoutLog.unshift({date:todayStr(),type,duration,intensity,notes});
+  document.getElementById('log-duration').value='';
+  document.getElementById('log-notes').value='';
+  st();renderStats();renderWorkoutHistory();
+  showToast(`⚡ ${type} logged — ${duration} minutes!`);
+}
+
+function renderWorkoutHistory(){
+  const hist=document.getElementById('workout-history');
+  const logs=TR.workoutLog||[];
+  if(!logs.length){hist.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">No workouts logged yet. Complete a session or log one above.</div>';return;}
+  hist.innerHTML=logs.slice(0,15).map(w=>{
+    const d=new Date(w.date+'T00:00:00');
+    const label=d.toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'});
+    return`<div class="log-entry">
+      <div class="log-entry-date">${label}</div>
+      <div class="log-entry-info">
+        <div class="log-entry-name">${w.type}</div>
+        <div class="log-entry-detail">${w.duration} min · Intensity ${w.intensity}/10${w.notes?' · '+w.notes.slice(0,30):''}</div>
+      </div>
+      <div class="log-entry-badge">${w.intensity>=8?'🔥':w.intensity>=6?'⚡':'✓'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══ WORKOUT TIMER ═══
+function setInterval2(work,rest,btn){
+  if(wtRunning)return;
+  wtWork=work;wtRest2=rest;wtRemaining=work;wtTotalPhase=work;wtPhase='work';
+  document.querySelectorAll('.wt-int-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  updateTimerDisplay2();
+}
+let wtRest2=20;
+
+function toggleWT(){
+  if(wtRunning){
+    clearInterval(wtInterval);wtRunning=false;
+    document.getElementById('wt-main-btn').textContent='▶ Resume';
+    document.getElementById('wt-main-btn').className='wt-btn wt-start';
+  } else {
+    wtRunning=true;
+    document.getElementById('wt-main-btn').textContent='⏸ Pause';
+    document.getElementById('wt-main-btn').className='wt-btn wt-pause';
+    wtInterval=setInterval(()=>{
+      wtRemaining--;
+      if(wtRemaining<=0){
+        if(wtPhase==='work'){wtPhase='rest';wtRemaining=wtRest2;wtTotalPhase=wtRest2;}
+        else{wtPhase='work';wtRemaining=wtWork;wtTotalPhase=wtWork;addRound();}
+      }
+      updateTimerDisplay2();
+    },1000);
+  }
+}
+
+function resetWT(){
+  clearInterval(wtInterval);wtRunning=false;wtPhase='work';wtRemaining=wtWork;wtTotalPhase=wtWork;
+  document.getElementById('wt-main-btn').textContent='▶ Start';
+  document.getElementById('wt-main-btn').className='wt-btn wt-start';
+  updateTimerDisplay2();
+}
+
+function updateTimerDisplay2(){
+  const m=Math.floor(wtRemaining/60),s=wtRemaining%60;
+  document.getElementById('wt-display').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.getElementById('wt-phase').textContent=wtPhase==='work'?'WORK — Give everything!':'REST — Breathe and recover';
+  const pct=(wtRemaining/wtTotalPhase)*100;
+  document.getElementById('wt-progress').style.width=pct+'%';
+  document.getElementById('wt-progress').style.background=wtPhase==='work'?'var(--temple)':'var(--spirit)';
+}
+
+// REST TIMER
+function startRestTimer(sec){
+  clearInterval(restTimerInterval);restRemaining=sec;
+  updateRestDisplay();
+  restTimerInterval=setInterval(()=>{
+    restRemaining--;updateRestDisplay();
+    if(restRemaining<=0){clearInterval(restTimerInterval);document.getElementById('rest-display').textContent='GO!';showToast('⚡ Rest complete — next set!');}
+  },1000);
+}
+function updateRestDisplay(){
+  document.getElementById('rest-display').textContent=restRemaining+'s';
+}
+
+// ROUNDS
+function addRound(){rounds++;document.getElementById('round-count').textContent=rounds;}
+function resetRounds(){rounds=0;document.getElementById('round-count').textContent=0;}
+</script>
+</body>
+</html>

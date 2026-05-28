@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GodHealth">
+<meta name="theme-color" content="#0D1F0D">
+<meta name="description" content="GodHealth — transform your body, mind and spirit. Ancient biblical wisdom meets modern health science. Build the temple God gave you.">
+<meta name="format-detection" content="telephone=no">
+<!-- Open Graph / social sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="GodHealth — Transform Together">
+<meta property="og:description" content="Ancient biblical wisdom meets modern health science. Get in the best shape of your life — body, mind and spirit.">
+<meta property="og:site_name" content="GodHealth">
+<title>GodHealth — Transform Together</title>
+<!-- Inline gold-cross favicon (no extra file needed) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<!-- Installable PWA manifest (inline, no extra file needed) -->
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22GodHealth%22%2C%22short_name%22%3A%22GodHealth%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230D1F0D%22%2C%22theme_color%22%3A%22%230D1F0D%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg%2527%2520viewBox%253D%25270%25200%252044%252044%2527%253E%253Crect%2520width%253D%252744%2527%2520height%253D%252744%2527%2520rx%253D%25279%2527%2520fill%253D%2527%25230D1F0D%2527%252F%253E%253Crect%2520x%253D%252718%2527%2520y%253D%25276%2527%2520width%253D%25278%2527%2520height%253D%252732%2527%2520rx%253D%25273%2527%2520fill%253D%2527%2523B8912A%2527%252F%253E%253Crect%2520x%253D%25278%2527%2520y%253D%252716%2527%2520width%253D%252728%2527%2520height%253D%25278%2527%2520rx%253D%25273%2527%2520fill%253D%2527%2523B8912A%2527%252F%253E%253C%252Fsvg%253E%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0D1F0D;--bg2:#FFFFFF;--bg3:#F2EDE4;
+  --border:#E8E0D0;--border2:#D4C9B0;
+  --ink:#1A1410;--ink2:#5C4F3A;--ink3:#9A8E7A;
+  --temple:#C4573A;--temple-light:#FAF0ED;
+  --soul:#4A7FA5;--soul-light:#EEF4F9;
+  --spirit:#6B8F5E;--spirit-light:#EFF4EE;
+  --gold:#B8912A;--gold-light:#FBF5E6;--gold-dark:#9A7020;
+  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;display:flex;flex-direction:column;}
+.screen{display:none;flex:1;flex-direction:column;overflow:hidden;}
+.screen.active{display:flex;}
+
+/* ONBOARDING */
+#onboard{background:var(--bg);align-items:center;justify-content:center;padding:40px 28px;text-align:center;overflow-y:auto;}
+.ob-cross{margin-bottom:20px;animation:riseUp .8s ease both;}
+.ob-eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:700;animation:riseUp .9s ease both;}
+.ob-title{font-family:'Playfair Display',serif;font-size:clamp(36px,8vw,52px);font-weight:700;line-height:1.08;color:#F5EDD8;margin-bottom:8px;animation:riseUp 1s ease both;}
+.ob-title em{font-style:italic;color:var(--gold);}
+.ob-pillars{display:flex;gap:8px;justify-content:center;margin:16px 0 24px;animation:riseUp 1.1s ease both;}
+.ob-pillar{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;max-width:90px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 8px;}
+.ob-pillar-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.ob-pillar-name{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.ob-pillar-sub{font-size:9px;color:var(--ink3);}
+.ob-form{width:100%;max-width:360px;animation:riseUp 1.2s ease both;}
+.ob-form label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,216,.7);margin-bottom:6px;font-weight:700;text-align:left;}
+.ob-form input[type=text],.ob-form input[type=time]{width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;transition:border-color .25s;margin-bottom:12px;}
+.ob-form input:focus{border-color:var(--gold);}
+.ob-time-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.ob-time-row .ob-time-box label{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,216,.7);margin-bottom:5px;font-weight:700;}
+.ob-verse{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:rgba(245,237,216,.5);margin-top:20px;line-height:1.7;animation:riseUp 1.3s ease both;}
+.btn-primary{width:100%;background:var(--ink);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;transition:all .25s;margin-bottom:4px;}
+.btn-primary:hover{background:var(--gold);transform:translateY(-1px);box-shadow:0 8px 24px rgba(184,145,42,.25);}
+
+/* APP SHELL */
+#app{display:none;flex:1;flex-direction:column;overflow:hidden;}
+#app.active{display:flex;}
+.app-header{background:#0D1F0D;border-bottom:1px solid rgba(107,143,94,.25);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.3);}
+.header-logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#F5EDD8;}
+.header-logo em{font-style:italic;color:var(--gold);}
+.header-right{display:flex;align-items:center;gap:8px;}
+.streak-badge{display:flex;align-items:center;gap:4px;background:rgba(184,145,42,.18);border:1px solid rgba(184,145,42,.35);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--gold);}
+.date-badge{font-size:11px;color:rgba(245,237,216,.55);}
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll-area::-webkit-scrollbar{width:0;}
+.page{display:none;padding:16px;}
+.page.active{display:block;}
+
+/* TODAY PAGE */
+.today-greeting{margin-bottom:16px;}
+.today-greeting .day-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:4px;}
+.today-greeting h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#FFFFFF;line-height:1.15;}
+.today-greeting h2 em{font-style:italic;color:var(--gold);}
+.verse-strip{background:var(--gold-light);border:1px solid rgba(184,145,42,.2);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
+.verse-strip::before{content:'✝';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.06;color:var(--gold);}
+.verse-strip .vs-text{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--ink);line-height:1.6;margin-bottom:4px;}
+.verse-strip .vs-ref{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+.pillar-section{margin-bottom:14px;}
+.pillar-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.pillar-dot{width:8px;height:8px;border-radius:50%;}
+.pillar-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;}
+.pillar-why{font-size:11px;color:var(--ink3);margin-left:auto;font-style:italic;}
+.habit-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);}
+.habit-card:hover{border-color:var(--border2);transform:translateY(-1px);}
+.habit-card.checked.temple{background:var(--temple-light);border-color:rgba(224,104,72,.3);}
+.habit-card.checked.soul{background:var(--soul-light);border-color:rgba(90,159,200,.3);}
+.habit-card.checked.spirit{background:var(--spirit-light);border-color:rgba(122,191,106,.3);}
+.habit-check{width:24px;height:24px;min-width:24px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;transition:all .25s;font-size:12px;background:var(--bg3);}
+.habit-card.checked.temple .habit-check{background:var(--temple);border-color:var(--temple);color:#fff;}
+.habit-card.checked.soul .habit-check{background:var(--soul);border-color:var(--soul);color:#fff;}
+.habit-card.checked.spirit .habit-check{background:var(--spirit);border-color:var(--spirit);color:#fff;}
+.habit-body{flex:1;}
+.habit-name{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:1px;}
+.habit-desc{font-size:11px;color:var(--ink3);line-height:1.45;}
+.habit-icon{font-size:20px;margin-left:auto;}
+.habit-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.habit-expand.open{display:block;}
+.habit-input{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;padding:9px 12px;border-radius:8px;outline:none;margin-top:6px;transition:border-color .25s;}
+.habit-input:focus{border-color:var(--gold);}
+.habit-slider-wrap{margin-top:8px;}
+.habit-slider-label{font-size:11px;color:var(--ink3);margin-bottom:4px;display:flex;justify-content:space-between;}
+.habit-slider{width:100%;-webkit-appearance:none;height:4px;border-radius:100px;outline:none;cursor:pointer;}
+.habit-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.4);}
+
+/* IF CARD */
+.if-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow-sm);}
+.if-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.if-proto{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--soul);}
+.if-proto-meta{font-size:10px;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
+.if-why-text{font-size:11px;color:var(--ink3);max-width:140px;text-align:right;font-style:italic;line-height:1.4;}
+.if-ring-row{display:flex;justify-content:center;margin-bottom:12px;}
+.if-ring{position:relative;width:100px;height:100px;}
+.if-ring svg{width:100px;height:100px;transform:rotate(-90deg);}
+.if-ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.if-elapsed{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);line-height:1;}
+.if-elapsed-sub{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);}
+.if-status-txt{font-size:9px;color:var(--soul);font-weight:700;margin-top:1px;}
+.if-windows{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.if-win-box{background:var(--soul-light);border:1px solid rgba(74,127,165,.15);border-radius:9px;padding:9px 10px;}
+.if-win-lbl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(74,127,165,.6);margin-bottom:3px;font-weight:700;}
+.if-win-val{font-size:15px;font-weight:700;color:var(--ink);font-family:'Playfair Display',serif;}
+.if-win-sub{font-size:9px;color:var(--ink3);margin-top:1px;}
+.if-btn-row{display:flex;gap:7px;}
+.if-btn{flex:1;padding:9px;border-radius:8px;font-family:'Lato',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;transition:all .22s;}
+.if-start{background:var(--soul);color:#fff;}
+.if-stop{background:rgba(196,87,58,.08);border:1.5px solid rgba(196,87,58,.3)!important;color:var(--temple);}
+
+/* SCORE ROW */
+.score-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
+.score-box{background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:12px 10px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);}
+.score-box:hover{border-color:rgba(212,168,58,.35);transform:translateY(-1px);}
+.score-box.scored.temple{border-color:rgba(196,87,58,.3);background:var(--temple-light);}
+.score-box.scored.soul{border-color:rgba(74,127,165,.3);background:var(--soul-light);}
+.score-box.scored.spirit{border-color:rgba(107,143,94,.3);background:var(--spirit-light);}
+.score-icon{font-size:20px;margin-bottom:4px;}
+.score-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:5px;}
+.score-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);}
+.score-sub{font-size:9px;color:var(--ink3);}
+.save-day-btn{width:100%;background:var(--gold);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:15px;border:none;border-radius:12px;cursor:pointer;transition:all .25s;margin-top:4px;margin-bottom:8px;}
+.save-day-btn:hover{background:#9A7020;box-shadow:0 4px 16px rgba(184,145,42,.35);}
+.save-day-btn.saved{background:var(--spirit);color:#fff;pointer-events:none;}
+
+/* INSIGHTS */
+.week-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.week-header h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);}
+.week-nav{display:flex;gap:6px;}
+.week-nav button{background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-size:14px;width:30px;height:30px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.week-nav button:hover{border-color:var(--gold);color:var(--gold);}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:16px;}
+.week-day-col{text-align:center;}
+.week-day-name{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;}
+.week-day-dot{width:100%;aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:var(--bg2);color:var(--ink3);}
+.week-day-dot.today{border-color:var(--gold);color:var(--gold);background:var(--gold-light);}
+.week-day-dot.complete{border-color:var(--spirit);background:var(--spirit-light);color:var(--spirit);}
+.week-day-dot.partial{border-color:var(--soul);background:var(--soul-light);color:var(--soul);}
+.week-day-dot.future{opacity:.35;}
+.pillar-score-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
+.psc{border-radius:12px;padding:14px 10px;text-align:center;border:1.5px solid;}
+.psc.temple{background:var(--temple-light);border-color:rgba(196,87,58,.2);}
+.psc.soul{background:var(--soul-light);border-color:rgba(74,127,165,.2);}
+.psc.spirit{background:var(--spirit-light);border-color:rgba(107,143,94,.2);}
+.psc-icon{font-size:22px;margin-bottom:5px;}
+.psc-name{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.psc-name.temple{color:var(--temple);}
+.psc-name.soul{color:var(--soul);}
+.psc-name.spirit{color:var(--spirit);}
+.psc-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--ink);line-height:1;}
+.psc-label{font-size:9px;color:var(--ink3);margin-top:2px;}
+.insight-block{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.insight-block h4{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px;}
+.bar-chart{display:flex;flex-direction:column;gap:6px;}
+.bar-row{display:flex;align-items:center;gap:8px;}
+.bar-label{font-size:10px;color:var(--ink3);width:28px;text-align:right;font-weight:700;}
+.bar-track{flex:1;background:var(--bg3);border-radius:100px;height:7px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:100px;transition:width .6s ease;}
+.bar-fill.temple{background:var(--temple);}
+.bar-fill.soul{background:var(--soul);}
+.bar-fill.spirit{background:var(--spirit);}
+.journal-entry-card{background:var(--bg3);border-radius:10px;padding:12px 14px;margin-bottom:8px;border:1px solid var(--border);}
+.jec-date{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:6px;}
+.jec-text{font-size:12px;color:var(--ink2);line-height:1.6;font-style:italic;}
+
+/* TRIBE */
+.tribe-hero{background:linear-gradient(135deg,var(--spirit-light),var(--bg2));border:1.5px solid rgba(107,143,94,.2);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
+.tribe-hero h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.tribe-hero p{font-size:12px;color:var(--ink3);line-height:1.6;margin-bottom:12px;}
+.tribe-btn{display:flex;align-items:center;justify-content:center;gap:7px;background:var(--spirit);color:#fff;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:11px;border-radius:9px;cursor:pointer;border:none;width:100%;transition:all .25s;}
+.tribe-btn:hover{background:#5a7a4e;}
+.share-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.share-card h4{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.share-template{background:var(--bg3);border-radius:9px;padding:12px;font-size:12px;color:var(--ink2);line-height:1.7;margin-bottom:10px;font-style:italic;white-space:pre-line;}
+.share-btn{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--ink);color:#fff;font-family:'Lato',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px;border-radius:8px;cursor:pointer;border:none;width:100%;transition:all .22s;}
+.share-btn:hover{background:var(--gold);}
+.accountability-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.acc-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;}
+.acc-partner{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.acc-partner:last-child{border-bottom:none;}
+.acc-avatar{width:36px;height:36px;border-radius:50%;background:var(--spirit-light);border:2px solid rgba(122,191,106,.3);display:flex;align-items:center;justify-content:center;font-size:14px;}
+.acc-name{font-size:13px;font-weight:700;color:var(--ink);}
+.acc-streak{font-size:11px;color:var(--spirit);}
+.acc-ping{margin-left:auto;background:var(--spirit-light);border:1px solid rgba(107,143,94,.25);color:var(--spirit);font-size:10px;font-weight:700;letter-spacing:1px;padding:5px 10px;border-radius:20px;cursor:pointer;font-family:'Lato',sans-serif;}
+
+/* PROFILE */
+.profile-header{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;text-align:center;box-shadow:var(--shadow-sm);}
+.profile-avatar{width:60px;height:60px;border-radius:50%;background:var(--gold-light);border:2px solid rgba(184,145,42,.3);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 10px;}
+.profile-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.profile-sub{font-size:12px;color:var(--ink3);}
+.profile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px;}
+.ps-box{background:var(--bg3);border-radius:10px;padding:10px 8px;text-align:center;border:1px solid var(--border);}
+.ps-num{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--gold);line-height:1;}
+.ps-lbl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-top:2px;}
+.settings-section{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.settings-section h4{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
+.setting-row:last-child{border-bottom:none;}
+.setting-label{font-size:13px;font-weight:700;color:var(--ink);}
+.setting-sub{font-size:11px;color:var(--ink3);}
+.setting-input{background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;padding:6px 10px;border-radius:7px;outline:none;width:100px;text-align:center;transition:border-color .25s;}
+.setting-input:focus{border-color:var(--gold);}
+.toggle{width:44px;height:24px;background:var(--border2);border-radius:100px;position:relative;cursor:pointer;transition:background .25s;border:none;flex-shrink:0;}
+.toggle.on{background:var(--spirit);}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .25s;box-shadow:0 1px 4px rgba(0,0,0,.15);}
+.toggle.on::after{left:23px;}
+
+/* MEALS */
+.meal-filter-btn{background:var(--bg2);border:1.5px solid var(--border);color:var(--ink3);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.meal-filter-btn.active{background:var(--ink);border-color:var(--ink);color:#fff;}
+.meal-card-item{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow-sm);}
+.meal-card-header{padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;}
+.meal-card-emoji{font-size:24px;flex-shrink:0;}
+.meal-card-info{flex:1;}
+.meal-card-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.meal-card-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.meal-card-pillar{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:20px;}
+.meal-card-pillar.temple{background:var(--temple-light);color:var(--temple);}
+.meal-card-pillar.soul{background:var(--soul-light);color:var(--soul);}
+.meal-card-pillar.spirit{background:var(--spirit-light);color:var(--spirit);}
+.meal-card-pillar.fast{background:var(--gold-light);color:var(--gold);}
+.meal-card-ref{font-size:10px;color:var(--ink3);font-style:italic;}
+.meal-card-chevron{font-size:12px;color:var(--ink3);transition:transform .25s;flex-shrink:0;}
+.meal-card-item.open .meal-card-chevron{transform:rotate(180deg);}
+.meal-card-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border);}
+.meal-card-item.open .meal-card-body{display:block;}
+.meal-section-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:12px 0 6px;}
+.meal-science{background:var(--soul-light);border-left:3px solid var(--soul);border-radius:0 8px 8px 0;padding:10px 12px;font-size:12px;color:var(--ink2);line-height:1.65;margin-bottom:10px;}
+.meal-ingredients{font-size:13px;color:var(--ink2);line-height:1.8;}
+.meal-steps{list-style:none;}
+.meal-step{display:flex;gap:10px;margin-bottom:8px;font-size:13px;color:var(--ink2);line-height:1.55;}
+.meal-step-num{width:22px;height:22px;min-width:22px;border-radius:50%;background:var(--gold-light);border:1px solid rgba(201,168,76,.25);font-size:10px;font-weight:700;color:var(--gold);display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.meal-macros{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.meal-macro-tag{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.meal-macro-tag.p{background:rgba(74,127,165,.1);color:var(--soul);}
+.meal-macro-tag.f{background:rgba(201,168,76,.1);color:var(--gold);}
+.meal-macro-tag.c{background:rgba(107,143,94,.1);color:var(--spirit);}
+
+/* TIPS */
+.tip-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
+.tip-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.tip-emoji{font-size:26px;flex-shrink:0;}
+.tip-header-body{flex:1;}
+.tip-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.tip-pillar-tag{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:20px;display:inline-block;}
+.tip-pillar-tag.temple{background:var(--temple-light);color:var(--temple);}
+.tip-pillar-tag.soul{background:var(--soul-light);color:var(--soul);}
+.tip-pillar-tag.spirit{background:var(--spirit-light);color:var(--spirit);}
+.tip-body{font-size:13px;color:var(--ink2);line-height:1.75;margin-bottom:8px;}
+.tip-science{background:var(--bg3);border-radius:8px;padding:9px 11px;font-size:11px;color:var(--ink3);line-height:1.55;font-style:italic;margin-bottom:8px;}
+.tip-verse{background:var(--gold-light);border-left:3px solid var(--gold);padding:8px 12px;border-radius:0 7px 7px 0;font-size:11px;font-style:italic;color:var(--ink2);line-height:1.55;margin-bottom:8px;}
+.tip-steps{list-style:none;}
+.tip-step{display:flex;gap:8px;margin-bottom:7px;font-size:12px;color:var(--ink2);line-height:1.5;}
+.tip-step-dot{width:6px;height:6px;min-width:6px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.tip-step-dot.temple{background:var(--temple);}
+.tip-step-dot.soul{background:var(--soul);}
+.tip-step-dot.spirit{background:var(--spirit);}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,20,16,.5);z-index:500;display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-sheet{background:var(--bg2);border-radius:20px 20px 0 0;padding:24px 22px 40px;width:100%;max-width:480px;animation:slideUp .3s ease both;}
+.modal-sheet h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.modal-sheet p{font-size:12px;color:var(--ink3);margin-bottom:18px;line-height:1.6;}
+.score-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+.score-pill{width:38px;height:38px;border-radius:10px;border:2px solid var(--border);background:var(--bg3);font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.score-pill.selected.temple{background:var(--temple);border-color:var(--temple);color:#fff;}
+.score-pill.selected.soul{background:var(--soul);border-color:var(--soul);color:#fff;}
+.score-pill.selected.spirit{background:var(--spirit);border-color:var(--spirit);color:#fff;}
+.modal-confirm{width:100%;background:var(--ink);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;transition:all .25s;}
+.modal-confirm:hover{background:var(--gold);}
+
+/* JOURNAL */
+.j-textarea{width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;line-height:1.7;padding:12px;resize:vertical;min-height:80px;outline:none;transition:border-color .3s;}
+.j-textarea:focus{border-color:var(--gold);}
+.j-textarea::placeholder{color:var(--ink3);opacity:.55;}
+.btn-save{width:100%;background:var(--gold-light);border:1px solid rgba(184,145,42,.25);color:var(--gold);font-family:'Lato',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:11px;border-radius:8px;cursor:pointer;transition:all .2s;margin-top:9px;}
+.btn-save:hover{background:rgba(184,145,42,.18);}
+
+/* NAV */
+.bottom-nav{background:#0D1F0D;border-top:1px solid rgba(107,143,94,.2);display:flex;padding:8px 0 max(14px,env(safe-area-inset-bottom));flex-shrink:0;overflow-x:auto;}
+.nav-item{flex:1;min-width:50px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;padding:4px 0;transition:all .2s;}
+.nav-icon{font-size:20px;opacity:.4;transition:opacity .2s;}
+.nav-label{font-size:7px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,237,216,.4);font-weight:700;transition:color .2s;}
+.nav-item.active .nav-icon{opacity:1;}
+.nav-item.active .nav-label{color:var(--gold);}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;padding:10px 20px;border-radius:100px;z-index:999;opacity:0;transition:all .35s;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* INSIGHTS SUB-TABS */
+.ins-tabs{display:flex;gap:6px;padding:12px 0 4px;overflow-x:auto;}
+.ins-tab{background:var(--bg2);border:1.5px solid var(--border);color:var(--ink3);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;padding:7px 13px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.ins-tab.active{background:var(--ink);border-color:var(--ink);color:#fff;}
+.ins-panel{display:none;}
+.ins-panel.active{display:block;padding-top:12px;}
+
+/* REFLECTION */
+.ref-textarea{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;line-height:1.65;padding:10px 12px;border-radius:9px;outline:none;resize:vertical;min-height:64px;transition:border-color .25s;}
+.ref-textarea:focus{border-color:var(--gold);}
+.ref-textarea::placeholder{color:var(--ink3);opacity:.55;}
+
+/* VISION HERO */
+.vision-hero{background:linear-gradient(135deg,#0d0900,#1a1100);border:1px solid rgba(184,145,42,.25);border-radius:13px;padding:18px;margin-bottom:12px;}
+
+/* GOALS */
+.goal-pillar-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.goal-pillar-label.temple{color:var(--temple);}
+.goal-pillar-label.soul{color:var(--soul);}
+.goal-pillar-label.spirit{color:var(--spirit);}
+.goal-select{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;padding:9px 12px;border-radius:8px;outline:none;cursor:pointer;transition:border-color .25s;}
+.goal-select:focus{border-color:var(--gold);}
+.goal-review-item{background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:8px;}
+.goal-review-pill-row{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;}
+.goal-review-pill{font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg2);color:var(--ink3);cursor:pointer;transition:all .2s;}
+.goal-review-pill.sel-1{background:rgba(196,87,58,.12);border-color:var(--temple);color:var(--temple);}
+.goal-review-pill.sel-2{background:rgba(184,145,42,.12);border-color:var(--gold);color:var(--gold);}
+.goal-review-pill.sel-3{background:rgba(107,143,94,.12);border-color:var(--spirit);color:var(--spirit);}
+.goal-history-item{padding:10px 0;border-bottom:1px solid var(--border);}
+.goal-history-item:last-child{border-bottom:none;}
+.goal-history-week{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;}
+.goal-history-goal{font-size:12px;color:var(--ink2);margin-bottom:3px;display:flex;align-items:center;gap:6px;}
+
+/* ANIMATIONS */
+@keyframes riseUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes checkPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.check-pop{animation:checkPop .3s ease both;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:rgba(184,145,42,.18);border-radius:4px;}
+
+/* ACCESSIBILITY */
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+.nav-item:focus-visible{outline-offset:-2px;border-radius:8px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
+</style>
+</head>
+<body>
+
+<!-- ONBOARDING -->
+<div id="onboard" class="screen active">
+  <svg class="ob-cross" width="44" height="44" viewBox="0 0 44 44" fill="none">
+    <rect x="18" y="2" width="8" height="40" rx="3" fill="#D4A83A"/>
+    <rect x="4" y="14" width="36" height="8" rx="3" fill="#D4A83A"/>
+  </svg>
+  <div class="ob-eyebrow">GodHealth</div>
+  <h1 class="ob-title">Transform<br><em>Together</em></h1>
+  <div class="ob-pillars">
+    <div class="ob-pillar">
+      <div class="ob-pillar-dot" style="background:rgba(196,87,58,.12);">🏛️</div>
+      <div class="ob-pillar-name" style="color:var(--temple);">Temple</div>
+      <div class="ob-pillar-sub">Physical</div>
+    </div>
+    <div class="ob-pillar">
+      <div class="ob-pillar-dot" style="background:rgba(74,127,165,.12);">🧠</div>
+      <div class="ob-pillar-name" style="color:var(--soul);">Soul</div>
+      <div class="ob-pillar-sub">Mental</div>
+    </div>
+    <div class="ob-pillar">
+      <div class="ob-pillar-dot" style="background:rgba(107,143,94,.12);">✝️</div>
+      <div class="ob-pillar-name" style="color:var(--spirit);">Spirit</div>
+      <div class="ob-pillar-sub">God</div>
+    </div>
+  </div>
+  <div class="ob-form">
+    <label>Your name</label>
+    <input type="text" id="ob-name" placeholder="Enter your name..." maxlength="30"/>
+    <div class="ob-time-row">
+      <div class="ob-time-box"><label>Wake-up time</label><input type="time" id="ob-wake" value="07:00"/></div>
+      <div class="ob-time-box"><label>Bedtime</label><input type="time" id="ob-bed" value="23:00"/></div>
+    </div>
+    <button class="btn-primary" onclick="startApp()">Begin My Journey</button>
+  </div>
+  <p class="ob-verse">"Know ye not that your body is the temple of the Holy Ghost?"<br>— 1 Corinthians 6:19 (KJV)</p>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="app-header">
+    <div class="header-logo">God<em>Health</em></div>
+    <div class="header-right">
+      <div class="streak-badge">🔥 <span id="streak-num">0</span></div>
+      <div class="date-badge" id="date-badge"></div>
+    </div>
+  </div>
+  <div class="scroll-area">
+
+    <!-- TODAY -->
+    <div class="page active" id="page-today">
+      <div class="today-greeting">
+        <div class="day-label" id="today-day-label">Day 1</div>
+        <h2 id="today-greeting">Good morning,<br><em>Warrior.</em></h2>
+      </div>
+      <div class="verse-strip">
+        <div class="vs-text" id="daily-verse">"I can do all things through Christ which strengtheneth me."</div>
+        <div class="vs-ref" id="daily-verse-ref">Philippians 4:13 (KJV)</div>
+      </div>
+      <div class="score-row">
+        <div class="score-box temple" id="score-temple" onclick="openScoreModal('temple')">
+          <div class="score-icon">🏛️</div>
+          <div class="score-label" style="color:var(--temple);">Temple</div>
+          <div class="score-val" id="score-temple-val">—</div>
+          <div class="score-sub">Body</div>
+        </div>
+        <div class="score-box soul" id="score-soul" onclick="openScoreModal('soul')">
+          <div class="score-icon">🧠</div>
+          <div class="score-label" style="color:var(--soul);">Soul</div>
+          <div class="score-val" id="score-soul-val">—</div>
+          <div class="score-sub">Mind</div>
+        </div>
+        <div class="score-box spirit" id="score-spirit" onclick="openScoreModal('spirit')">
+          <div class="score-icon">✝️</div>
+          <div class="score-label" style="color:var(--spirit);">Spirit</div>
+          <div class="score-val" id="score-spirit-val">—</div>
+          <div class="score-sub">God</div>
+        </div>
+      </div>
+      <div class="if-card">
+        <div class="if-top">
+          <div><div class="if-proto" id="if-proto">16/8</div><div class="if-proto-meta" id="if-proto-meta">16h Fast · 8h Eating</div></div>
+          <div class="if-why-text" id="if-why-short">16 hours triggers deep cellular repair and fat burning.</div>
+        </div>
+        <div class="if-ring-row">
+          <div class="if-ring">
+            <svg viewBox="0 0 100 100">
+              <circle fill="none" stroke="rgba(74,127,165,.12)" stroke-width="9" cx="50" cy="50" r="40"/>
+              <circle id="if-ring-fill" fill="none" stroke="var(--soul)" stroke-width="9" stroke-linecap="round" cx="50" cy="50" r="40" stroke-dasharray="251.3" stroke-dashoffset="251.3" style="transition:stroke-dashoffset .8s ease;"/>
+            </svg>
+            <div class="if-ring-center">
+              <div class="if-elapsed" id="if-elapsed">0:00</div>
+              <div class="if-elapsed-sub">elapsed</div>
+              <div class="if-status-txt" id="if-status">not started</div>
+            </div>
+          </div>
+        </div>
+        <div class="if-windows">
+          <div class="if-win-box"><div class="if-win-lbl">Window Opens</div><div class="if-win-val" id="if-open">—</div><div class="if-win-sub">First meal</div></div>
+          <div class="if-win-box"><div class="if-win-lbl">Window Closes</div><div class="if-win-val" id="if-close">—</div><div class="if-win-sub">Last meal</div></div>
+        </div>
+        <div class="if-btn-row">
+          <button class="if-btn if-start" id="if-btn" onclick="toggleIF()">▶ Start Fast</button>
+        </div>
+      </div>
+
+      <!-- SPIRIT -->
+      <div class="pillar-section">
+        <div class="pillar-header">
+          <div class="pillar-dot" style="background:var(--spirit);"></div>
+          <div class="pillar-label" style="color:var(--spirit);">Spirit — God</div>
+          <div class="pillar-why">First. Always.</div>
+        </div>
+        <div class="habit-card spirit" id="h-prayer" onclick="toggleHabit('prayer',this)">
+          <div class="habit-check" id="hc-prayer"></div>
+          <div class="habit-body"><div class="habit-name">Morning Prayer</div><div class="habit-desc">Speak to God before anyone else. 10 minutes minimum.</div></div>
+          <div class="habit-icon">🙏</div>
+        </div>
+        <div class="habit-card spirit" id="h-bible" onclick="toggleHabit('bible',this)">
+          <div class="habit-check" id="hc-bible"></div>
+          <div class="habit-body"><div class="habit-name">Bible Reading</div><div class="habit-desc">1–2 chapters. Read slowly. Let God speak.</div></div>
+          <div class="habit-icon">📖</div>
+        </div>
+        <div class="habit-card spirit" id="h-gratitude" onclick="toggleHabit('gratitude',this)">
+          <div class="habit-check" id="hc-gratitude"></div>
+          <div class="habit-body"><div class="habit-name">Gratitude — 3 Things</div><div class="habit-desc">Name three specific things you are grateful to God for today.</div></div>
+          <div class="habit-icon">✨</div>
+        </div>
+      </div>
+
+      <!-- TEMPLE -->
+      <div class="pillar-section">
+        <div class="pillar-header">
+          <div class="pillar-dot" style="background:var(--temple);"></div>
+          <div class="pillar-label" style="color:var(--temple);">Temple — Body</div>
+          <div class="pillar-why">Steward it well.</div>
+        </div>
+        <div class="habit-card temple" id="h-morning" onclick="toggleHabit('morning',this)">
+          <div class="habit-check" id="hc-morning"></div>
+          <div class="habit-body"><div class="habit-name">Morning Routine</div><div class="habit-desc">Rise immediately · Sunlight · Water · Light movement</div></div>
+          <div class="habit-icon">🌅</div>
+        </div>
+        <div class="habit-card temple" id="h-workout" onclick="toggleHabit('workout',this)">
+          <div class="habit-check" id="hc-workout"></div>
+          <div class="habit-body"><div class="habit-name">Training</div><div class="habit-desc">Move your body as an act of worship. Log it below.</div></div>
+          <div class="habit-icon">⚡</div>
+          <div class="habit-expand" id="he-workout">
+            <div class="habit-slider-wrap">
+              <div class="habit-slider-label"><span>Intensity</span><span id="intensity-val">5</span>/10</div>
+              <input type="range" class="habit-slider" min="1" max="10" value="5" id="intensity-slider" oninput="updateSlider(this,'intensity-val')" onclick="event.stopPropagation()" style="accent-color:var(--temple);"/>
+            </div>
+            <input type="text" class="habit-input" id="workout-log" placeholder="What did you train today?" onclick="event.stopPropagation()"/>
+          </div>
+        </div>
+        <div class="habit-card temple" id="h-meals" onclick="toggleHabit('meals',this)">
+          <div class="habit-check" id="hc-meals"></div>
+          <div class="habit-body"><div class="habit-name">3 Biblical Meals</div><div class="habit-desc">25% protein · 30% fats · 45% complex carbs. No snacks.</div></div>
+          <div class="habit-icon">🌿</div>
+          <div class="habit-expand" id="he-meals">
+            <input type="text" class="habit-input" id="meal1-log" placeholder="Meal 1 — what did you eat?" onclick="event.stopPropagation()"/>
+            <input type="text" class="habit-input" id="meal2-log" placeholder="Meal 2 — what did you eat?" onclick="event.stopPropagation()"/>
+            <input type="text" class="habit-input" id="meal3-log" placeholder="Meal 3 — what did you eat?" onclick="event.stopPropagation()"/>
+          </div>
+        </div>
+        <div class="habit-card temple" id="h-sleep" onclick="toggleHabit('sleep',this)">
+          <div class="habit-check" id="hc-sleep"></div>
+          <div class="habit-body"><div class="habit-name">Sleep — 7 to 9 Hours</div><div class="habit-desc">God gives sleep to those He loves. Protect it fiercely.</div></div>
+          <div class="habit-icon">🌙</div>
+          <div class="habit-expand" id="he-sleep">
+            <div class="habit-slider-wrap">
+              <div class="habit-slider-label"><span>Hours slept last night</span><span id="sleep-val">7</span>h</div>
+              <input type="range" class="habit-slider" min="3" max="12" value="7" id="sleep-slider" oninput="updateSlider(this,'sleep-val')" onclick="event.stopPropagation()" style="accent-color:var(--temple);"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOUL -->
+      <div class="pillar-section">
+        <div class="pillar-header">
+          <div class="pillar-dot" style="background:var(--soul);"></div>
+          <div class="pillar-label" style="color:var(--soul);">Soul — Mind</div>
+          <div class="pillar-why">Renew it daily.</div>
+        </div>
+        <div class="habit-card soul" id="h-journal" onclick="toggleHabit('journal',this)">
+          <div class="habit-check" id="hc-journal"></div>
+          <div class="habit-body"><div class="habit-name">Evening Journal</div><div class="habit-desc">Reflect. Learn. Grow. End your day with God.</div></div>
+          <div class="habit-icon">✍️</div>
+          <div class="habit-expand" id="he-journal">
+            <input type="text" class="habit-input" id="j1" placeholder="What did God teach me today?" onclick="event.stopPropagation()"/>
+            <input type="text" class="habit-input" id="j2" placeholder="Where was I strong? Where did I fall short?" onclick="event.stopPropagation()"/>
+            <input type="text" class="habit-input" id="j3" placeholder="One thing I want to do better tomorrow." onclick="event.stopPropagation()"/>
+          </div>
+        </div>
+        <div class="habit-card soul" id="h-dopamine" onclick="toggleHabit('dopamine',this)">
+          <div class="habit-check" id="hc-dopamine"></div>
+          <div class="habit-body"><div class="habit-name">Dopamine Fast</div><div class="habit-desc">No scrolling before prayer. No screens 1h before sleep.</div></div>
+          <div class="habit-icon">📵</div>
+        </div>
+        <div class="habit-card soul" id="h-sunlight" onclick="toggleHabit('sunlight',this)">
+          <div class="habit-check" id="hc-sunlight"></div>
+          <div class="habit-body"><div class="habit-name">Morning Sunlight</div><div class="habit-desc">Outside within 30 minutes of waking. Resets your circadian clock.</div></div>
+          <div class="habit-icon">☀️</div>
+        </div>
+        <div class="habit-card soul" id="h-focus" onclick="toggleHabit('focus',this)">
+          <div class="habit-check" id="hc-focus"></div>
+          <div class="habit-body"><div class="habit-name">Deep Work — No Distractions</div><div class="habit-desc">At least 90 minutes of focused, purposeful work today.</div></div>
+          <div class="habit-icon">🎯</div>
+          <div class="habit-expand" id="he-focus">
+            <div class="habit-slider-wrap">
+              <div class="habit-slider-label"><span>Focus quality</span><span id="focus-val">7</span>/10</div>
+              <input type="range" class="habit-slider" min="1" max="10" value="7" id="focus-slider" oninput="updateSlider(this,'focus-val')" onclick="event.stopPropagation()" style="accent-color:var(--soul);"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="save-day-btn" id="save-day-btn" onclick="saveDay()">Save Today</button>
+      <a href="godhealth-tribe.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--spirit-light),var(--bg2));border:1.5px solid rgba(107,143,94,.3);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;">
+        👥 Covenant Circle — Accountability
+      </a>
+      <a href="godhealth-training.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--temple-light);border:1.5px solid rgba(196,87,58,.25);color:var(--temple);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;">
+        ⚡ Training Schedule
+      </a>
+      <a href="godhealth-prayer.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--spirit-light);border:1.5px solid rgba(107,143,94,.25);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;">
+        🙏 Prayer Guide
+      </a>
+      <a href="godhealth-21days.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--soul-light);border:1.5px solid rgba(74,127,165,.25);color:var(--soul);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;">
+        ✝️ 21-Day Arise Challenge
+      </a>
+      <a href="godhealth-meals-plan.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--gold-light);border:1.5px solid rgba(184,145,42,.25);color:var(--gold);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;">
+        🌿 Generate My Meal Plan
+      </a>
+      <a href="godhealth-tracker.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--spirit-light);border:1.5px solid rgba(107,143,94,.25);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;">
+        📊 Open Progress Tracker
+      </a>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div class="page" id="page-insights">
+
+      <!-- SUB-NAV TABS -->
+      <div class="ins-tabs">
+        <button class="ins-tab active" onclick="switchInsTab('overview',this)">📊 Overview</button>
+        <button class="ins-tab" onclick="switchInsTab('reflection',this)">✍️ Reflection</button>
+        <button class="ins-tab" onclick="switchInsTab('vision',this)">🎯 Vision</button>
+        <button class="ins-tab" onclick="switchInsTab('goals',this)">⚡ Goals</button>
+      </div>
+
+      <!-- OVERVIEW SUB-TAB -->
+      <div class="ins-panel active" id="ins-overview">
+        <div class="week-header">
+          <h3>Weekly Insights</h3>
+          <div class="week-nav">
+            <button onclick="changeWeek(-1)">←</button>
+            <button onclick="changeWeek(1)">→</button>
+          </div>
+        </div>
+        <div class="week-grid" id="week-grid"></div>
+        <div class="pillar-score-cards">
+          <div class="psc temple"><div class="psc-icon">🏛️</div><div class="psc-name temple">Temple</div><div class="psc-num" id="ins-temple">—</div><div class="psc-label">avg score</div></div>
+          <div class="psc soul"><div class="psc-icon">🧠</div><div class="psc-name soul">Soul</div><div class="psc-num" id="ins-soul">—</div><div class="psc-label">avg score</div></div>
+          <div class="psc spirit"><div class="psc-icon">✝️</div><div class="psc-name spirit">Spirit</div><div class="psc-num" id="ins-spirit">—</div><div class="psc-label">avg score</div></div>
+        </div>
+        <div class="insight-block">
+          <h4>Habit Consistency This Week</h4>
+          <div class="bar-chart" id="habit-bars"></div>
+        </div>
+        <div class="insight-block">
+          <h4>Biblical Science Insight</h4>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.75;" id="weekly-insight"></div>
+        </div>
+      </div>
+
+      <!-- REFLECTION SUB-TAB -->
+      <div class="ins-panel" id="ins-reflection">
+        <div style="margin-bottom:14px;">
+          <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--spirit);font-weight:700;margin-bottom:3px;">Daily Reflection</div>
+          <p style="font-size:12px;color:var(--ink3);line-height:1.55;">End every day with God. Honest reflection is the soil of transformation.</p>
+        </div>
+
+        <!-- Daily journal entry -->
+        <div class="insight-block" style="margin-bottom:12px;">
+          <h4>Today's Journal</h4>
+          <div style="font-size:11px;font-weight:700;color:var(--spirit);margin-bottom:4px;">1. What did God teach me today?</div>
+          <textarea id="ref-j1" class="ref-textarea" placeholder="Write freely..."></textarea>
+          <div style="font-size:11px;font-weight:700;color:var(--soul);margin:10px 0 4px;">2. Where was I strong? Where did I fall short?</div>
+          <textarea id="ref-j2" class="ref-textarea" placeholder="Be honest..."></textarea>
+          <div style="font-size:11px;font-weight:700;color:var(--temple);margin:10px 0 4px;">3. One thing I will do better tomorrow.</div>
+          <textarea id="ref-j3" class="ref-textarea" placeholder="Specific and actionable..."></textarea>
+          <button class="btn-save" onclick="saveReflection()" style="margin-top:10px;">Save Reflection</button>
+        </div>
+
+        <!-- Weekly reflection (Sunday) -->
+        <div class="insight-block" style="margin-bottom:12px;" id="weekly-reflection-block">
+          <h4>Weekly Reflection</h4>
+          <p style="font-size:11px;color:var(--ink3);margin-bottom:10px;line-height:1.55;">Take 10 minutes at the end of your week. Review what God did. What grew. What still needs work.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--spirit);margin-bottom:4px;">What was my biggest win this week?</div>
+          <textarea id="ref-wk-win" class="ref-textarea" placeholder="Celebrate what God did..."></textarea>
+          <div style="font-size:11px;font-weight:700;color:var(--temple);margin:10px 0 4px;">Where did I struggle most?</div>
+          <textarea id="ref-wk-struggle" class="ref-textarea" placeholder="Be honest with yourself..."></textarea>
+          <div style="font-size:11px;font-weight:700;color:var(--soul);margin:10px 0 4px;">What is one thing I want to change next week?</div>
+          <textarea id="ref-wk-change" class="ref-textarea" placeholder="One specific change..."></textarea>
+          <button class="btn-save" onclick="saveWeeklyReflection()" style="margin-top:10px;">Save Weekly Reflection</button>
+        </div>
+
+        <!-- Journal history this week -->
+        <div class="insight-block">
+          <h4>This Week's Journal</h4>
+          <div id="journal-history"></div>
+        </div>
+      </div>
+
+      <!-- VISION SUB-TAB -->
+      <div class="ins-panel" id="ins-vision">
+        <div style="margin-bottom:14px;">
+          <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:3px;">Your Vision</div>
+          <p style="font-size:12px;color:var(--ink3);line-height:1.55;">"Where there is no vision, the people perish." (Proverbs 29:18 KJV). Write your vision in present tense — as if it is already done.</p>
+        </div>
+
+        <!-- Vision display -->
+        <div class="vision-hero" id="vision-hero-block" style="display:none;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(184,145,42,.7);margin-bottom:6px;">Your 1-Year Vision</div>
+          <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:#F5EDD8;line-height:1.7;" id="vision-display"></div>
+        </div>
+
+        <!-- Vision input -->
+        <div class="insight-block" style="margin-bottom:12px;">
+          <h4>1-Year Vision</h4>
+          <p style="font-size:11px;color:var(--ink3);margin-bottom:8px;line-height:1.55;">Write in present tense as if it is December next year. Example: <em>"I wake up with energy every morning, my body is strong and lean, I walk closely with God and I have broken every unhealthy habit that held me back."</em></p>
+          <textarea id="vision-1y" class="ref-textarea" style="min-height:90px;" placeholder="It is [month, year]. I wake up every morning and..."></textarea>
+          <button class="btn-save" onclick="saveVision('1y')" style="margin-top:10px;">Save 1-Year Vision</button>
+        </div>
+
+        <div class="insight-block" style="margin-bottom:12px;">
+          <h4>6-Month Milestone</h4>
+          <p style="font-size:11px;color:var(--ink3);margin-bottom:8px;">What does your life look like in 6 months? What has changed in body, mind and spirit?</p>
+          <textarea id="vision-6m" class="ref-textarea" placeholder="In 6 months I will..."></textarea>
+          <button class="btn-save" onclick="saveVision('6m')" style="margin-top:10px;">Save 6-Month Vision</button>
+        </div>
+
+        <div class="insight-block" style="margin-bottom:12px;">
+          <h4>3-Month Milestone</h4>
+          <p style="font-size:11px;color:var(--ink3);margin-bottom:8px;">What specific milestones will you reach in the next 3 months?</p>
+          <textarea id="vision-3m" class="ref-textarea" placeholder="In 3 months I will..."></textarea>
+          <button class="btn-save" onclick="saveVision('3m')" style="margin-top:10px;">Save 3-Month Vision</button>
+        </div>
+
+        <div class="insight-block">
+          <h4>Why Vision Works</h4>
+          <div style="font-size:12px;color:var(--ink2);line-height:1.75;">
+            <p>Dr. Gail Matthews at Dominican University found that people who write their goals achieve them <strong>42% more often</strong>. Those who review their vision weekly achieve them <strong>95%</strong> of the time.</p>
+            <p style="margin-top:8px;font-style:italic;color:var(--ink3);">"Write the vision, and make it plain upon tables, that he may run that readeth it." — Habakkuk 2:2 (KJV)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GOALS SUB-TAB -->
+      <div class="ins-panel" id="ins-goals">
+        <div style="margin-bottom:14px;">
+          <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--temple);font-weight:700;margin-bottom:3px;">Weekly Goals</div>
+          <p style="font-size:12px;color:var(--ink3);line-height:1.55;">Set 3 concrete goals each week — one per pillar. Review them every Sunday.</p>
+        </div>
+
+        <!-- Set goals -->
+        <div class="insight-block" style="margin-bottom:12px;">
+          <h4>This Week's Goals</h4>
+          <p style="font-size:11px;color:var(--ink3);margin-bottom:12px;">Choose a goal from the suggestions or write your own.</p>
+
+          <div class="goal-pillar-label temple">🏛️ Temple — Physical</div>
+          <select class="goal-select" id="goal-temple-select" onchange="applyGoalSuggestion('temple')">
+            <option value="">— Choose a suggestion or write below —</option>
+            <option value="Train 4x this week — minimum 30 minutes each session">Train 4x this week — minimum 30 minutes</option>
+            <option value="Drink 2 litres of water every day this week">Drink 2 litres of water every day</option>
+            <option value="Complete my 16/8 intermittent fast every day">Complete 16/8 intermittent fast every day</option>
+            <option value="Sleep before 11pm every single night">Sleep before 11pm every night</option>
+            <option value="Eat 3 biblical meals daily — no snacks">Eat 3 biblical meals daily — no snacks</option>
+            <option value="Do 10 minutes of stretching every morning">Do 10 minutes of stretching every morning</option>
+            <option value="custom">Write my own...</option>
+          </select>
+          <input type="text" id="goal-temple" class="habit-input" placeholder="Your Temple goal this week..." style="margin-top:6px;"/>
+
+          <div class="goal-pillar-label soul" style="margin-top:12px;">🧠 Soul — Mental</div>
+          <select class="goal-select" id="goal-soul-select" onchange="applyGoalSuggestion('soul')">
+            <option value="">— Choose a suggestion or write below —</option>
+            <option value="No phone for the first 60 minutes after waking">No phone for first 60 minutes after waking</option>
+            <option value="Journal every evening this week — all 3 questions">Journal every evening — all 3 questions</option>
+            <option value="No social media before 12pm every day">No social media before 12pm every day</option>
+            <option value="90 minutes of deep focused work every morning">90 minutes of deep focused work every morning</option>
+            <option value="Read 20 pages of a book every day">Read 20 pages of a book every day</option>
+            <option value="No screens 1 hour before sleep every night">No screens 1 hour before sleep every night</option>
+            <option value="custom">Write my own...</option>
+          </select>
+          <input type="text" id="goal-soul" class="habit-input" placeholder="Your Soul goal this week..." style="margin-top:6px;"/>
+
+          <div class="goal-pillar-label spirit" style="margin-top:12px;">✝️ Spirit — God</div>
+          <select class="goal-select" id="goal-spirit-select" onchange="applyGoalSuggestion('spirit')">
+            <option value="">— Choose a suggestion or write below —</option>
+            <option value="Pray 10 minutes every morning before anything else">Pray 10 minutes every morning before anything else</option>
+            <option value="Read 1 chapter of the Bible every single day">Read 1 chapter of the Bible every single day</option>
+            <option value="Write 3 specific things of gratitude every day">Write 3 specific things of gratitude every day</option>
+            <option value="Fast and pray one full day this week">Fast and pray one full day this week</option>
+            <option value="Reach out to 1 person from the Tribe daily">Reach out to 1 person from the Tribe daily</option>
+            <option value="Memorise 1 Bible verse this week">Memorise 1 Bible verse this week</option>
+            <option value="custom">Write my own...</option>
+          </select>
+          <input type="text" id="goal-spirit" class="habit-input" placeholder="Your Spirit goal this week..." style="margin-top:6px;"/>
+
+          <button class="btn-save" onclick="saveWeeklyGoals()" style="margin-top:12px;">Save This Week's Goals</button>
+        </div>
+
+        <!-- Current goals review -->
+        <div class="insight-block" style="margin-bottom:12px;">
+          <h4>Goal Review</h4>
+          <p style="font-size:11px;color:var(--ink3);margin-bottom:10px;">How are you tracking against your goals this week?</p>
+          <div id="goals-review-list"></div>
+        </div>
+
+        <!-- Previous weeks -->
+        <div class="insight-block">
+          <h4>Previous Weeks</h4>
+          <div id="goals-history"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MEALS -->
+    <div class="page" id="page-meals">
+      <div style="margin-bottom:14px;">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;">GodHealth Kitchen</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--ink);margin-bottom:5px;">50 Biblical Meals</h2>
+        <p style="font-size:12px;color:var(--ink3);line-height:1.6;">Every meal from God's Word — with biblical reference, scientific evidence, and step-by-step instructions.</p>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;" id="meal-filters">
+        <button class="meal-filter-btn active" onclick="filterMeals('all',this)">All 50</button>
+        <button class="meal-filter-btn" onclick="filterMeals('temple',this)">🏛️ Temple</button>
+        <button class="meal-filter-btn" onclick="filterMeals('soul',this)">🧠 Soul</button>
+        <button class="meal-filter-btn" onclick="filterMeals('spirit',this)">✝️ Spirit</button>
+        <button class="meal-filter-btn" onclick="filterMeals('fast',this)">⏱ Break Fast</button>
+      </div>
+      <div id="meals-list"></div>
+    </div>
+
+    <!-- TIPS -->
+    <div class="page" id="page-tips">
+      <div style="margin-bottom:14px;">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;">GodHealth Wisdom</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--ink);margin-bottom:5px;">Health Tips</h2>
+        <p style="font-size:12px;color:var(--ink3);line-height:1.6;">Biblical wisdom meets modern science. Practical tips for Temple, Soul and Spirit.</p>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:14px;">
+        <button class="meal-filter-btn active" onclick="filterTips('all',this)">All</button>
+        <button class="meal-filter-btn" onclick="filterTips('temple',this)">🏛️ Temple</button>
+        <button class="meal-filter-btn" onclick="filterTips('soul',this)">🧠 Soul</button>
+        <button class="meal-filter-btn" onclick="filterTips('spirit',this)">✝️ Spirit</button>
+      </div>
+      <div id="tips-list"></div>
+    </div>
+
+    <!-- TRIBE -->
+    <div class="page" id="page-tribe">
+      <div class="tribe-hero">
+        <h3>GodHealth Tribe</h3>
+        <p>You were not made to do this alone. The Tribe is your community of believers doing this together — holding each other accountable, celebrating victories, carrying burdens.</p>
+        <p style="font-size:11px;font-style:italic;color:var(--spirit);margin-bottom:12px;margin-top:4px;">"Iron sharpeneth iron; so a man sharpeneth the countenance of his friend." — Proverbs 27:17 (KJV)</p>
+        <button class="tribe-btn" onclick="openCircle()">🌿 Open GodHealth Tribe on Circle</button>
+      </div>
+      <div class="share-card">
+        <h4>Share Today's Victory</h4>
+        <div class="share-template" id="share-template"></div>
+        <button class="share-btn" onclick="copyShare()">📋 Copy & Share to Tribe</button>
+      </div>
+      <div class="accountability-card">
+        <div class="acc-title">Accountability Partners</div>
+        <div class="acc-partner">
+          <div class="acc-avatar">👤</div>
+          <div><div class="acc-name">Your Partner</div><div class="acc-streak">Add via Circle Tribe →</div></div>
+          <button class="acc-ping" onclick="openCircle()">Ping</button>
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:var(--ink3);line-height:1.6;">The GodHealth Tribe uses the Covenant Circle model — you bring one person, they bring one. Accountability partners are people you personally invite.</div>
+      </div>
+      <div class="insight-block">
+        <h4>Why Community Accelerates Transformation</h4>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.75;">
+          <p>Research shows that people who track habits with an accountability partner are <strong>65% more likely</strong> to achieve their goals. With a specific accountability appointment that number rises to <strong>95%</strong>.</p>
+          <p style="margin-top:8px;">"Two are better than one; because they have a good reward for their labour." (Ecclesiastes 4:9 KJV)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="page" id="page-profile">
+      <div class="profile-header">
+        <div class="profile-avatar">✝️</div>
+        <div class="profile-name" id="profile-name">Warrior</div>
+        <div class="profile-sub">Member of the GodHealth Tribe</div>
+        <div class="profile-stats">
+          <div class="ps-box"><div class="ps-num" id="ps-days">0</div><div class="ps-lbl">Days Done</div></div>
+          <div class="ps-box"><div class="ps-num" id="ps-streak">0</div><div class="ps-lbl">Streak</div></div>
+          <div class="ps-box"><div class="ps-num" id="ps-week">0</div><div class="ps-lbl">This Week</div></div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h4>Personal Settings</h4>
+        <div class="setting-row">
+          <div><div class="setting-label">Wake-up Time</div><div class="setting-sub">Adjusts your IF window</div></div>
+          <input type="time" class="setting-input" id="set-wake" onchange="updateSettings()"/>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Bedtime</div><div class="setting-sub">Last meal 2h before this</div></div>
+          <input type="time" class="setting-input" id="set-bed" onchange="updateSettings()"/>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Fasting Protocol</div><div class="setting-sub">Changes your daily fast</div></div>
+          <select class="setting-input" id="set-if" onchange="updateSettings()" style="width:90px;font-size:12px;">
+            <option value="12">12/12</option>
+            <option value="14">14/10</option>
+            <option value="16" selected>16/8</option>
+            <option value="18">18/6</option>
+          </select>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h4>Subscription — €19.99/month</h4>
+        <div class="setting-row">
+          <div><div class="setting-label">Status</div><div class="setting-sub">Active member</div></div>
+          <div style="color:var(--spirit);font-weight:700;font-size:12px;">✓ Active</div>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Community Access</div><div class="setting-sub">GodHealth Tribe on Circle</div></div>
+          <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h4>The Three Pillars</h4>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.75;">
+          <p style="margin-bottom:8px;"><strong style="color:var(--temple);">🏛️ Temple (Physical)</strong> — "Know ye not that your body is the temple of the Holy Ghost?" (1 Cor. 6:19). Train daily. Eat biblical foods. Fast regularly. Sleep deeply.</p>
+          <p style="margin-bottom:8px;"><strong style="color:var(--soul);">🧠 Soul (Mental)</strong> — "Be ye transformed by the renewing of your mind." (Romans 12:2). Protect your dopamine. Journal. Build focus.</p>
+          <p><strong style="color:var(--spirit);">✝️ Spirit (God)</strong> — "They that wait upon the LORD shall renew their strength." (Isaiah 40:31). Prayer first. Scripture daily. Gratitude always.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <button class="nav-item active" onclick="showPage('today')" data-page="today" aria-label="Today"><div class="nav-icon" aria-hidden="true">☀️</div><div class="nav-label">Today</div></button>
+    <button class="nav-item" onclick="showPage('insights')" data-page="insights" aria-label="Insights"><div class="nav-icon" aria-hidden="true">📊</div><div class="nav-label">Insights</div></button>
+    <button class="nav-item" onclick="showPage('meals')" data-page="meals" aria-label="Meals"><div class="nav-icon" aria-hidden="true">🌿</div><div class="nav-label">Meals</div></button>
+    <button class="nav-item" onclick="showPage('tips')" data-page="tips" aria-label="Tips"><div class="nav-icon" aria-hidden="true">💡</div><div class="nav-label">Tips</div></button>
+    <button class="nav-item" onclick="showPage('tribe')" data-page="tribe" aria-label="Tribe"><div class="nav-icon" aria-hidden="true">👥</div><div class="nav-label">Tribe</div></button>
+    <button class="nav-item" onclick="showPage('profile')" data-page="profile" aria-label="Profile"><div class="nav-icon" aria-hidden="true">✝️</div><div class="nav-label">Profile</div></button>
+  </nav>
+</div>
+
+<!-- Score Modal -->
+<div class="modal-overlay" id="score-modal" onclick="closeScoreModal(event)">
+  <div class="modal-sheet">
+    <h3 id="modal-title">Rate Your Temple</h3>
+    <p id="modal-desc">How well did you honour your body today?</p>
+    <div class="score-pills" id="score-pills"></div>
+    <button class="modal-confirm" onclick="confirmScore()">Confirm</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ CONFIG ═══
+// 👉 Vul hier je echte Circle Tribe-link in. Eén plek, overal gebruikt.
+const GODHEALTH_CONFIG={
+  circleTribeUrl:'https://godhealth.circle.so', // <-- vervang door je echte Tribe-URL
+};
+
+// ═══ DATA ═══
+const DAILY_VERSES=[
+  {text:"What? know ye not that your body is the temple of the Holy Ghost?",ref:"1 Corinthians 6:19 (KJV)"},
+  {text:"But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles.",ref:"Isaiah 40:31 (KJV)"},
+  {text:"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God.",ref:"1 Corinthians 10:31 (KJV)"},
+  {text:"I can do all things through Christ which strengtheneth me.",ref:"Philippians 4:13 (KJV)"},
+  {text:"Be not conformed to this world: but be ye transformed by the renewing of your mind.",ref:"Romans 12:2 (KJV)"},
+  {text:"And let us not be weary in well doing: for in due season we shall reap, if we faint not.",ref:"Galatians 6:9 (KJV)"},
+  {text:"The LORD is my strength and my shield; my heart trusted in him, and I am helped.",ref:"Psalm 28:7 (KJV)"},
+  {text:"I will praise thee; for I am fearfully and wonderfully made.",ref:"Psalm 139:14 (KJV)"},
+  {text:"Trust in the LORD with all thine heart; and lean not unto thine own understanding.",ref:"Proverbs 3:5 (KJV)"},
+  {text:"For we are his workmanship, created in Christ Jesus unto good works.",ref:"Ephesians 2:10 (KJV)"},
+  {text:"Delight thyself also in the LORD; and he shall give thee the desires of thine heart.",ref:"Psalm 37:4 (KJV)"},
+  {text:"Be strong and of a good courage; for the LORD thy God is with thee whithersoever thou goest.",ref:"Joshua 1:9 (KJV)"},
+  {text:"Now no chastening for the present seemeth to be joyous, but grievous: nevertheless afterward it yieldeth the peaceable fruit of righteousness.",ref:"Hebrews 12:11 (KJV)"},
+  {text:"She is clothed with strength and dignity; and she shall rejoice in time to come.",ref:"Proverbs 31:25 (KJV)"},
+  {text:"His mercies are new every morning: great is thy faithfulness.",ref:"Lamentations 3:23 (KJV)"},
+  {text:"And we know that all things work together for good to them that love God.",ref:"Romans 8:28 (KJV)"},
+  {text:"Bodily exercise profiteth little: but godliness is profitable unto all things.",ref:"1 Timothy 4:8 (KJV)"},
+  {text:"Two are better than one; because they have a good reward for their labour.",ref:"Ecclesiastes 4:9 (KJV)"},
+  {text:"Commit thy works unto the LORD, and thy thoughts shall be established.",ref:"Proverbs 16:3 (KJV)"},
+  {text:"This is the day which the LORD hath made; we will rejoice and be glad in it.",ref:"Psalm 118:24 (KJV)"},
+  {text:"Come unto me, all ye that labour and are heavy laden, and I will give you rest.",ref:"Matthew 11:28 (KJV)"},
+  {text:"Iron sharpeneth iron; so a man sharpeneth the countenance of his friend.",ref:"Proverbs 27:17 (KJV)"},
+  {text:"I have fought a good fight, I have finished my course, I have kept the faith.",ref:"2 Timothy 4:7 (KJV)"},
+  {text:"The fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith.",ref:"Galatians 5:22 (KJV)"},
+  {text:"Let your light so shine before men, that they may see your good works, and glorify your Father.",ref:"Matthew 5:16 (KJV)"},
+  {text:"In returning and rest shall ye be saved; in quietness and in confidence shall be your strength.",ref:"Isaiah 30:15 (KJV)"},
+  {text:"Well done, thou good and faithful servant: thou hast been faithful over a few things.",ref:"Matthew 25:21 (KJV)"},
+  {text:"And on the seventh day God ended his work which he had made; and he rested.",ref:"Genesis 2:2 (KJV)"},
+  {text:"Ye are the light of the world. A city that is set on an hill cannot be hid.",ref:"Matthew 5:14 (KJV)"},
+  {text:"For I know the thoughts that I think toward you, saith the LORD, thoughts of peace.",ref:"Jeremiah 29:11 (KJV)"},
+];
+
+const WEEKLY_INSIGHTS=[
+  {title:"Why fasting sharpens your mind",body:"After 14–16 hours of fasting, your brain produces more BDNF — a protein that builds new neural connections. God designed hunger as a tool for mental sharpening, not just physical healing.",verse:"\"Is not this the fast that I have chosen?\" — Isaiah 58:6 (KJV)"},
+  {title:"The science of morning sunlight",body:"Morning light within 30 minutes of waking triggers a cortisol pulse that sets your entire circadian clock for the day. It increases serotonin, sharpens focus for 4–6 hours, and primes your body to produce melatonin at the right time. God separated light from darkness on Day 1 — this was biological design.",verse:"\"And God saw the light, that it was good.\" — Genesis 1:4 (KJV)"},
+  {title:"Why community changes everything",body:"Harvard's 85-year study found that the single greatest predictor of health and happiness was the quality of relationships. The GodHealth Tribe is not an add-on. It is the foundation.",verse:"\"Two are better than one.\" — Ecclesiastes 4:9 (KJV)"},
+  {title:"How biblical food stabilises your brain",body:"The biblical diet — lentils, fish, olive oil, figs, barley, pomegranate — is almost identical to the Mediterranean diet, the most validated eating pattern for brain health. These foods reduce neuroinflammation and stabilise dopamine.",verse:"\"Daniel was found ten times better.\" — Daniel 1:20 (KJV)"},
+];
+
+const IF_WHY={12:"12 hours aligns with the biblical rhythm of day and night — your body gets time to repair and reset.",14:"14 hours significantly increases fat burning and autophagy — your cells begin cleaning out damaged components.",16:"16 hours triggers deep cellular repair. Mental clarity peaks. Hunger hormones normalise permanently.",18:"18 hours — you are running on fat for fuel. Clean sustained energy. Growth hormone spikes."};
+
+const HABITS=['prayer','bible','gratitude','morning','workout','meals','sleep','journal','dopamine','sunlight','focus'];
+const HABIT_PILLARS={prayer:'spirit',bible:'spirit',gratitude:'spirit',morning:'temple',workout:'temple',meals:'temple',sleep:'temple',journal:'soul',dopamine:'soul',sunlight:'soul',focus:'soul'};
+const HABIT_NAMES={prayer:'Morning Prayer',bible:'Bible Reading',gratitude:'Gratitude',morning:'Morning Routine',workout:'Training',meals:'3 Biblical Meals',sleep:'Sleep 7–9h',journal:'Evening Journal',dopamine:'Dopamine Fast',sunlight:'Morning Sunlight',focus:'Deep Work'};
+
+// ═══ STATE ═══
+let S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};
+function ls2(){try{const s=localStorage.getItem('gh_app_v2');if(s){const parsed=JSON.parse(s);if(parsed&&typeof parsed==='object')S={...S,...parsed};}}catch(e){console.warn('Could not load saved data:',e);}}
+function ss2(){try{localStorage.setItem('gh_app_v2',JSON.stringify(S));return true;}catch(e){console.error('Could not save data:',e);if(typeof showToast==='function')showToast('⚠️ Storage full — could not save');return false;}}
+function todayStr(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function today(){return S.days[todayStr()]||{};}
+function setToday(key,val){if(!S.days[todayStr()])S.days[todayStr()]={habits:{},scores:{},data:{}};S.days[todayStr()][key]=val;ss2();}
+
+ls2();
+if(S.name){
+  document.getElementById('onboard').classList.remove('active');
+  const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
+  initApp();
+}
+
+function startApp(){
+  S.name=document.getElementById('ob-name').value.trim()||'Warrior';
+  S.wake=document.getElementById('ob-wake').value||'07:00';
+  S.bed=document.getElementById('ob-bed').value||'23:00';
+  ss2();
+  document.getElementById('onboard').classList.remove('active');
+  const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
+  initApp();
+}
+
+function initApp(){
+  renderHeader();renderTodayPage();renderInsights();renderTribe();renderProfile();
+  restoreTodayState();
+  if(S.ifActive)startIFTimer();
+  const sw=document.getElementById('set-wake');if(sw)sw.value=S.wake;
+  const sb=document.getElementById('set-bed');if(sb)sb.value=S.bed;
+  const si=document.getElementById('set-if');if(si)si.value=S.fastHours;
+}
+
+function renderHeader(){
+  const now=new Date();
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('date-badge').textContent=`${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]}`;
+  document.getElementById('streak-num').textContent=calcStreak();
+  const pn=document.getElementById('profile-name');if(pn)pn.textContent=S.name;
+}
+
+function renderTodayPage(){
+  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
+  const v=DAILY_VERSES[doy%DAILY_VERSES.length];
+  document.getElementById('daily-verse').textContent=`"${v.text}"`;
+  document.getElementById('daily-verse-ref').textContent=v.ref;
+  const hr=new Date().getHours();
+  const greet=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
+  document.getElementById('today-greeting').innerHTML=`${greet},<br><em>${S.name}.</em>`;
+  document.getElementById('today-day-label').textContent=`Day ${calcTotalDays()}`;
+  renderIF();updateShareTemplate();
+}
+
+function renderIF(){
+  const fast=S.fastHours||16,eat=24-fast;
+  document.getElementById('if-proto').textContent=`${fast}/${eat}`;
+  document.getElementById('if-proto-meta').textContent=`${fast}h Fast · ${eat}h Eating`;
+  document.getElementById('if-why-short').textContent=IF_WHY[fast]?.slice(0,60)+'...';
+  const wakeMin=parseTime(S.wake);
+  let offset=fast<=12?120:fast<=14?120:fast<=16?180:240;
+  const openMin=(wakeMin+offset)%1440,closeMin=(openMin+(eat*60))%1440;
+  document.getElementById('if-open').textContent=fmt12(minsToTime(openMin));
+  document.getElementById('if-close').textContent=fmt12(minsToTime(closeMin));
+}
+
+let ifInterval=null;
+function toggleIF(){
+  if(!S.ifActive){
+    S.ifStart=new Date().toISOString();S.ifActive=true;ss2();
+    document.getElementById('if-btn').textContent='⏹ End Fast';
+    document.getElementById('if-btn').className='if-btn if-stop';
+    startIFTimer();showToast('⏱ Fast started — God is with you');
+  }else{
+    S.ifActive=false;clearInterval(ifInterval);
+    document.getElementById('if-btn').textContent='▶ Start Fast';
+    document.getElementById('if-btn').className='if-btn if-start';
+    document.getElementById('if-elapsed').textContent='0:00';
+    document.getElementById('if-status').textContent='fast ended';
+    document.getElementById('if-ring-fill').style.strokeDashoffset='251.3';
+    ss2();showToast('✓ Fast complete');
+  }
+}
+function startIFTimer(){updateIFTimer();ifInterval=setInterval(updateIFTimer,30000);}
+function updateIFTimer(){
+  if(!S.ifActive||!S.ifStart)return;
+  const elapsed=Math.floor((new Date()-new Date(S.ifStart))/60000);
+  const target=S.fastHours*60;const pct=Math.min(elapsed/target,1);
+  const h=Math.floor(elapsed/60),m=elapsed%60;
+  document.getElementById('if-elapsed').textContent=`${h}:${String(m).padStart(2,'0')}`;
+  const rem=target-elapsed;
+  document.getElementById('if-status').textContent=rem>0?`${Math.floor(rem/60)}h ${rem%60}m left`:'✓ complete!';
+  document.getElementById('if-ring-fill').style.strokeDashoffset=251.3*(1-pct);
+}
+
+function toggleHabit(id,card){
+  const t=today();const habits=t.habits||{};const checked=!habits[id];
+  habits[id]=checked;setToday('habits',habits);
+  card.classList.toggle('checked',checked);
+  const chk=document.getElementById('hc-'+id);
+  if(chk){chk.innerHTML=checked?'✓':'';if(checked)chk.classList.add('check-pop');setTimeout(()=>chk.classList.remove('check-pop'),300);}
+  const exp=document.getElementById('he-'+id);if(exp)exp.classList.toggle('open',checked);
+  updateStreakDisplay();
+  if(checked)showToast(`✓ ${HABIT_NAMES[id]} — well done!`);
+}
+
+function restoreTodayState(){
+  const t=today();const habits=t.habits||{};
+  HABITS.forEach(id=>{
+    const card=document.getElementById('h-'+id);const chk=document.getElementById('hc-'+id);
+    if(!card)return;
+    if(habits[id]){card.classList.add('checked');if(chk)chk.innerHTML='✓';const exp=document.getElementById('he-'+id);if(exp)exp.classList.add('open');}
+  });
+  const scores=t.scores||{};
+  ['temple','soul','spirit'].forEach(p=>{
+    if(scores[p]){document.getElementById(`score-${p}-val`).textContent=scores[p];document.getElementById(`score-${p}`).classList.add('scored',p);}
+  });
+  const data=t.data||{};
+  if(data.workout)document.getElementById('workout-log').value=data.workout;
+  if(data.meal1)document.getElementById('meal1-log').value=data.meal1;
+  if(data.meal2)document.getElementById('meal2-log').value=data.meal2;
+  if(data.meal3)document.getElementById('meal3-log').value=data.meal3;
+  if(data.j1)document.getElementById('j1').value=data.j1;
+  if(data.j2)document.getElementById('j2').value=data.j2;
+  if(data.j3)document.getElementById('j3').value=data.j3;
+  if(data.intensity){document.getElementById('intensity-slider').value=data.intensity;document.getElementById('intensity-val').textContent=data.intensity;}
+  if(data.sleep_h){document.getElementById('sleep-slider').value=data.sleep_h;document.getElementById('sleep-val').textContent=data.sleep_h;}
+  if(data.focus){document.getElementById('focus-slider').value=data.focus;document.getElementById('focus-val').textContent=data.focus;}
+  const btn=document.getElementById('save-day-btn');
+  if(t.saved){btn.textContent='✓ Day Saved';btn.classList.add('saved');}
+  updateStreakDisplay();
+}
+
+function updateSlider(el,valId){document.getElementById(valId).textContent=el.value;}
+
+// SCORES
+function openScoreModal(pillar){
+  S.modal.pillar=pillar;S.modal.selected=today().scores?.[pillar]||0;
+  const titles={temple:'Rate Your Temple',soul:'Rate Your Soul',spirit:'Rate Your Spirit'};
+  const descs={temple:'How well did you honour your body today?',soul:'How clear and focused was your mind today?',spirit:'How connected to God did you feel today?'};
+  document.getElementById('modal-title').textContent=titles[pillar];
+  document.getElementById('modal-desc').textContent=descs[pillar];
+  document.getElementById('score-pills').innerHTML=Array.from({length:10},(_,i)=>{
+    const n=i+1,sel=n===S.modal.selected?`selected ${pillar}`:'';
+    return `<div class="score-pill ${sel}" onclick="selectScore(${n})">${n}</div>`;
+  }).join('');
+  document.getElementById('score-modal').classList.add('open');
+}
+function selectScore(n){
+  S.modal.selected=n;
+  document.querySelectorAll('.score-pill').forEach((p,i)=>{p.className=`score-pill${i+1===n?' selected '+S.modal.pillar:''}`;});
+}
+function confirmScore(){
+  const p=S.modal.pillar,n=S.modal.selected;if(!n){closeScoreModal();return;}
+  const scores=today().scores||{};scores[p]=n;setToday('scores',scores);
+  document.getElementById(`score-${p}-val`).textContent=n;
+  document.getElementById(`score-${p}`).classList.add('scored',p);
+  closeScoreModal();showToast(`${p.charAt(0).toUpperCase()+p.slice(1)} score: ${n}/10`);
+}
+function closeScoreModal(e){if(e&&e.target!==document.getElementById('score-modal'))return;document.getElementById('score-modal').classList.remove('open');}
+
+function saveDay(){
+  const data={
+    workout:document.getElementById('workout-log').value,
+    meal1:document.getElementById('meal1-log').value,
+    meal2:document.getElementById('meal2-log').value,
+    meal3:document.getElementById('meal3-log').value,
+    j1:document.getElementById('j1').value,
+    j2:document.getElementById('j2').value,
+    j3:document.getElementById('j3').value,
+    intensity:document.getElementById('intensity-slider').value,
+    sleep_h:document.getElementById('sleep-slider').value,
+    focus:document.getElementById('focus-slider').value
+  };
+  setToday('data',data);setToday('saved',true);
+  const btn=document.getElementById('save-day-btn');btn.textContent='✓ Day Saved';btn.classList.add('saved');
+  updateStreakDisplay();renderInsights();updateShareTemplate();
+  showToast('🙏 Day saved — well done, faithful servant!');
+}
+
+// INSIGHTS
+function renderInsights(){
+  renderWeekGrid();renderPillarScores();renderHabitBars();renderJournalHistory();renderWeeklyInsight();
+  renderGoalsReview();renderGoalsHistory();restoreReflection();restoreVision();restoreGoals();
+}
+
+function switchInsTab(id,btn){
+  document.querySelectorAll('.ins-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ins-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('ins-'+id)?.classList.add('active');
+  if(id==='reflection'){renderJournalHistory();restoreReflection();}
+  if(id==='vision'){restoreVision();}
+  if(id==='goals'){renderGoalsReview();renderGoalsHistory();restoreGoals();}
+}
+
+function renderWeekGrid(){
+  const grid=document.getElementById('week-grid');
+  const today2=new Date();today2.setHours(0,0,0,0);
+  const start=new Date(today2);start.setDate(today2.getDate()-today2.getDay()+S.weekOffset*7);
+  const dayNames=['S','M','T','W','T','F','S'];
+  grid.innerHTML=Array.from({length:7},(_,i)=>{
+    const d=new Date(start);d.setDate(start.getDate()+i);
+    const key=dateStr(d),isToday=d.toDateString()===new Date().toDateString(),isFuture=d>new Date();
+    const dayData=S.days[key]||{},habits=dayData.habits||{};
+    const done=Object.values(habits).filter(Boolean).length;
+    let cls='week-day-dot';
+    if(isToday)cls+=' today';else if(isFuture)cls+=' future';else if(done>=HABITS.length*0.8)cls+=' complete';else if(done>0)cls+=' partial';
+    return `<div class="week-day-col"><div class="week-day-name">${dayNames[i]}</div><div class="${cls}" onclick="goToDay('${dateStr(d)}')">${d.getDate()}</div></div>`;
+  }).join('');
+  const title=S.weekOffset===0?'This Week':S.weekOffset===-1?'Last Week':`${Math.abs(S.weekOffset)} weeks ago`;
+  document.querySelector('.week-header h3').textContent=title;
+}
+
+function renderPillarScores(){
+  const today2=new Date();today2.setHours(0,0,0,0);
+  const start=new Date(today2);start.setDate(today2.getDate()-today2.getDay()+S.weekOffset*7);
+  const scores={temple:[],soul:[],spirit:[]};
+  for(let i=0;i<7;i++){
+    const d=new Date(start);d.setDate(start.getDate()+i);
+    const data=S.days[dateStr(d)]||{};const s=data.scores||{};
+    ['temple','soul','spirit'].forEach(p=>{if(s[p])scores[p].push(s[p]);});
+  }
+  ['temple','soul','spirit'].forEach(p=>{
+    const avg=scores[p].length?Math.round(scores[p].reduce((a,b)=>a+b,0)/scores[p].length):0;
+    document.getElementById('ins-'+p).textContent=avg||'—';
+  });
+}
+
+function renderHabitBars(){
+  const today2=new Date();today2.setHours(0,0,0,0);
+  const start=new Date(today2);start.setDate(today2.getDate()-today2.getDay()+S.weekOffset*7);
+  const counts={};HABITS.forEach(h=>counts[h]=0);
+  for(let i=0;i<7;i++){
+    const d=new Date(start);d.setDate(start.getDate()+i);
+    const data=S.days[dateStr(d)]||{};const h=data.habits||{};
+    HABITS.forEach(id=>{if(h[id])counts[id]++;});
+  }
+  document.getElementById('habit-bars').innerHTML=HABITS.map(id=>{
+    const pct=Math.round((counts[id]/7)*100);const pillar=HABIT_PILLARS[id];
+    return `<div class="bar-row"><div class="bar-label">${counts[id]}/7</div><div class="bar-track"><div class="bar-fill ${pillar}" style="width:${pct}%"></div></div><div style="font-size:10px;color:var(--ink3);flex:1;padding-left:6px;">${HABIT_NAMES[id]}</div></div>`;
+  }).join('');
+}
+
+function renderJournalHistory(){
+  const today2=new Date();today2.setHours(0,0,0,0);
+  const start=new Date(today2);start.setDate(today2.getDate()-today2.getDay()+S.weekOffset*7);
+  const entries=[];
+  for(let i=0;i<7;i++){
+    const d=new Date(start);d.setDate(start.getDate()+i);
+    const data=S.days[dateStr(d)]||{};const j=data.data||{};
+    if(j.j1||j.j2||j.j3)entries.push({date:d,texts:[j.j1,j.j2,j.j3].filter(Boolean)});
+  }
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const container=document.getElementById('journal-history');
+  if(!entries.length){container.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">No journal entries this week yet.</div>';return;}
+  container.innerHTML=entries.map(e=>`<div class="journal-entry-card"><div class="jec-date">${days[e.date.getDay()]} ${e.date.getDate()}</div>${e.texts.map(t=>`<div class="jec-text">"${t}"</div>`).join('')}</div>`).join('');
+}
+
+function renderWeeklyInsight(){
+  const wi=WEEKLY_INSIGHTS[Math.abs(S.weekOffset)%WEEKLY_INSIGHTS.length];
+  document.getElementById('weekly-insight').innerHTML=`<p><strong style="color:var(--ink);">${wi.title}</strong></p><p style="margin-top:6px;">${wi.body}</p><p style="margin-top:8px;font-style:italic;color:var(--ink3);">${wi.verse}</p>`;
+}
+
+function changeWeek(dir){S.weekOffset+=dir;if(S.weekOffset>0)S.weekOffset=0;renderInsights();}
+function goToDay(key){showToast('Day: '+key);}
+
+// ═══ REFLECTION ═══
+function getWeekKey(offset){
+  const d=new Date();d.setHours(0,0,0,0);
+  d.setDate(d.getDate()-d.getDay()+(offset||0)*7);
+  return dateStr(d);
+}
+
+function saveReflection(){
+  const wk=getWeekKey();
+  const todayKey=todayStr();
+  if(!S.days[todayKey])S.days[todayKey]={habits:{},scores:{},data:{}};
+  S.days[todayKey].data.j1=document.getElementById('ref-j1').value;
+  S.days[todayKey].data.j2=document.getElementById('ref-j2').value;
+  S.days[todayKey].data.j3=document.getElementById('ref-j3').value;
+  ss2();renderJournalHistory();showToast('📖 Reflection saved');
+}
+
+function saveWeeklyReflection(){
+  const wk=getWeekKey();
+  if(!S.weeklyReflections)S.weeklyReflections={};
+  S.weeklyReflections[wk]={
+    win:document.getElementById('ref-wk-win').value,
+    struggle:document.getElementById('ref-wk-struggle').value,
+    change:document.getElementById('ref-wk-change').value
+  };
+  ss2();showToast('✓ Weekly reflection saved');
+}
+
+function restoreReflection(){
+  const t=today();const data=t.data||{};
+  const r1=document.getElementById('ref-j1');const r2=document.getElementById('ref-j2');const r3=document.getElementById('ref-j3');
+  if(r1)r1.value=data.j1||'';
+  if(r2)r2.value=data.j2||'';
+  if(r3)r3.value=data.j3||'';
+  const wk=getWeekKey();
+  const wr=(S.weeklyReflections||{})[wk]||{};
+  const w1=document.getElementById('ref-wk-win');const w2=document.getElementById('ref-wk-struggle');const w3=document.getElementById('ref-wk-change');
+  if(w1)w1.value=wr.win||'';
+  if(w2)w2.value=wr.struggle||'';
+  if(w3)w3.value=wr.change||'';
+}
+
+// ═══ VISION ═══
+function saveVision(period){
+  if(!S.visions)S.visions={};
+  const val=document.getElementById('vision-'+period)?.value||'';
+  S.visions[period]=val;ss2();
+  if(period==='1y'){
+    const hero=document.getElementById('vision-hero-block');
+    const disp=document.getElementById('vision-display');
+    if(val&&hero&&disp){hero.style.display='block';disp.textContent=val;}
+  }
+  showToast('✓ Vision saved — hold it firmly');
+}
+
+function restoreVision(){
+  const v=S.visions||{};
+  ['1y','6m','3m'].forEach(p=>{
+    const el=document.getElementById('vision-'+p);
+    if(el)el.value=v[p]||'';
+  });
+  const hero=document.getElementById('vision-hero-block');
+  const disp=document.getElementById('vision-display');
+  if(v['1y']&&hero&&disp){hero.style.display='block';disp.textContent=v['1y'];}
+}
+
+// ═══ WEEKLY GOALS ═══
+function applyGoalSuggestion(pillar){
+  const sel=document.getElementById('goal-'+pillar+'-select');
+  const inp=document.getElementById('goal-'+pillar);
+  if(!sel||!inp)return;
+  if(sel.value&&sel.value!=='custom')inp.value=sel.value;
+  else if(sel.value==='custom')inp.focus();
+}
+
+function saveWeeklyGoals(){
+  if(!S.weeklyGoals)S.weeklyGoals={};
+  const wk=getWeekKey();
+  S.weeklyGoals[wk]={
+    temple:document.getElementById('goal-temple').value.trim(),
+    soul:document.getElementById('goal-soul').value.trim(),
+    spirit:document.getElementById('goal-spirit').value.trim(),
+    saved:new Date().toISOString()
+  };
+  ss2();renderGoalsReview();renderGoalsHistory();
+  showToast('✓ Goals saved — pursue them with everything');
+}
+
+function restoreGoals(){
+  const wk=getWeekKey();
+  const goals=(S.weeklyGoals||{})[wk]||{};
+  const gt=document.getElementById('goal-temple');
+  const gs=document.getElementById('goal-soul');
+  const gsp=document.getElementById('goal-spirit');
+  if(gt)gt.value=goals.temple||'';
+  if(gs)gs.value=goals.soul||'';
+  if(gsp)gsp.value=goals.spirit||'';
+}
+
+function rateGoalProgress(wk,pillar,rating){
+  if(!S.goalRatings)S.goalRatings={};
+  if(!S.goalRatings[wk])S.goalRatings[wk]={};
+  S.goalRatings[wk][pillar]=rating;
+  ss2();renderGoalsReview();
+}
+
+function renderGoalsReview(){
+  const container=document.getElementById('goals-review-list');if(!container)return;
+  const wk=getWeekKey();
+  const goals=(S.weeklyGoals||{})[wk]||{};
+  const ratings=(S.goalRatings||{})[wk]||{};
+  const pillars=[
+    {key:'temple',label:'🏛️ Temple',color:'temple'},
+    {key:'soul',label:'🧠 Soul',color:'soul'},
+    {key:'spirit',label:'✝️ Spirit',color:'spirit'}
+  ];
+  const pills=[{label:'Struggling',cls:'sel-1'},{label:'Making progress',cls:'sel-2'},{label:'Nailed it!',cls:'sel-3'}];
+  const hasGoals=goals.temple||goals.soul||goals.spirit;
+  if(!hasGoals){
+    container.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">No goals set this week yet. Add goals above.</div>';
+    return;
+  }
+  container.innerHTML=pillars.filter(p=>goals[p.key]).map(p=>{
+    const r=ratings[p.key]||0;
+    return `<div class="goal-review-item">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--${p.color});margin-bottom:4px;">${p.label}</div>
+      <div style="font-size:13px;color:var(--ink);margin-bottom:8px;">${goals[p.key]}</div>
+      <div style="font-size:11px;color:var(--ink3);margin-bottom:5px;">How is it going?</div>
+      <div class="goal-review-pill-row">
+        ${pills.map((pill,i)=>`<button class="goal-review-pill ${r===i+1?pill.cls:''}" onclick="rateGoalProgress('${wk}','${p.key}',${i+1})">${pill.label}</button>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderGoalsHistory(){
+  const container=document.getElementById('goals-history');if(!container)return;
+  const allGoals=S.weeklyGoals||{};
+  const wk=getWeekKey();
+  const pastWeeks=Object.keys(allGoals).filter(k=>k<wk).sort().reverse().slice(0,4);
+  if(!pastWeeks.length){
+    container.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">Your previous weeks will appear here.</div>';
+    return;
+  }
+  const icons={temple:'🏛️',soul:'🧠',spirit:'✝️'};
+  const ratingLabels=['','Struggling','Making progress','Nailed it!'];
+  container.innerHTML=pastWeeks.map(wk2=>{
+    const g=allGoals[wk2];
+    const r=(S.goalRatings||{})[wk2]||{};
+    const d=new Date(wk2);
+    const label=`Week of ${d.toLocaleDateString('en',{month:'short',day:'numeric'})}`;
+    return `<div class="goal-history-item">
+      <div class="goal-history-week">${label}</div>
+      ${['temple','soul','spirit'].filter(p=>g[p]).map(p=>`
+        <div class="goal-history-goal">
+          <span>${icons[p]}</span>
+          <span style="flex:1;color:var(--ink2);">${g[p]}</span>
+          ${r[p]?`<span style="font-size:9px;font-weight:700;color:var(--spirit);background:var(--spirit-light);padding:2px 7px;border-radius:20px;">${ratingLabels[r[p]]}</span>`:''}
+        </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+// TRIBE
+function renderTribe(){updateShareTemplate();}
+function updateShareTemplate(){
+  const t=today();const habits=t.habits||{};const done=HABITS.filter(h=>habits[h]).length;
+  const scores=t.scores||{};const day=calcTotalDays();
+  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
+  const v=DAILY_VERSES[doy%DAILY_VERSES.length];
+  const tmpl=`✝️ GodHealth — Day ${day}\n\n🏛️ Temple: ${scores.temple?scores.temple+'/10':'—'}\n🧠 Soul: ${scores.soul?scores.soul+'/10':'—'}\n✝️ Spirit: ${scores.spirit?scores.spirit+'/10':'—'}\n\n✓ ${done}/${HABITS.length} habits completed\n\n"${v.text.slice(0,60)}..."\n— ${v.ref}\n\n#GodHealthTribe`;
+  const el=document.getElementById('share-template');if(el)el.textContent=tmpl;
+}
+function copyShare(){navigator.clipboard?.writeText(document.getElementById('share-template')?.textContent||'').then(()=>showToast('✓ Copied! Paste in the Tribe')).catch(()=>showToast('Select and copy the text'));}
+function openCircle(){
+  const url=GODHEALTH_CONFIG.circleTribeUrl;
+  if(url&&url.startsWith('http')){window.open(url,'_blank','noopener');showToast('Opening GodHealth Tribe...');}
+  else{showToast('Tribe link not set yet');}
+}
+
+// PROFILE
+function renderProfile(){
+  const saved=Object.keys(S.days).filter(k=>S.days[k].saved).length;
+  document.getElementById('ps-days').textContent=saved;
+  document.getElementById('ps-streak').textContent=calcStreak();
+  const thisWeek=Object.keys(S.days).filter(k=>{const d=new Date(k);return(new Date()-d)/(1000*60*60*24)<7&&S.days[k].saved;}).length;
+  document.getElementById('ps-week').textContent=thisWeek;
+}
+function updateSettings(){
+  S.wake=document.getElementById('set-wake').value;
+  S.bed=document.getElementById('set-bed').value;
+  S.fastHours=parseInt(document.getElementById('set-if').value)||16;
+  ss2();renderIF();showToast('Settings saved');
+}
+
+// HELPERS
+function parseTime(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
+function minsToTime(m){return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;}
+function fmt12(t){const[h,m]=t.split(':').map(Number);return `${h%12||12}:${String(m).padStart(2,'0')} ${h>=12?'PM':'AM'}`;}
+function dateStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function calcStreak(){let s=0,d=new Date();d.setHours(0,0,0,0);while(true){const k=dateStr(d);if(S.days[k]?.saved)s++;else break;d.setDate(d.getDate()-1);}return s;}
+function calcTotalDays(){const k=Object.keys(S.days).sort();if(!k.length)return 1;const diff=Math.floor((new Date()-new Date(k[0]))/(1000*60*60*24));return diff+1;}
+function updateStreakDisplay(){document.getElementById('streak-num').textContent=calcStreak();}
+
+// NAV
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id)?.classList.add('active');
+  document.querySelector(`[data-page="${id}"]`)?.classList.add('active');
+  document.querySelector('.scroll-area').scrollTop=0;
+  if(id==='insights')renderInsights();
+  if(id==='tribe')renderTribe();
+  if(id==='profile')renderProfile();
+  if(id==='meals')renderMeals('all');
+  if(id==='tips')renderTips('all');
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+document.getElementById('ob-name')?.addEventListener('keydown',e=>{if(e.key==='Enter')startApp();});
+
+// ═══ MEALS DATA ═══
+const BIBLICAL_MEALS=[
+  {id:1,emoji:'🐟',name:'Grilled Fish by the Fire',pillar:'temple',ref:'John 21:9–13 (KJV)',refText:'"Jesus saith unto them, Come and dine."',science:'Fish is rich in omega-3 fatty acids (EPA & DHA) which reduce systemic inflammation and support heart health. A single serving provides 25–35g complete protein for muscle repair.',ingredients:'• Whole fresh fish or fillet (200g)\n• 2 tbsp extra virgin olive oil\n• 3 garlic cloves\n• Fresh herbs: thyme, rosemary, parsley\n• Sea salt, black pepper\n• Lemon wedges',steps:['Pat fish completely dry — moisture prevents proper searing.','Score the skin 3 times on each side to prevent curling.','Rub all over with olive oil, crushed garlic and herbs. Season generously.','Heat a heavy pan until smoking hot. Place fish skin-side down.','Press gently for 30 seconds. Cook 4–5 minutes without moving.','Flip carefully. Cook 3–4 more minutes.','Rest 2 minutes. Serve with fresh lemon.'],macros:{p:42,f:30,c:0}},
+  {id:2,emoji:'🫘',name:'Lentil Pottage of Esau',pillar:'temple',ref:'Genesis 25:34 (KJV)',refText:'"Then Jacob gave Esau bread and pottage of lentiles."',science:'Red lentils have a glycaemic index of just 21 — one of the lowest of any food. They provide 18g protein and 16g fibre per cup, preventing blood sugar spikes and cravings.',ingredients:'• 200g red lentils, rinsed\n• 1 large onion, diced\n• 4 garlic cloves\n• 2 tbsp olive oil\n• 1 tsp cumin, ½ tsp turmeric\n• Salt and black pepper\n• 700ml water',steps:['Heat olive oil. Add onion, cook 8 minutes until golden.','Add garlic and spices. Stir 1 minute.','Add lentils and water. Bring to a boil then simmer.','Cook 20–25 minutes until lentils break down.','Season well. Serve with barley bread.'],macros:{p:28,f:18,c:54}},
+  {id:3,emoji:'🍯',name:'Barley Bread with Raw Honey',pillar:'spirit',ref:'Judges 7:13 / Proverbs 24:13 (KJV)',refText:'"Eat thou honey, because it is good."',science:'Barley contains beta-glucan — clinically shown to reduce LDL cholesterol by 5–10% and stabilise blood sugar for 4–6 hours. Raw honey contains 181 bioactive compounds.',ingredients:'• 250g barley flour\n• 1 tsp sea salt\n• 1 tbsp olive oil\n• 150ml warm water\n• Raw honey to serve',steps:['Mix flour and salt. Add olive oil, mix with fingertips.','Add warm water gradually until firm dough forms.','Shape into a flat disc, about 1cm thick.','Cook in a dry hot pan 5 minutes each side.','Cool slightly. Drizzle with raw honey.'],macros:{p:12,f:18,c:70}},
+  {id:4,emoji:'🍖',name:'Passover Lamb with Bitter Herbs',pillar:'spirit',ref:'Exodus 12:8 (KJV)',refText:'"And they shall eat the flesh...with bitter herbs."',science:'Lamb is one of the most bioavailable sources of iron, zinc and B12. Bitter herbs stimulate bile production, improving fat digestion and liver detoxification.',ingredients:'• 300g lamb shoulder\n• 2 tbsp olive oil\n• 3 garlic cloves\n• Fresh rosemary and thyme\n• Sea salt and black pepper\n• Bitter herbs: rocket, endive, chicory',steps:['Bring lamb to room temperature. Pat completely dry.','Score the surface. Push garlic and herbs into the cuts.','Rub with olive oil, salt and pepper.','Roast at 220°C for 20 minutes, reduce to 160°C for 1–1.5 hours.','Rest covered 15 minutes.','Serve with bitter herb salad dressed in olive oil and lemon.'],macros:{p:40,f:35,c:0}},
+  {id:5,emoji:'🫙',name:"Daniel's Pulse Bowl",pillar:'temple',ref:'Daniel 1:12–16 (KJV)',refText:'"Prove thy servants ten days; give us pulse to eat."',science:'Daniel was found ten times healthier. Pulse (legumes) provide resistant starch that feeds the gut microbiome, reducing inflammation markers by up to 22%.',ingredients:'• 150g chickpeas, cooked\n• 100g green lentils, cooked\n• 2 tbsp olive oil\n• Juice of 1 lemon\n• 2 garlic cloves\n• Fresh parsley and mint\n• ½ tsp cumin',steps:['Combine olive oil, lemon juice, garlic and cumin.','Add warm legumes to the dressing and toss to coat.','Fold in fresh parsley and mint.','Top with pomegranate seeds.','Eat at room temperature.'],macros:{p:26,f:20,c:54}},
+  {id:6,emoji:'🫒',name:'Olive Oil & Herb Dipping Bread',pillar:'temple',ref:'Ruth 2:14 (KJV)',refText:'"Eat of the bread, and dip thy morsel in the vinegar."',science:'Extra virgin olive oil contains oleocanthal with anti-inflammatory properties equivalent to a small dose of ibuprofen. EVOO reduces cardiovascular disease risk by 30%.',ingredients:'• 4 tbsp extra virgin olive oil\n• 1 garlic clove, minced\n• Fresh rosemary, thyme, oregano\n• Sea salt and black pepper\n• Barley bread for dipping',steps:['Pour olive oil into a wide shallow bowl.','Add minced garlic. Infuse 5 minutes.','Scatter fresh herbs. Add sea salt generously.','Do not heat the oil — heating destroys the oleocanthal.','Tear bread and dip slowly. This is a meal, not a starter.'],macros:{p:8,f:42,c:50}},
+  {id:7,emoji:'🐑',name:'Slow-Roasted Lamb with Pomegranate',pillar:'temple',ref:'Luke 15:23 (KJV)',refText:'"Bring hither the fatted calf...let us eat and be merry."',science:'Pomegranate contains punicalagin which reduces muscle soreness by 35% and lowers cortisol. Lamb provides CLA which actively reduces body fat.',ingredients:'• 500g lamb shoulder\n• Seeds of 1 pomegranate\n• 2 tbsp pomegranate molasses\n• 3 tbsp olive oil\n• 4 garlic cloves\n• 1 tsp cinnamon, cumin, coriander',steps:['Mix molasses, olive oil, garlic and spices into a paste.','Score lamb deeply and rub paste into all cuts.','Marinate 2 hours minimum.','Roast at 160°C for 2.5–3 hours until falling apart.','Rest 20 minutes. Top with pomegranate seeds.'],macros:{p:38,f:32,c:30}},
+  {id:8,emoji:'🌾',name:'Ezekiel Multi-Grain Bread',pillar:'temple',ref:'Ezekiel 4:9 (KJV)',refText:'"Take thou wheat, barley, beans, lentiles, millet and fitches."',science:'Combining six grains creates a complete protein with all nine essential amino acids. Sprouting reduces phytic acid by up to 75%, increasing mineral absorption.',ingredients:'• 100g wheat flour\n• 100g barley flour\n• 50g spelt flour\n• 50g lentil flour\n• 50g millet flour\n• 1 tsp salt, 2 tbsp olive oil\n• 180ml warm water',steps:['Combine all flours and salt.','Add olive oil and mix with fingertips.','Add warm water gradually, knead 8 minutes.','Shape into a loaf.','Bake at 190°C for 30–35 minutes.'],macros:{p:18,f:15,c:67}},
+  {id:9,emoji:'🍇',name:'Fresh Grape & Walnut Plate',pillar:'soul',ref:'Numbers 13:23 (KJV)',refText:'"They cut a branch with one cluster of grapes."',science:'Grapes contain resveratrol which activates sirtuins linked to longevity. Walnuts contain ALA omega-3 which reduces anxiety and depression markers.',ingredients:'• 200g fresh red grapes\n• 50g walnuts (soaked overnight)\n• 30g almonds\n• 1 tsp raw honey\n• Fresh mint leaves',steps:['Soak walnuts overnight in cold water. Drain and rinse.','Wash grapes thoroughly.','Arrange grapes, walnuts and almonds in a bowl.','Drizzle with raw honey.','Add fresh mint.'],macros:{p:10,f:38,c:52}},
+  {id:10,emoji:'🫐',name:'Pomegranate & Fig Morning Plate',pillar:'spirit',ref:'Deuteronomy 8:8 (KJV)',refText:'"A land of vines, fig trees, pomegranates, oil olive and honey."',science:'Figs are 30% fibre by weight — providing prebiotics that increase serotonin production. Pomegranate provides vitamin C, K and powerful anti-inflammatory compounds.',ingredients:'• 3 fresh figs, halved\n• Seeds of ½ pomegranate\n• 1 tbsp raw honey\n• 20g almonds\n• Fresh mint',steps:['Halve figs and arrange cut-side up.','Scatter pomegranate seeds over.','Add almonds.','Drizzle raw honey.','Eat slowly, with thanksgiving before the meal.'],macros:{p:8,f:22,c:70}},
+  {id:11,emoji:'🥣',name:'Barley & Honey Porridge',pillar:'temple',ref:'Proverbs 24:13 (KJV)',refText:'"Eat thou honey, because it is good."',science:'Barley porridge has a glycaemic index of 28 — far lower than oats or rice. Beta-glucan forms a viscous gel that reduces post-meal blood sugar spikes by up to 59%.',ingredients:'• 80g barley flakes\n• 400ml water\n• 1 tbsp raw honey\n• ½ tsp cinnamon\n• Pinch of sea salt\n• Figs or walnuts to serve',steps:['Bring water to a boil. Add barley and salt.','Simmer 10–12 minutes, stirring regularly.','Remove from heat. Stir in cinnamon.','Serve with honey, figs and walnuts.'],macros:{p:14,f:18,c:68}},
+  {id:12,emoji:'🫙',name:'Raisin Cake & Almond Restoration Plate',pillar:'fast',ref:'1 Samuel 25:18 (KJV)',refText:'"Abigail took raisins and figs to restore the exhausted."',science:'Raisins restore liver glycogen rapidly after fasting without overwhelming the digestive system. Almonds provide magnesium which is depleted during extended fasting.',ingredients:'• 40g raisins\n• 30g raw almonds\n• 3 dried figs\n• 2 fresh dates, pitted\n• 1 tbsp raw honey\n• A cup of water',steps:['Always break a fast with water first. Drink slowly.','Wait 5 minutes for digestion to awaken.','Start with raisins and dates.','Follow with almonds — fat and protein slow further absorption.','End with figs and honey.','Wait 20 minutes before eating a full meal.'],macros:{p:10,f:28,c:62}},
+  {id:13,emoji:'🌿',name:'Bitter Herb Salad — Passover Style',pillar:'soul',ref:'Exodus 12:8 (KJV)',refText:'"With bitter herbs they shall eat it."',science:'Bitter herbs stimulate bile production by up to 40%, significantly improving fat digestion and liver detoxification. They also support the gut-brain axis.',ingredients:'• 60g rocket\n• 40g radicchio, torn\n• 30g endive or chicory\n• 20g fresh parsley\n• 3 tbsp extra virgin olive oil\n• 1½ tbsp apple cider vinegar\n• 1 tsp raw honey\n• Sea salt and black pepper',steps:['Wash all greens in cold water. Pat completely dry.','Tear larger leaves into bite-sized pieces.','Whisk together olive oil, vinegar, honey, salt and pepper.','Toss just before serving.','The bitterness represents life\'s trials and God\'s deliverance.'],macros:{p:4,f:42,c:14}},
+  {id:14,emoji:'🥗',name:'Roasted Root Vegetables & Olive Oil',pillar:'temple',ref:'Numbers 11:5 (KJV)',refText:'"We remember the leeks, onions, and garlick."',science:'Roasting increases bioavailability of fat-soluble vitamins A, D, E and K. Garlic and onions contain quercetin and allicin which reduce cardiovascular disease risk by 25%.',ingredients:'• 300g mixed root vegetables\n• 1 large onion, cut into wedges\n• 6 garlic cloves, skin on\n• 3 tbsp olive oil\n• 1 tbsp raw honey\n• Fresh thyme and rosemary',steps:['Preheat oven to 200°C. Cut vegetables into similar-sized chunks.','Toss with olive oil, salt and pepper.','Spread on a large tray — do not crowd.','Scatter garlic and herbs.','Roast 35–45 minutes, turning halfway.','In last 5 minutes, drizzle honey for caramelisation.'],macros:{p:6,f:28,c:66}},
+  {id:15,emoji:'🫙',name:'Hummus — Crushed Chickpeas & Olive Oil',pillar:'temple',ref:'Daniel 1:12 (KJV)',refText:'"Give us pulse to eat."',science:'Chickpeas are 20% protein and 40% fibre by dry weight. This combination reduces hunger hormones for 4–6 hours — making this one of the most effective foods for managing weight.',ingredients:'• 200g cooked chickpeas\n• 3 tbsp tahini\n• 3 tbsp lemon juice\n• 2 garlic cloves\n• 4 tbsp olive oil\n• ½ tsp salt\n• 4–6 tbsp cold water',steps:['Remove skins from chickpeas for a smoother result.','Blend chickpeas alone 2 minutes until a paste.','Add tahini, lemon, garlic and salt. Blend 2 more minutes.','Add ice-cold water one tbsp at a time with blender running.','Blend 4–5 minutes total. Serve with olive oil and paprika.'],macros:{p:16,f:38,c:46}},
+  {id:16,emoji:'🍳',name:'Eggs with Fresh Herbs',pillar:'temple',ref:'Luke 11:12 (KJV)',refText:'"If he shall ask an egg, will he offer him a scorpion?"',science:'Eggs are the most bioavailable protein source known — biological value of 100. They contain all nine essential amino acids plus choline, essential for brain function and memory.',ingredients:'• 3 whole eggs\n• 1 tbsp butter or olive oil\n• Fresh herbs: parsley, chives, dill\n• Sea salt and black pepper',steps:['Crack eggs into a bowl. Whisk until combined.','Heat pan over LOW heat — slow cooking is essential.','Add butter. Add eggs before fat is fully hot.','Stir constantly in slow figure-8 motions.','Remove when still slightly underdone — residual heat finishes them.','Season only at the end. Fold in fresh herbs.'],macros:{p:32,f:46,c:2}},
+  {id:17,emoji:'🌰',name:'Almond & Date Energy Plate',pillar:'fast',ref:'Genesis 43:11 (KJV)',refText:'"Take of the best fruits...nuts and almonds."',science:'Dates restore liver and muscle glycogen simultaneously — making them ideal for exercise recovery. Almonds contain magnesium to reduce muscle cramps and vitamin E as antioxidant.',ingredients:'• 4 fresh or soft dried dates, pitted\n• 30g raw almonds\n• 15g walnuts\n• 1 tsp raw honey\n• Pinch of cinnamon',steps:['Split dates open and remove pits.','Arrange dates, almonds and walnuts on a plate.','Drizzle a small amount of raw honey.','Dust with cinnamon.','Eat slowly — this is a restorative meal.','Ideal before or after training, or as the first meal after fasting.'],macros:{p:10,f:36,c:54}},
+  {id:18,emoji:'🥘',name:'Fish & Barley Bread at the Sea',pillar:'spirit',ref:'John 21:9–13 (KJV)',refText:'"They saw a fire of coals there, and fish laid thereon, and bread."',science:'Jesus prepared this meal after a night of labour. Fish omega-3s support brain recovery while barley beta-glucan provides sustained energy for 4–6 hours.',ingredients:'• 200g white fish fillet\n• 2 slices barley bread\n• 2 tbsp olive oil\n• 3 garlic cloves\n• Fresh parsley and lemon',steps:['Season fish generously with salt and pepper.','Heat pan with olive oil until hot.','Cook fish 3–4 minutes per side without moving.','Rub bread with garlic clove. Toast until golden.','Squeeze lemon over fish. Scatter fresh parsley.','Eat together with others — this meal is for community.'],macros:{p:38,f:28,c:34}},
+  {id:19,emoji:'🧄',name:'Roasted Garlic & Olive Plate',pillar:'temple',ref:'Numbers 11:5 (KJV)',refText:'"We remember the onions and the garlick."',science:'Garlic contains allicin which reduces blood pressure by 8–11 mmHg, lowers LDL cholesterol by 10–15%, and significantly boosts immune cell activity.',ingredients:'• 2 whole heads of garlic\n• 20 mixed olives\n• 3 tbsp extra virgin olive oil\n• Fresh thyme\n• Sea salt\n• Barley bread to serve',steps:['Cut tops off garlic heads. Drizzle with olive oil.','Wrap in foil. Roast at 180°C for 45 minutes.','Squeeze roasted garlic from skins — it becomes a soft paste.','Arrange with olives and more olive oil.','Spread on barley bread.'],macros:{p:6,f:48,c:46}},
+  {id:20,emoji:'🌊',name:'Sardines with Herbs & Lemon',pillar:'temple',ref:'Matthew 14:17 (KJV)',refText:'"We have here but five loaves, and two fishes."',science:'Sardines are among the most nutrient-dense foods — high in omega-3s, vitamin D, B12, selenium and calcium from the edible bones. Low in mercury.',ingredients:'• 2 tins quality sardines in olive oil\n• 1 lemon, zested and juiced\n• Fresh parsley\n• 1 tbsp capers\n• 2 tbsp extra virgin olive oil\n• Black pepper\n• Barley bread',steps:['Drain sardines, keeping a little oil.','Place on a plate. Break gently into large pieces.','Drizzle fresh olive oil and lemon juice generously.','Scatter lemon zest, parsley and capers.','Season with black pepper.','Serve on barley bread.'],macros:{p:36,f:40,c:0}},
+  {id:21,emoji:'🧘',name:'Manna — Simple Grain Porridge',pillar:'soul',ref:'Exodus 16:31 (KJV)',refText:'"The taste of it was like wafers made with honey."',science:'Simple clean carbohydrates in the morning increase serotonin production — the neurotransmitter of calm and contentment. Coriander seed has clinically proven anxiolytic effects.',ingredients:'• 60g oats or millet flakes\n• 300ml water\n• 1 tbsp raw honey\n• ½ tsp ground coriander seed\n• Pinch sea salt\n• Fresh figs or dates',steps:['Bring water and salt to a boil.','Add oats or millet. Reduce to low simmer.','Cook 5–8 minutes, stirring often.','Stir in ground coriander seed.','Sweeten with raw honey. Top with figs or dates.','Eat in silence if possible — this is a contemplative meal.'],macros:{p:12,f:14,c:74}},
+  {id:22,emoji:'🍵',name:'Hyssop & Herb Healing Tea',pillar:'spirit',ref:'Psalm 51:7 (KJV)',refText:'"Purge me with hyssop, and I shall be clean."',science:'Hyssop contains diosmin and hesperidin with anti-inflammatory and anti-anxiety properties. Modern research confirms it reduces cortisol and supports respiratory health.',ingredients:'• 1 tsp dried hyssop\n• 1 tsp dried mint\n• ½ tsp dried thyme\n• 500ml freshly boiled water\n• Raw honey to taste',steps:['Place herbs in a ceramic or glass teapot.','Pour water cooled 30 seconds (90°C) over herbs.','Steep covered for 7–10 minutes.','Strain through a fine sieve.','Add honey while still warm.','Drink slowly and prayerfully.'],macros:{p:0,f:0,c:8}},
+  {id:23,emoji:'🌱',name:'Restorative Herb Broth',pillar:'soul',ref:'1 Kings 19:6 (KJV)',refText:'"Arise and eat; because the journey is too great for thee."',science:'Broth-based soups increase satiety significantly more than the same calories eaten separately. Slow cooking creates glycine which is clinically shown to improve sleep quality.',ingredients:'• 1.5L water\n• 1 onion, quartered\n• 3 carrots, roughly chopped\n• 4 garlic cloves\n• Fresh parsley, thyme, bay leaves\n• 1 tsp sea salt',steps:['Place all vegetables and herbs in a large pot. Cover with cold water.','Bring to a boil, then reduce to lowest possible simmer.','Simmer uncovered for 60–90 minutes.','Strain through a fine sieve.','Drink from a cup like the angel gave Elijah.'],macros:{p:4,f:4,c:12}},
+  {id:24,emoji:'🍂',name:'Lentil & Vegetable Sabbath Stew',pillar:'spirit',ref:'Genesis 25:34 (KJV)',refText:'"Jacob gave Esau bread and pottage of lentiles."',science:'A warm stew activates the parasympathetic nervous system — the rest-and-digest state. Research shows warm soft foods eaten in a relaxed setting reduce cortisol by 20%.',ingredients:'• 200g green lentils\n• 2 carrots, diced\n• 2 celery stalks, diced\n• 1 onion, diced\n• 3 garlic cloves\n• 400g diced tomatoes\n• 1.2L water\n• 2 tbsp olive oil\n• 1 tsp cumin, 1 tsp smoked paprika',steps:['Rinse lentils. Soak 30 minutes if time allows.','Heat olive oil. Sauté onion, carrot, celery 10 minutes.','Add garlic and spices. Add tomatoes. Stir.','Add lentils and water. Bring to a boil.','Simmer 35–40 minutes until lentils are tender.','Serve with barley bread. Eat slowly.'],macros:{p:22,f:16,c:62}},
+  {id:25,emoji:'🍋',name:'Water with Lemon & Raw Honey',pillar:'soul',ref:'Proverbs 24:13 (KJV)',refText:'"Eat thou honey, because it is good."',science:'Warm water with lemon increases gastric acid secretion, preparing the digestive system. Lemon boosts iron absorption from plant foods by 300%. Raw honey is prebiotic.',ingredients:'• 300ml warm water\n• Juice of ½ lemon\n• 1 tsp raw honey\n• Optional: slice of fresh ginger',steps:['Boil water and allow to cool to 40–50°C.','Squeeze lemon juice in.','Add raw honey and stir until dissolved.','Add ginger slice if using.','Drink before your first meal each morning.'],macros:{p:0,f:0,c:12}},
+  {id:26,emoji:'🍷',name:'Fresh Grape Juice of the Vine',pillar:'spirit',ref:'John 15:1 (KJV)',refText:'"I am the true vine, and my Father is the husbandman."',science:'Fresh grape juice contains resveratrol, quercetin and anthocyanins — three of the most studied polyphenols. Together they reduce oxidative stress and lower blood pressure.',ingredients:'• 400g fresh red grapes\n• Dash of lemon juice\n• Ice\n• Fresh mint',steps:['Wash grapes thoroughly. Remove from stems.','Blend until completely smooth.','Strain through a fine mesh sieve.','Add a dash of lemon juice.','Serve over ice with fresh mint.'],macros:{p:2,f:0,c:28}},
+  {id:27,emoji:'🥖',name:'Unleavened Bread — Passover Flatbread',pillar:'spirit',ref:'Exodus 12:39 (KJV)',refText:'"Thou shalt eat unleavened bread therewith."',science:'Unleavened bread has a lower glycaemic index than leavened bread. It is simpler to digest and contains no added sugars — ideal for people with digestive sensitivities.',ingredients:'• 200g whole wheat or spelt flour\n• ½ tsp sea salt\n• 4 tbsp extra virgin olive oil\n• 80ml warm water',steps:['Mix flour and salt.','Add olive oil and mix until crumbly.','Add water gradually until dough comes together. Do not overwork.','Divide into 6 pieces. Roll each paper-thin.','Cook in a dry hot pan 1–2 minutes per side.'],macros:{p:10,f:22,c:68}},
+  {id:28,emoji:'🌿',name:'Mint & Coriander Herb Sauce',pillar:'soul',ref:'Matthew 23:23 (KJV)',refText:'"Ye pay tithe of mint and anise and cummin."',science:'Mint contains menthol and rosmarinic acid which relax intestinal smooth muscle, reducing bloating. Coriander has been shown to match diazepam in reducing anxiety with no side effects.',ingredients:'• 40g fresh mint\n• 40g fresh coriander\n• 2 garlic cloves\n• 2 tbsp lemon juice\n• 4 tbsp olive oil\n• Pinch of cumin and sea salt',steps:['Wash herbs thoroughly. Pat completely dry.','Place all ingredients in a blender.','Blend to a rough paste — do not over-blend.','Taste and adjust lemon and salt.','Use as a sauce with fish, lamb or vegetables.'],macros:{p:2,f:38,c:6}},
+  {id:29,emoji:'🍑',name:'Dried Fruit & Nut Communion Plate',pillar:'spirit',ref:'1 Samuel 25:18 (KJV)',refText:'"Abigail took raisins and clusters of figs."',science:'Dried fruits retain virtually all minerals and polyphenols in concentrated form. With nuts they provide magnesium, potassium, selenium and iron in highly bioavailable form.',ingredients:'• 30g raisins\n• 20g dried figs, chopped\n• 15g dried dates\n• 25g walnuts\n• 20g almonds\n• 15g pistachios',steps:['Choose the highest quality dried fruits — sun-dried with no added sugar.','Soak raisins in warm water 10 minutes to rehydrate.','Arrange all dried fruits and nuts on a wooden board.','Drizzle a little raw honey if desired.','Eat slowly and mindfully.'],macros:{p:10,f:40,c:50}},
+  {id:30,emoji:'🍲',name:"Abraham's Curds & Milk",pillar:'temple',ref:'Genesis 18:8 (KJV)',refText:'"He took butter, and milk...and they did eat."',science:'Fermented dairy contains live probiotic cultures that directly colonise the gut microbiome, improving digestion, immunity and mental health via the gut-brain axis.',ingredients:'• 200g full-fat natural yoghurt or labneh\n• 1 tbsp raw honey\n• Fresh mint leaves\n• Pinch of cinnamon\n• Pomegranate seeds, crushed walnuts',steps:['Use full-fat yoghurt — the fat carries fat-soluble vitamins.','Spoon into a bowl. Create a small well in the centre.','Pour honey into the well.','Scatter fresh mint, cinnamon, pomegranate and walnuts.','Eat immediately before the honey mixes in.'],macros:{p:14,f:28,c:38}},
+  {id:31,emoji:'🌅',name:'Fast-Breaking Water & Figs',pillar:'fast',ref:'1 Samuel 30:12 (KJV)',refText:'"They gave him figs and raisins; and when he had eaten, his spirit came again."',science:'After 16+ hours of fasting, figs provide 72% water content making them easy to digest. Their natural sugars restore blood glucose gradually — preventing post-fast fatigue.',ingredients:'• 2 fresh figs or 3 dried figs\n• 1 large glass of water\n• 1 tsp raw honey\n• 5 almonds',steps:['Always break a fast with water first. Drink the entire glass slowly.','Wait 5 minutes for water to reach the stomach.','Eat figs slowly — chew each piece completely.','Add honey for additional quick energy.','The almonds provide magnesium.','Wait 20–30 minutes before eating a full meal.'],macros:{p:4,f:8,c:56}},
+  {id:32,emoji:'🥗',name:'Cucumber & Herb Salad',pillar:'soul',ref:'Numbers 11:5 (KJV)',refText:'"We remember the cucumbers, and the melons."',science:'Cucumbers are 96% water and contain cucurbitacins — anti-inflammatory compounds that reduce oxidative stress. Combined with herbs this is a high-volume, low-calorie meal.',ingredients:'• 2 large cucumbers\n• Handful fresh mint and parsley\n• 2 spring onions, sliced\n• 3 tbsp olive oil\n• 2 tbsp lemon juice\n• Sea salt and black pepper',steps:['Slice cucumbers thinly.','Salt and leave in a colander 15 minutes. Rinse and pat dry.','Chop mint and parsley. Add with spring onions.','Whisk olive oil and lemon juice. Pour over.','Toss gently. Eat immediately.'],macros:{p:4,f:36,c:20}},
+  {id:33,emoji:'🫓',name:'Spelt Flatbread with Olive Oil',pillar:'temple',ref:'Ezekiel 4:9 (KJV)',refText:'"Take thou wheat, and barley, and spelt."',science:'Spelt has higher protein content (15%) than modern wheat and significantly more minerals — especially magnesium, zinc and iron. It contains more soluble fibre supporting a healthier microbiome.',ingredients:'• 200g spelt flour\n• ½ tsp sea salt\n• 1 tsp dried rosemary\n• 3 tbsp olive oil\n• 90ml warm water',steps:['Mix flour, salt and rosemary.','Drizzle in olive oil and mix until breadcrumb texture.','Add warm water gradually until soft dough forms.','Divide into 4 balls. Rest 10 minutes.','Roll to 3mm thickness.','Cook in a dry pan 2 minutes per side.'],macros:{p:12,f:24,c:64}},
+  {id:34,emoji:'🥜',name:'Roasted Seeds & Grain Mix',pillar:'temple',ref:'Ruth 2:14 (KJV)',refText:'"He reached her parched corn."',science:'A blend of seeds provides zinc, magnesium, selenium and vitamin E — the four most commonly deficient micronutrients in modern diets. Zinc is essential for testosterone production and immune function.',ingredients:'• 40g pumpkin seeds\n• 30g sunflower seeds\n• 20g sesame seeds\n• 20g roasted barley\n• 1 tsp olive oil\n• Pinch sea salt',steps:['Heat a dry pan until hot.','Add seeds and grain. Toss constantly.','Cook 3–4 minutes until pumpkin seeds pop.','Remove from heat. Add olive oil and salt.','Cool on a flat surface. Store in an airtight jar.'],macros:{p:18,f:52,c:30}},
+  {id:35,emoji:'🍠',name:'Roasted Sweet Potato with Cinnamon',pillar:'soul',ref:'Numbers 11:5 (KJV)',refText:'"We remember the melons."',science:'Sweet potatoes have a glycaemic index of 44 when baked — much lower than white potato. They are rich in beta-carotene essential for immune function.',ingredients:'• 2 medium sweet potatoes\n• 2 tbsp olive oil\n• 1 tsp cinnamon\n• 1 tsp raw honey\n• Pinch sea salt',steps:['Preheat oven to 200°C.','Prick sweet potatoes several times with a fork.','Rub with olive oil and sea salt.','Bake 40–50 minutes until completely soft.','Split open. Drizzle with honey and dust with cinnamon.','Eat with the skin on — it contains additional fibre.'],macros:{p:4,f:18,c:78}},
+  {id:36,emoji:'🥬',name:'Braised Greens with Garlic & Oil',pillar:'temple',ref:'Proverbs 15:17 (KJV)',refText:'"Better is a dinner of herbs where love is."',science:'Dark leafy greens contain folate, vitamin K2 and nitrates. Nitrates from greens directly improve blood flow and athletic endurance by expanding blood vessels.',ingredients:'• 300g dark leafy greens (kale, chard or spinach)\n• 4 garlic cloves, thinly sliced\n• 3 tbsp olive oil\n• Juice of ½ lemon\n• Sea salt and red pepper flakes',steps:['Wash greens. Remove thick stalks from kale.','Heat olive oil over medium heat.','Add garlic slices. Cook gently 2–3 minutes.','Add greens in batches. Toss to coat.','Cover and cook 5 minutes. Remove lid 2 more minutes.','Squeeze lemon over and season.'],macros:{p:6,f:38,c:14}},
+  {id:37,emoji:'🌾',name:'Parched Grain — Warrior Food',pillar:'temple',ref:'1 Samuel 17:17 (KJV)',refText:'"Take now for thy brethren an ephah of this parched corn."',science:'Parched grain was the primary portable food of biblical warriors. Dry-roasting partially gelatinises the starch, making it more digestible with a lower glycaemic response.',ingredients:'• 100g whole spelt or barley berries\n• 1 tbsp olive oil\n• Sea salt\n• Fresh herbs: thyme, rosemary',steps:['Soak grain overnight. Drain and spread to dry.','Heat a heavy pan until very hot.','Add grain with no oil. Stir constantly.','After 4–5 minutes when golden, add olive oil and herbs.','Season with salt. Spread to cool.'],macros:{p:14,f:18,c:68}},
+  {id:38,emoji:'🐐',name:'Goat Cheese & Herb Plate',pillar:'soul',ref:'Proverbs 27:27 (KJV)',refText:'"Thou shalt have goats milk enough for thy food."',science:'Goat milk products are more easily digested than cow milk — the fat globules are smaller, allowing faster breakdown by digestive enzymes. Rich in medium-chain fatty acids for direct energy.',ingredients:'• 150g fresh goat cheese\n• Fresh herbs: thyme, mint\n• 2 tbsp honey\n• 20g walnuts, crushed\n• Black pepper\n• Barley bread',steps:['Remove goat cheese from fridge 30 minutes before — room temperature enhances flavour.','Place on a serving plate. Press fresh herbs into the surface.','Drizzle honey generously.','Scatter crushed walnuts and grind black pepper.','Serve with barley bread on the side.'],macros:{p:18,f:44,c:22}},
+  {id:39,emoji:'🥘',name:'Lamb & Herb Stuffed Flatbread',pillar:'temple',ref:'Exodus 12:8 (KJV)',refText:'"And they shall eat the flesh...and unleavened bread."',science:'Combining lamb with flatbread and fresh herbs creates a balanced macronutrient profile. The herbs provide polyphenols that reduce oxidative stress created during intensive exercise.',ingredients:'• 200g minced lamb\n• 1 onion, grated\n• 2 garlic cloves\n• 1 tsp cumin, ½ tsp cinnamon\n• Fresh parsley, mint\n• 4 flatbreads\n• Natural yoghurt and lemon',steps:['Mix lamb with grated onion, garlic, spices, parsley, salt and pepper.','Form into small oval patties.','Cook in a hot pan 3–4 minutes each side.','Warm flatbreads in the same pan.','Assemble with fresh herbs, lemon and yoghurt.'],macros:{p:36,f:30,c:34}},
+  {id:40,emoji:'🌻',name:'Tahini & Sesame Dressing',pillar:'temple',ref:'Isaiah 28:25 (KJV)',refText:'"Doth he not cast abroad the fitches and scatter the cummin?"',science:'Sesame seeds contain sesamin and sesamolin — unique lignans that reduce blood pressure and lower LDL cholesterol. Tahini is one of the richest plant sources of calcium — more per gram than cow milk.',ingredients:'• 3 tbsp tahini\n• 2 tbsp lemon juice\n• 1 garlic clove, minced\n• 4 tbsp warm water\n• Pinch sea salt and cumin',steps:['Place tahini in a bowl. It will be thick.','Add lemon juice — tahini will seize. This is normal.','Add garlic and salt.','Add warm water one tablespoon at a time, whisking vigorously.','The sauce transforms into a creamy, pourable consistency.','Use as dressing, dip, or poured over roasted vegetables.'],macros:{p:8,f:52,c:18}},
+  {id:41,emoji:'🥣',name:'Date & Cinnamon Energy Pudding',pillar:'fast',ref:'2 Samuel 16:1 (KJV)',refText:'"Ziba met him with dates and raisins."',science:'Dates have a unique 1:1 glucose to fructose ratio — the most effective natural food for restoring both muscle and liver glycogen. Cinnamon\'s cinnamaldehyde improves insulin sensitivity.',ingredients:'• 6 Medjool dates, pitted\n• 200ml coconut milk or warm water\n• 1 tsp cinnamon\n• ¼ tsp cardamom\n• 1 tbsp tahini\n• Pinch sea salt',steps:['Pit the dates. Soak in warm water 20 minutes if dry.','Blend dates, coconut milk, cinnamon, cardamom and salt until smooth.','Add tahini. Blend 30 seconds more.','Serve in small cups. Eat slowly with gratitude.','Ideal as fast-breaking meal or before training.'],macros:{p:6,f:28,c:66}},
+  {id:42,emoji:'🧅',name:'Caramelised Onion & Herb Broth',pillar:'soul',ref:'Numbers 11:5 (KJV)',refText:'"We remember the leeks and the onions."',science:'Onions contain quercetin — a neuroprotective antioxidant that reduces neuroinflammation. Slow caramelisation converts onion starches to prebiotic compounds that feed beneficial gut bacteria.',ingredients:'• 4 large onions, thinly sliced\n• 2 tbsp olive oil\n• 1L water or broth\n• 3 garlic cloves\n• Fresh thyme, bay leaf\n• Sea salt',steps:['Heat olive oil in a heavy pot over very low heat.','Add all sliced onions. Season with salt.','Cook on the lowest heat 45–60 minutes, stirring every 10 minutes.','Add garlic and thyme for the last 10 minutes.','Add water or broth. Simmer 20 more minutes.','Remove bay leaf. Adjust seasoning.'],macros:{p:4,f:18,c:24}},
+  {id:43,emoji:'🫕',name:'Barley & Vegetable Soup',pillar:'temple',ref:'2 Kings 4:38 (KJV)',refText:'"Set on the great pot, and seethe pottage."',science:'Barley maintains its beta-glucan content after cooking in liquid — making barley soup superior to barley bread for blood sugar management. The fibre dissolves in broth.',ingredients:'• 100g pearl barley\n• 2 carrots, diced\n• 2 celery stalks, diced\n• 1 onion, diced\n• 3 garlic cloves\n• 1.5L water or broth\n• 2 tbsp olive oil\n• Fresh parsley',steps:['Rinse barley under cold water.','Sauté onion, carrot and celery in olive oil 8 minutes.','Add garlic. Cook 1 minute.','Add barley and water. Bring to a boil.','Simmer 40–45 minutes until barley is completely tender.','Season generously. Add fresh parsley.','This soup improves on day 2.'],macros:{p:10,f:16,c:74}},
+  {id:44,emoji:'🫐',name:'Mixed Berry & Nut Plate',pillar:'soul',ref:'Song of Solomon 2:5 (KJV)',refText:'"Stay me with flagons, comfort me with apples."',science:'Berries have the highest antioxidant density of any commonly eaten food. Blueberries specifically improve memory, attention and processing speed by 10–15% in adults.',ingredients:'• 100g blueberries or grapes\n• 50g pomegranate seeds\n• 30g walnuts\n• 1 tbsp raw honey\n• Fresh mint\n• 1 fig, sliced',steps:['Wash all fresh berries gently. Pat dry.','Arrange in a wide bowl.','Scatter pomegranate seeds and figs.','Add walnuts.','Drizzle raw honey.','Tuck mint leaves throughout.'],macros:{p:8,f:32,c:60}},
+  {id:45,emoji:'🌿',name:'Parsley & Mint Tabbouleh',pillar:'soul',ref:'Matthew 23:23 (KJV)',refText:'"Ye pay tithe of mint and anise and cummin."',science:'Parsley contains the highest concentration of apigenin of any commonly eaten food — a flavonoid that binds to GABA receptors, producing a calming effect without sedation.',ingredients:'• 60g bulgur wheat or barley\n• 60g fresh parsley, finely chopped\n• 30g fresh mint, finely chopped\n• 3 tomatoes, finely diced\n• 4 spring onions, sliced\n• 4 tbsp olive oil\n• 3 tbsp lemon juice',steps:['Pour boiling water over bulgur/barley to cover 2cm. Rest 20 minutes.','Fluff with a fork. Spread to cool completely.','Finely chop parsley and mint — fine chopping is essential.','Combine cooled grain with herbs, tomatoes and spring onions.','Dress with olive oil and lemon generously.','Season and toss. Improve if left 30 minutes before serving.'],macros:{p:8,f:36,c:56}},
+  {id:46,emoji:'🌊',name:'Cumin & Coriander Spiced Fish',pillar:'temple',ref:'Isaiah 28:25 (KJV)',refText:'"Doth he not cast abroad the fitches?"',science:'Cumin contains thymoquinone with significant anti-inflammatory and antimicrobial properties. Studies show cumin reduces blood sugar by improving insulin sensitivity similarly to metformin.',ingredients:'• 200g white fish fillet\n• 1 tsp ground cumin\n• 1 tsp ground coriander\n• ½ tsp turmeric\n• 2 tbsp olive oil\n• 2 garlic cloves\n• Lemon juice and fresh herbs',steps:['Mix cumin, coriander, turmeric and salt.','Rub spice mix all over the fish.','Marinate 15–30 minutes.','Heat olive oil in a pan over medium-high heat.','Cook fish 4–5 minutes first side without moving.','Flip gently. Cook 3 minutes more.','Finish with lemon juice and fresh coriander.'],macros:{p:40,f:28,c:4}},
+  {id:47,emoji:'🍯',name:'Raw Honey & Cinnamon Healing Paste',pillar:'spirit',ref:'Proverbs 16:24 (KJV)',refText:'"Pleasant words are as an honeycomb, sweet to the soul, and health to the bones."',science:'Raw honey is antimicrobial, anti-inflammatory and prebiotic. Ceylon cinnamon\'s cinnamaldehyde improves insulin sensitivity and reduces fasting blood glucose by 10–29% in clinical trials.',ingredients:'• 2 tbsp raw honey (unheated, unfiltered)\n• ½ tsp Ceylon cinnamon\n• Optional: pinch of black pepper\n• Optional: pinch of turmeric',steps:['Never heat raw honey above 40°C — heat destroys the enzymes.','Mix raw honey with cinnamon in a small bowl.','Add black pepper — piperine increases absorption of all compounds.','Take 1 tsp daily on an empty stomach.','Or spread on warm (not hot) barley bread.','Use Ceylon cinnamon only — not Cassia.'],macros:{p:0,f:0,c:18}},
+  {id:48,emoji:'🌾',name:'Seven Species Harvest Bowl',pillar:'spirit',ref:'Deuteronomy 8:8 (KJV)',refText:'"A land of wheat, barley, vines, fig trees, pomegranates, oil olive and honey."',science:'God described the Promised Land by its seven species — each chosen for specific nutritional properties. Together they represent a complete nutritional profile with all major micronutrient groups.',ingredients:'• 50g cooked barley or wheat berries\n• 1 fig, chopped\n• Handful of grapes or raisins\n• 1 tbsp pomegranate seeds\n• 3 olives, sliced\n• 1 tsp raw honey\n• 1 tbsp olive oil\n• Lemon juice and salt',steps:['Cook barley or wheat berries until tender. Cool completely.','Arrange in a wide bowl as a base.','Scatter figs, grapes, pomegranate seeds and olives.','Whisk olive oil, lemon juice and a pinch of salt.','Drizzle dressing over the bowl.','Finish with a drizzle of raw honey.','Eat with intention — this is the food of the Promised Land.'],macros:{p:8,f:28,c:64}},
+  {id:49,emoji:'🧄',name:'Roasted Tomato & Herb Sauce',pillar:'soul',ref:'Numbers 11:5 (KJV)',refText:'"We remember the cucumbers, melons, leeks, onions."',science:'Cooking tomatoes significantly increases lycopene bioavailability — a carotenoid linked to reduced cancer risk (50% reduction in high consumers). Olive oil increases lycopene absorption by 300%.',ingredients:'• 500g ripe tomatoes, halved\n• 4 garlic cloves, unpeeled\n• 3 tbsp extra virgin olive oil\n• Fresh basil and thyme\n• Sea salt and black pepper\n• 1 tsp raw honey',steps:['Preheat oven to 180°C.','Arrange tomato halves cut side up.','Tuck in unpeeled garlic cloves.','Drizzle olive oil. Season with salt and pepper.','Scatter fresh thyme.','Roast 40–45 minutes until slightly caramelised.','Squeeze garlic from skins into the sauce. Crush everything together.'],macros:{p:4,f:38,c:22}},
+  {id:50,emoji:'🔥',name:'Fire-Roasted Whole Fish — Elijah Style',pillar:'spirit',ref:'1 Kings 19:6 (KJV)',refText:'"Arise and eat; and he went in the strength of that meat forty days."',science:'The meal God provided Elijah for a 40-day journey. Whole roasted fish is the most complete single-food protein source — providing all essential amino acids alongside omega-3s.',ingredients:'• 1 whole fish (400–500g)\n• Generous olive oil\n• 4 garlic cloves\n• Fresh herbs: rosemary, thyme, lemon slices\n• Sea salt and black pepper',steps:['Score the fish 4–5 times deeply on each side.','Season generously inside and out.','Stuff cavity with garlic, lemon and fresh herbs.','Rub all over with olive oil.','Cook over fire or in a very hot pan 6–8 minutes each side.','Rest 3 minutes.','Eat the whole fish — the cheeks are the sweetest part.'],macros:{p:44,f:32,c:0}}
+];
+
+// ═══ TIPS DATA ═══
+const HEALTH_TIPS=[
+  {id:1,pillar:'temple',emoji:'☀️',title:'Morning Sunlight — The Master Hormone Reset',body:'Every morning, within 30 minutes of waking, go outside and let natural light hit your eyes. Do not wear sunglasses. This single habit triggers a cortisol pulse that sets your entire circadian clock for the day.',science:'Morning light suppresses melatonin and triggers a cortisol peak that primes your brain for alertness, learning and memory. Studies show morning light reduces insomnia severity by 83% and improves mood equivalent to antidepressant medication in seasonal depression.',verse:'"And God said, Let there be light: and there was light. And God saw the light, that it was good." — Genesis 1:3–4 (KJV)',steps:['Go outside within 30 minutes of waking — even on cloudy days.','Face towards the sun (not directly at it) for 2–5 minutes.','Do not wear sunglasses during this morning practice.','On cloudy days, stay outside longer — 10–15 minutes.','Repeat every single morning without exception.']},
+  {id:2,pillar:'temple',emoji:'💧',title:'Water — First Commandment of the Body',body:'Your body loses 0.5–1 litre of water every night. Even 2% dehydration causes a 20% reduction in cognitive performance. Drink a large glass of water the moment you wake — before coffee, before food, before anything.',science:'Drinking 500ml of water in the morning increases metabolic rate by 30% for 60–90 minutes. Water before meals reduces calorie consumption by 13% and improves satiety signals by 22%.',verse:'"He sendeth the springs into the valleys." — Psalm 104:10 (KJV)',steps:['Place a full glass of water by your bed the night before.','Drink it before your feet touch the floor.','Aim for 2–3 litres throughout the day.','Eat water-rich foods — cucumbers, figs, grapes.','Your urine should be pale yellow — darker means dehydrated.']},
+  {id:3,pillar:'temple',emoji:'🏃',title:'Zone 2 Cardio — The Fat-Burning Foundation',body:'Zone 2 cardio (a pace where you can still hold a conversation) is the single most effective training method for long-term metabolic health. It trains your mitochondria to burn fat efficiently.',science:'Zone 2 training increases mitochondrial density by 40% over 8–12 weeks. Research from Stanford shows Zone 2 produces greater improvements in insulin sensitivity, VO2 max and body composition than high-intensity training per hour invested.',verse:'"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God." — 1 Corinthians 10:31 (KJV)',steps:['Walk briskly, cycle or swim at 60–70% of maximum heart rate.','You should be able to speak in full sentences — slightly breathless.','Start with 30 minutes 3x per week. Build to 45–60 minutes.','The morning is ideal — Zone 2 fasted accelerates fat burning.','Consistency over months creates the metabolic shift.']},
+  {id:4,pillar:'temple',emoji:'🌙',title:'Sleep Before Midnight — God\'s Design for Repair',body:'Every hour of sleep before midnight is worth approximately two hours after midnight in terms of physical restoration. Growth hormone — which repairs every tissue — is released almost exclusively between 10pm and 2am.',science:'Sleep deprivation below 7 hours doubles cortisol, halves testosterone, reduces insulin sensitivity by 40% and increases hunger hormones by 24%. After 17 hours without sleep, cognitive performance equals a blood alcohol level of 0.05%.',verse:'"He giveth his beloved sleep." — Psalm 127:2 (KJV)',steps:['Set a consistent bedtime before 11pm — regularity above all.','Stop all screens 60–90 minutes before sleep. Blue light blocks melatonin for 3 hours.','Keep your bedroom completely dark.','Keep room temperature at 18–20°C.','Read Scripture before sleeping — let God\'s Word be the last your mind processes.']},
+  {id:5,pillar:'temple',emoji:'⚡',title:'Strength Training — The Anti-Ageing Medicine',body:'Resistance training is the most evidence-backed intervention for slowing ageing. After 30, we lose 3–5% of muscle mass per decade without resistance training. Muscle is a metabolic organ.',science:'2 sessions of resistance training per week reduce all-cause mortality by 23%, type 2 diabetes risk by 34%, and cognitive decline risk by 19%. Muscle mass is the single strongest predictor of longevity in people over 40.',verse:'"She girdeth her loins with strength, and strengtheneth her arms." — Proverbs 31:17 (KJV)',steps:['Train every major muscle group at least twice per week.','Focus on compound movements: squats, push-ups, deadlifts, rows.','Progressive overload is the key — add weight, reps or difficulty regularly.','Rest 48–72 hours between training the same muscle group.','Eat protein within 2 hours of training for optimal muscle protein synthesis.']},
+  {id:6,pillar:'temple',emoji:'🫁',title:'Deep Breathing — The Vagus Nerve Activator',body:'Your breath is the only part of your autonomic nervous system you can consciously control. Slow deep diaphragmatic breathing directly stimulates the vagus nerve, lowering cortisol and blood pressure.',science:'Box breathing (4 seconds in, hold 4, out 4, hold 4) reduces cortisol by 18% in a single session. Daily practice for 8 weeks reduces anxiety scores by 40% and improves athletic performance by 4% through better oxygenation.',verse:'"The LORD God...breathed into his nostrils the breath of life." — Genesis 2:7 (KJV)',steps:['Practice for 5 minutes every morning after outdoor sunlight.','Breathe in for 4 counts through the nose, filling the belly first.','Hold for 4 counts.','Exhale slowly for 4 counts through the mouth.','Hold empty for 4 counts.','Begin with 5 cycles. Build to 20 over weeks.']},
+  {id:7,pillar:'temple',emoji:'🥩',title:'Protein — Build and Maintain Your Temple',body:'Most people severely under-eat protein. The research is clear: 1.6–2.2g of protein per kilogram of bodyweight is optimal for muscle building, fat loss and metabolic health.',science:'Higher protein intake increases satiety hormones and suppresses hunger hormones more than any other macronutrient. The thermic effect of protein means 20–30% of its calories are burned in digestion — making high-protein diets metabolically superior for fat loss.',verse:'"He took butter, and milk...and they did eat." — Genesis 18:8 (KJV)',steps:['Eat protein at every meal — not just dinner.','Biblical sources: fish, lamb, eggs, lentils, chickpeas, goat cheese.','Aim for 30–40g of protein per meal.','Eat your protein source first in every meal — it blunts the blood sugar response.','Track for 7 days to understand your current intake.']},
+  {id:8,pillar:'temple',emoji:'🧊',title:'Cold Exposure — The Ancient Discipline',body:'Brief cold water exposure activates brown adipose tissue, increases norepinephrine by 300%, reduces muscle inflammation, and improves insulin sensitivity.',science:'3 minutes of cold water immersion (15°C or lower) 3x per week increases metabolic rate by 350 calories per week, reduces inflammation markers by 40%, and dramatically improves mood through norepinephrine and dopamine release.',verse:'"Who hath given understanding to the heart?" — Job 38:36 (KJV)',steps:['Start with 30 seconds of cold water at the end of your shower.','Build to 2–3 minutes over 4 weeks.','Keep breathing slowly and deliberately.','Do not do cold exposure immediately after strength training.','Morning is ideal — the dopamine boost lasts for hours.']},
+  {id:9,pillar:'soul',emoji:'📵',title:'Dopamine Detox — Protect Your Reward System',body:'Every notification, every scroll artificially spikes dopamine and then crashes it — leaving your baseline lower than before. Over time this makes ordinary activities feel unstimulating.',science:'Brain scans of heavy social media users show dopamine receptor downregulation identical to substance addiction. Removing social media for 30 days increases wellbeing scores by 40%, reduces anxiety by 35%, and significantly improves sleep quality.',verse:'"I will set no wicked thing before mine eyes." — Psalm 101:3 (KJV)',steps:['No phone for the first 60 minutes after waking.','Delete social media apps from your phone. Use on laptop only, with time limits.','Replace scrolling before sleep with Scripture reading.','Use Sundays as a technology Sabbath.','Replace dopamine-spiking habits with hard rewarding activities: training, prayer, creating.']},
+  {id:10,pillar:'soul',emoji:'✍️',title:'Journalling — The Mind\'s Tool for Transformation',body:'Writing your thoughts engages the prefrontal cortex to process events that would otherwise be stored as unprocessed emotional memories. Reflection is active, not passive.',science:'Research from the University of Texas shows expressive writing for 20 minutes per day for 4 days reduces anxiety, depression and PTSD symptoms and improves immune function. Gratitude journalling activates the hypothalamus, regulating sleep, appetite and metabolism.',verse:'"Write the vision, and make it plain." — Habakkuk 2:2 (KJV)',steps:['Write every evening before sleep — even 5 minutes is transformative.','Always answer: What did God teach me today? Where did I fall short? What am I grateful for?','Write without editing or judging. Honesty to yourself is the entire point.','Review previous entries weekly — patterns reveal what God is doing.','Use your journal to pray on paper — writing prayers deepens and focuses them.']},
+  {id:11,pillar:'soul',emoji:'🧠',title:'Deep Work — The Disciplined Mind',body:'Your ability to focus without distraction is becoming the most valuable skill of the century. Deep work (90+ minutes uninterrupted focused effort) is the only way to produce work of genuine significance.',science:'Research shows that the average knowledge worker spends only 2.5 hours per day on deep work when they have a structured practice. Flow state produces 5x more output per hour and is associated with the highest levels of life satisfaction.',verse:'"Commit thy works unto the LORD, and thy thoughts shall be established." — Proverbs 16:3 (KJV)',steps:['Block 90–120 minutes in the morning for your most important work, with phone off.','Tell people in advance you are unavailable during deep work hours.','Use a physical timer — when it goes, you stop.','Begin each deep work session with a short prayer.','Protect this time as fiercely as you protect your prayer time.']},
+  {id:12,pillar:'soul',emoji:'😤',title:'Stress Management — Cast Your Anxiety on God',body:'Chronic stress is the most damaging thing you can do to your body. Cortisol, when chronically elevated, breaks down muscle, stores fat, suppresses immunity, disrupts sleep and impairs memory.',science:'Chronic stress exposure reduces hippocampal volume (the memory centre) by up to 14%, and doubles cardiovascular disease risk. People with strong faith communities have cortisol levels 20% lower on average than those without — community is medicine.',verse:'"Casting all your care upon him; for he careth for you." — 1 Peter 5:7 (KJV)',steps:['Identify your top 3 stressors. Bring each one to God specifically in prayer.','Practice 4-7-8 breathing when stress arises: inhale 4, hold 7, exhale 8.','Exercise is the most effective stress reducer — always train when stressed.','Limit news and media consumption to 30 minutes maximum per day.','Build margin into your schedule — God rested, and you must too.']},
+  {id:13,pillar:'soul',emoji:'🌊',title:'Nature Immersion — God\'s Therapy for the Mind',body:'Spending time in natural environments reduces cortisol, lowers blood pressure and improves mood more effectively than any pharmaceutical for mild-to-moderate anxiety and depression.',science:'Stanford research shows 90 minutes of walking in a natural setting reduces rumination and activity in the subgenual prefrontal cortex — the brain region associated with mental illness. Even 20 minutes in a park reduces cortisol by 21%.',verse:'"The heavens declare the glory of God." — Psalm 19:1 (KJV)',steps:['Walk outside in a park or natural area for at least 20 minutes daily.','Leave your phone behind during nature walks.','Practice noticing creation — trees, sky, birds, wind.','During your morning routine outside, extend time in green space when possible.','Consider a weekly longer walk in nature as part of your Sabbath practice.']},
+  {id:14,pillar:'soul',emoji:'🎵',title:'Worship Music — The Neuroscience of Praise',body:'Music activates more areas of the brain simultaneously than any other human activity. Worship music — with familiar melody, uplifting lyrics and communal memory — triggers dopamine release and reduces cortisol simultaneously.',science:'Research shows music reduces cortisol by 12%, reduces perceived pain by 21%, and improves immune function. Singing in groups releases oxytocin — the bonding hormone — even more powerfully than listening.',verse:'"Speaking to yourselves in psalms and hymns and spiritual songs." — Ephesians 5:19 (KJV)',steps:['Start each morning with worship music while you get ready.','Sing out loud — even imperfectly — for the neurological benefits of vocalising.','Create a playlist for your morning routine and workout.','Worship during your workout when possible — it reduces perceived exertion.','End each day with a quiet worship song as you journal.']},
+  {id:15,pillar:'spirit',emoji:'🙏',title:'Prayer — The Most Powerful Habit',body:'Prayer is not a religious duty. It is a direct conversation with the Creator of the universe. Research consistently shows that people with a regular prayer practice have lower blood pressure, stronger immune systems and higher psychological resilience.',science:'Harvard Medical School studies show people who pray regularly are 40% less likely to experience major depression, 60% less likely to die by suicide, and 46% more likely to survive major illness.',verse:'"Pray without ceasing." — 1 Thessalonians 5:17 (KJV)',steps:['Pray out loud, not silently — vocalising prayer activates more of the brain.','Begin with thanksgiving. Name specific things — not general gratitude.','Pray for others before yourself.','Keep a written prayer list. Track answered prayers.','Pray at fixed times (morning, midday, evening) to build the habit.']},
+  {id:16,pillar:'spirit',emoji:'📖',title:'Scripture — The Renewal of Your Mind',body:'Romans 12:2 says transformation begins with the renewing of the mind. The Word of God is not just spiritual food — it is the primary tool of mindset change.',science:'Repetitive reading of positive, hopeful text activates neuroplasticity — the brain\'s ability to rewire itself. Studies of communities with daily Scripture reading show lower rates of anxiety, depression and cognitive decline than comparable populations.',verse:'"Thy word is a lamp unto my feet, and a light unto my path." — Psalm 119:105 (KJV)',steps:['Read 1–2 chapters every morning before any other media.','Read out loud when possible — hearing the Word engages more neural pathways.','Keep a journal of what God speaks to you through Scripture each day.','Memorise one verse per week.','Read whole books of the Bible, not just individual verses — context is everything.']},
+  {id:17,pillar:'spirit',emoji:'✝️',title:'Fasting — The Spiritual Discipline that Transforms',body:'Fasting is the only discipline that directly affects body, soul and spirit simultaneously. Physically it triggers autophagy. Mentally it develops self-mastery. Spiritually it is a declaration that God is more essential than food.',science:'After 16 hours, autophagy peaks — your body\'s cellular housekeeping process. After 24 hours, growth hormone increases by 300–500%. After 36 hours, the brain produces more BDNF and ketones — both neuroprotective.',verse:'"Is not this the fast that I have chosen? to loose the bands of wickedness." — Isaiah 58:6 (KJV)',steps:['Start with 12/12 — stop eating 2 hours before bed, resume 2 hours after waking.','Build to 16/8 over 4–6 weeks by delaying your first meal.','Drink water, black coffee or plain herbal tea during fasting hours.','Break your fast gently — start with water and fruit.','One 24-hour fast per month is a powerful spiritual and physical reset.']},
+  {id:18,pillar:'spirit',emoji:'🤝',title:'Accountability — Iron Sharpening Iron',body:'You cannot fulfil your calling alone. God designed humans for community — not just for comfort but for transformation. Accountability removes the privacy that allows sin and laziness to thrive.',science:'The American Society of Training and Development found that commitment to another person increases goal achievement by 65%. With a specific accountability appointment, this rises to 95%.',verse:'"Iron sharpeneth iron; so a man sharpeneth the countenance of his friend." — Proverbs 27:17 (KJV)',steps:['Choose one accountability partner from the GodHealth Tribe who is serious.','Check in daily — even a brief voice message is enough.','Be brutally honest. Accountability without honesty is just performance.','Share your three daily goals with your partner each morning.','Celebrate their victories as loudly as you celebrate your own.']},
+  {id:19,pillar:'spirit',emoji:'🌅',title:'Fixed Prayer Times — The Ancient Practice',body:'Throughout Scripture, God\'s people prayed at fixed times — Daniel three times daily, David seven times. Fixed prayer times anchor your entire day around God, preventing drift into distraction.',science:'Habit research shows that habits attached to existing time anchors are 300% more likely to be maintained than flexible habits left to willpower. Fixed prayer times convert prayer from a discipline requiring constant decision-making into automatic behaviour.',verse:'"Evening, and morning, and at noon, will I pray." — Psalm 55:17 (KJV)',steps:['Choose three fixed prayer times: morning, midday, evening.','Set reminders until the times become automatic — approximately 66 days.','Morning prayer: 10 minutes minimum — thanksgiving, intercession, surrender.','Midday prayer: even 2 minutes of conscious acknowledgement of God\'s presence.','Evening prayer: review your day with God, confess, give thanks, entrust tomorrow to Him.']},
+  {id:20,pillar:'spirit',emoji:'❤️',title:'Gratitude — Rewiring Your Brain for Joy',body:'Gratitude is a discipline of the mind that, when repeated daily, literally changes the structure of your brain. Consistent gratitude practice rewires the brain\'s negativity bias toward a baseline of thankfulness.',science:'MRI studies show that gratitude practice activates the medial prefrontal cortex and creates lasting changes in neural structure over 8–12 weeks. People who journal 3 specific things of gratitude daily report 25% higher happiness levels and sleep 30 minutes longer on average.',verse:'"In every thing give thanks: for this is the will of God." — 1 Thessalonians 5:18 (KJV)',steps:['Write 3 specific things of gratitude every single day.','Specificity is critical: not "I\'m grateful for my health" but "I\'m grateful that my body carried me through today\'s training."','Say thank you to God out loud for each one.','Write one gratitude to another person each week — and deliver it.','On hard days, gratitude is a weapon. Wield it deliberately.']},
+  {id:21,pillar:'spirit',emoji:'🕊️',title:'Forgiveness — The Physical Act of Healing',body:'Unforgiveness keeps the body in a sustained stress response — elevated cortisol, elevated inflammatory markers, elevated blood pressure. Forgiveness is not just spiritual obedience — it is physical self-care.',science:'Studies show that people who forgive have 27% lower cortisol levels, significantly reduced blood pressure, lower rates of cardiovascular disease and improved immune function compared to those who hold grudges.',verse:'"Forgive us our debts, as we forgive our debtors." — Matthew 6:12 (KJV)',steps:['Write down the names of people you have not fully forgiven.','For each one, pray: "Lord, I choose to forgive [name]. I release this to You."','Forgiveness is a decision, not a feeling. Make the decision first.','Journal about what unforgiveness has been costing you physically and spiritually.','Repeat the prayer as many times as needed — 70 times 7 if necessary.']},
+  {id:22,pillar:'spirit',emoji:'😴',title:'The Sabbath — God\'s Weekly Reset',body:'God commanded rest not because He needed it but because you do. The Sabbath is a weekly recalibration — a day to remember that your worth is not in your productivity.',science:'Research on burnout consistently identifies the absence of recovery time as the primary cause. Athletes who do not include recovery days plateau or regress — the same is true for mental and spiritual athletes.',verse:'"Remember the sabbath day, to keep it holy." — Exodus 20:8 (KJV)',steps:['Choose a fixed 24-hour Sabbath period — same time every week.','No work, no social media, no screens beyond minimal necessity.','Begin with worship. End with worship.','Eat a special meal with people you love.','Use the time for prayer, Scripture, nature, rest and relationships.']},
+  {id:23,pillar:'soul',emoji:'📚',title:'Reading — The Discipline of the Renewed Mind',body:'Leaders are readers. Paul wrote "bring the books" from prison. Knowledge in service of God\'s Kingdom is never wasted.',science:'Reading for 6 minutes reduces stress by 68% — more than music, walking or drinking tea. Regular reading delays cognitive decline and builds cognitive reserve against dementia. Literary fiction improves understanding of others\'s perspectives by 25%.',verse:'"Study to shew thyself approved unto God." — 2 Timothy 2:15 (KJV)',steps:['Read 20–30 minutes every day — ideally morning or before sleep instead of screens.','Read Scripture first. Then books that grow your knowledge and calling.','Keep a reading journal — write one insight from every book.','Read biographies of great men and women of faith.','Set a goal: one book per month minimum.']},
+  {id:24,pillar:'temple',emoji:'🔥',title:'HIIT — Short, Intense, Transformative',body:'High-Intensity Interval Training produces the same cardiovascular and metabolic adaptations as twice the volume of moderate cardio — in significantly less time. HIIT specifically targets visceral fat.',science:'A meta-analysis of 77 studies showed HIIT reduces waist circumference 1.8cm more than moderate exercise, reduces visceral fat by 17% more, and improves VO2 max 9% more per hour invested. The afterburn effect keeps metabolism elevated 24–48 hours post-session.',verse:'"She girdeth her loins with strength." — Proverbs 31:17 (KJV)',steps:['Start with 4 rounds of: 40 seconds hard effort, 20 seconds rest.','Examples: sprinting, burpees, jump squats, mountain climbers.','Always warm up 5 minutes before — cold muscles are injury-prone.','HIIT should feel genuinely difficult — if you can hold a conversation, push harder.','Limit to 3 sessions per week maximum — more increases cortisol.']},
+  {id:25,pillar:'soul',emoji:'🎯',title:'Goal Setting — The Vision that Disciplines',body:'Without a clear vision, your brain defaults to comfort and avoidance. Written goals activate the reticular activating system (RAS) — filtering information toward your stated objectives.',science:'Specific written goals with deadlines produce 90% higher achievement rates than vague intentions. Implementation intentions ("When X happens, I will do Y") reduce decision fatigue and automate behaviour change, making consistency require less willpower over time.',verse:'"Write the vision, and make it plain." — Habakkuk 2:2 (KJV)',steps:['Write 3 goals every morning — one physical, one spiritual, one personal.','Make each goal specific, measurable and time-bound.','Review your 90-day goals every Sunday.','Share your goals with your accountability partner in the Tribe.','At the end of each day, ask: did I live today in line with who I want to become?']},
+  {id:26,pillar:'temple',emoji:'🧘',title:'Stretching & Mobility — The Body\'s Flexibility',body:'Flexibility and mobility are the foundation that determines how long you can train without injury. Tight hips and poor mobility create compensation patterns that eventually result in pain.',science:'Regular stretching (30–90 seconds per muscle, 5x per week) increases flexibility by 18–32% over 12 weeks. It improves sleep quality by activating the parasympathetic nervous system and reduces chronic lower back pain by 27%.',verse:'"Who satisfieth thy mouth with good things; so that thy youth is renewed like the eagle\'s." — Psalm 103:5 (KJV)',steps:['Stretch every morning after sunlight and water.','Hold each stretch for a minimum of 30 seconds.','Focus on hips, thoracic spine and hamstrings.','Never bounce during stretching — this causes micro-tears.','After training, hold stretches 60–90 seconds while muscles are warm.']},
+  {id:27,pillar:'soul',emoji:'🤲',title:'Serving Others — The Paradox of Fulfilment',body:'Acts of service for others consistently produce higher levels of wellbeing, purpose and happiness than self-focused pursuits — even when those pursuits are successful.',science:'Harvard research shows spending money on others produces greater happiness than spending on yourself. Volunteering regularly is associated with a 22% lower mortality rate. Helping others activates the brain\'s reward centre more powerfully than receiving help.',verse:'"For even the Son of man came not to be ministered unto, but to minister." — Mark 10:45 (KJV)',steps:['Identify one specific way you can serve someone today — before considering your own needs.','In the GodHealth Tribe: pray for one member daily by name.','Look for the person in your life who needs encouragement.','Give your time generously — time is more valuable than money in most relationships.','Serve without recognition. What you do in secret, God rewards openly.']}
+];
+
+// ═══ RENDER MEALS ═══
+function filterMeals(filter,btn){
+  document.querySelectorAll('#meal-filters .meal-filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderMeals(filter);
+}
+function renderMeals(filter){
+  const list=document.getElementById('meals-list');if(!list)return;
+  const filtered=filter==='all'?BIBLICAL_MEALS:BIBLICAL_MEALS.filter(m=>m.pillar===filter);
+  list.innerHTML=filtered.map(m=>`
+    <div class="meal-card-item" id="mc-${m.id}">
+      <div class="meal-card-header" onclick="toggleMealCard(${m.id})">
+        <div class="meal-card-emoji">${m.emoji}</div>
+        <div class="meal-card-info">
+          <div class="meal-card-name">${m.name}</div>
+          <div class="meal-card-meta">
+            <span class="meal-card-pillar ${m.pillar}">${m.pillar==='fast'?'⏱ Break Fast':m.pillar==='temple'?'🏛️ Temple':m.pillar==='soul'?'🧠 Soul':'✝️ Spirit'}</span>
+            <span class="meal-card-ref">${m.ref}</span>
+          </div>
+        </div>
+        <div class="meal-card-chevron">▼</div>
+      </div>
+      <div class="meal-card-body">
+        <div class="meal-section-label">Biblical Foundation</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:8px;">${m.refText}</div>
+        <div class="meal-section-label">Why This is Good for You</div>
+        <div class="meal-science">${m.science}</div>
+        <div class="meal-section-label">Ingredients</div>
+        <div class="meal-ingredients">${m.ingredients.replace(/\n/g,'<br>')}</div>
+        <div class="meal-section-label">How to Make It</div>
+        <ol class="meal-steps">${m.steps.map((s,i)=>`<li class="meal-step"><div class="meal-step-num">${i+1}</div><div>${s}</div></li>`).join('')}</ol>
+        <div class="meal-macros">
+          <span class="meal-macro-tag p">Protein ~${m.macros.p}%</span>
+          <span class="meal-macro-tag f">Fat ~${m.macros.f}%</span>
+          <span class="meal-macro-tag c">Carbs ~${m.macros.c}%</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function toggleMealCard(id){document.getElementById('mc-'+id)?.classList.toggle('open');}
+
+// ═══ RENDER TIPS ═══
+function filterTips(filter,btn){
+  document.querySelectorAll('#page-tips .meal-filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderTips(filter);
+}
+function renderTips(filter){
+  const list=document.getElementById('tips-list');if(!list)return;
+  const filtered=filter==='all'?HEALTH_TIPS:HEALTH_TIPS.filter(t=>t.pillar===filter);
+  list.innerHTML=filtered.map(t=>`
+    <div class="tip-card">
+      <div class="tip-header">
+        <div class="tip-emoji">${t.emoji}</div>
+        <div class="tip-header-body">
+          <div class="tip-title">${t.title}</div>
+          <span class="tip-pillar-tag ${t.pillar}">${t.pillar==='temple'?'🏛️ Temple':t.pillar==='soul'?'🧠 Soul':'✝️ Spirit'}</span>
+        </div>
+      </div>
+      <div class="tip-body">${t.body}</div>
+      <div class="tip-science"><strong>Science:</strong> ${t.science}</div>
+      <div class="tip-verse">${t.verse}</div>
+      <ul class="tip-steps">${t.steps.map(s=>`<li class="tip-step"><div class="tip-step-dot ${t.pillar}"></div><div>${s}</div></li>`).join('')}</ul>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>

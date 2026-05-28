@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0D1F0D">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
+<title>GodHealth — Covenant Circle</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F9F6F0;--bg2:#FFFFFF;--bg3:#F2EDE4;
+  --border:#E8E0D0;--border2:#D4C9B0;
+  --ink:#1A1410;--ink2:#5C4F3A;--ink3:#9A8E7A;
+  --temple:#C4573A;--temple-light:#FAF0ED;
+  --soul:#4A7FA5;--soul-light:#EEF4F9;
+  --spirit:#6B8F5E;--spirit-light:#EFF4EE;
+  --gold:#B8912A;--gold-light:#FBF5E6;
+  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:flex;flex-direction:column;}
+
+/* HEADER */
+.app-header{background:#0D1F0D;border-bottom:1px solid rgba(107,143,94,.25);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.3);}
+.header-left{display:flex;align-items:center;gap:10px;}
+.back-btn{background:rgba(245,237,216,.1);border:1px solid rgba(245,237,216,.15);color:#F5EDD8;font-size:16px;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;}
+.header-logo{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#F5EDD8;}
+.header-logo em{font-style:italic;color:var(--gold);}
+.header-badge{background:rgba(107,143,94,.2);border:1px solid rgba(107,143,94,.35);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--spirit);}
+
+/* SCROLL */
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll-area::-webkit-scrollbar{width:0;}
+.content{padding:16px;}
+
+/* TABS */
+.tab-row{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px;}
+.tab-btn{background:var(--bg2);border:1.5px solid var(--border);color:var(--ink3);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.tab-btn.active{background:var(--spirit);border-color:var(--spirit);color:#fff;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* HERO */
+.covenant-hero{background:linear-gradient(135deg,#0A1A0A,#142014);border:1px solid rgba(107,143,94,.3);border-radius:var(--radius);padding:20px;margin-bottom:16px;position:relative;overflow:hidden;}
+.covenant-hero::before{content:'✝';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:90px;opacity:.05;color:var(--spirit);}
+.hero-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(107,143,94,.7);margin-bottom:6px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#F5EDD8;line-height:1.2;margin-bottom:8px;}
+.hero-title em{font-style:italic;color:var(--gold);}
+.hero-verse{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:rgba(245,237,216,.5);line-height:1.65;}
+
+/* CARD */
+.card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.card-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+
+/* PROFILE SETUP */
+.profile-avatar-picker{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.avatar-opt{font-size:28px;width:44px;height:44px;border-radius:10px;border:2px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.avatar-opt.selected{border-color:var(--spirit);background:var(--spirit-light);box-shadow:0 0 0 3px rgba(107,143,94,.15);}
+.profile-input{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:14px;padding:11px 13px;border-radius:9px;outline:none;transition:border-color .25s;margin-bottom:10px;}
+.profile-input:focus{border-color:var(--spirit);}
+.goal-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.goal-chip{font-size:11px;font-weight:700;padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg3);color:var(--ink3);cursor:pointer;transition:all .2s;}
+.goal-chip.selected{background:var(--spirit-light);border-color:rgba(107,143,94,.4);color:var(--spirit);}
+.save-profile-btn{width:100%;background:var(--spirit);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border:none;border-radius:10px;cursor:pointer;transition:all .25s;}
+.save-profile-btn:hover{background:#5a7a4e;}
+
+/* MY PROFILE DISPLAY */
+.my-profile-card{background:linear-gradient(135deg,var(--spirit-light),var(--bg2));border:1.5px solid rgba(107,143,94,.25);border-radius:var(--radius);padding:18px;margin-bottom:12px;}
+.my-profile-top{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.my-avatar{width:56px;height:56px;border-radius:14px;background:var(--spirit-light);border:2px solid rgba(107,143,94,.3);display:flex;align-items:center;justify-content:center;font-size:28px;}
+.my-profile-info{flex:1;}
+.my-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.my-sub{font-size:11px;color:var(--ink3);}
+.my-goals{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.my-goal-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:var(--spirit-light);color:var(--spirit);}
+
+/* COVENANT CODE */
+.covenant-code-box{background:linear-gradient(135deg,#1A0E00,#2A1A00);border:1px solid rgba(184,145,42,.3);border-radius:12px;padding:16px;text-align:center;margin-bottom:12px;}
+.code-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(184,145,42,.7);margin-bottom:8px;}
+.code-value{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--gold);letter-spacing:6px;margin-bottom:10px;}
+.code-sub{font-size:11px;color:rgba(245,237,216,.4);line-height:1.55;margin-bottom:12px;}
+.code-share-btn{background:var(--gold);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .25s;}
+.code-share-btn:hover{background:#9A7020;}
+
+/* PARTNER CARDS */
+.partner-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
+.partner-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.partner-avatar{width:48px;height:48px;border-radius:12px;background:var(--spirit-light);border:2px solid rgba(107,143,94,.25);display:flex;align-items:center;justify-content:center;font-size:24px;}
+.partner-info{flex:1;}
+.partner-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.partner-since{font-size:10px;color:var(--ink3);}
+.partner-status{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--spirit);}
+.partner-status-dot{width:8px;height:8px;border-radius:50%;background:var(--spirit);}
+.partner-goals{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;}
+.partner-goal-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:20px;background:var(--spirit-light);color:var(--spirit);}
+.partner-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.partner-action-btn{padding:9px;border-radius:8px;font-family:'Lato',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;transition:all .2s;text-align:center;}
+.pa-pray{background:var(--spirit-light);color:var(--spirit);border:1px solid rgba(107,143,94,.25);}
+.pa-check{background:var(--gold-light);color:var(--gold);border:1px solid rgba(184,145,42,.25);}
+.pa-message{background:var(--soul-light);color:var(--soul);border:1px solid rgba(74,127,165,.2);}
+.pa-remove{background:var(--temple-light);color:var(--temple);border:1px solid rgba(196,87,58,.2);}
+
+/* CHECK-IN */
+.checkin-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.checkin-partner{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--spirit);margin-bottom:4px;}
+.checkin-date{font-size:9px;color:var(--ink3);margin-bottom:6px;}
+.checkin-scores{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.checkin-score{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--bg2);color:var(--ink2);}
+.checkin-note{font-size:12px;color:var(--ink2);font-style:italic;line-height:1.5;}
+
+/* WEEKLY CHECK-IN FORM */
+.checkin-form{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.checkin-slider-row{margin-bottom:12px;}
+.cs-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.cs-label{font-size:12px;font-weight:700;color:var(--ink);}
+.cs-val{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--spirit);}
+.cs-slider{width:100%;-webkit-appearance:none;height:5px;border-radius:100px;accent-color:var(--spirit);outline:none;cursor:pointer;}
+.cs-textarea{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;line-height:1.65;padding:10px 12px;resize:vertical;min-height:65px;outline:none;border-radius:9px;transition:border-color .25s;margin-bottom:10px;}
+.cs-textarea:focus{border-color:var(--spirit);}
+.cs-submit{width:100%;background:var(--spirit);color:#fff;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:12px;border:none;border-radius:9px;cursor:pointer;transition:all .25s;}
+.cs-submit:hover{background:#5a7a4e;}
+
+/* CONNECT */
+.connect-input{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:20px;font-weight:700;letter-spacing:4px;text-align:center;padding:14px;border-radius:10px;outline:none;margin-bottom:10px;transition:border-color .25s;text-transform:uppercase;}
+.connect-input:focus{border-color:var(--spirit);}
+.connect-btn{width:100%;background:var(--spirit);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border:none;border-radius:10px;cursor:pointer;transition:all .25s;margin-bottom:8px;}
+.connect-btn:hover{background:#5a7a4e;}
+
+/* HOW IT WORKS */
+.how-step{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);}
+.how-step:last-child{border-bottom:none;}
+.how-num{width:32px;height:32px;border-radius:50%;background:var(--spirit);color:#fff;font-family:'Playfair Display',serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.how-body{flex:1;}
+.how-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.how-desc{font-size:11px;color:var(--ink3);line-height:1.55;}
+
+/* PRAYER REQUESTS */
+.prayer-req-item{background:var(--spirit-light);border:1px solid rgba(107,143,94,.2);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.prayer-req-name{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--spirit);margin-bottom:4px;}
+.prayer-req-text{font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:6px;}
+.prayer-req-date{font-size:10px;color:var(--ink3);}
+.pray-for-btn{font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--spirit);color:#fff;border:none;cursor:pointer;font-family:'Lato',sans-serif;margin-top:6px;}
+
+/* VERSE STRIP */
+.verse-strip{background:var(--gold-light);border:1px solid rgba(184,145,42,.2);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
+.verse-text{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--ink);line-height:1.6;margin-bottom:4px;}
+.verse-ref{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:32px 16px;}
+.empty-state-icon{font-size:48px;margin-bottom:12px;opacity:.35;}
+.empty-state-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.empty-state-desc{font-size:12px;color:var(--ink3);line-height:1.65;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;padding:10px 20px;border-radius:100px;z-index:999;opacity:0;transition:all .35s;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+@keyframes riseUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ACCESSIBILITY */
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #B8912A;outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="header-left">
+    <a class="back-btn" href="index.html" onclick="ghGoBack(event)" aria-label="Back to home">←</a>
+    <div class="header-logo">God<em>Health</em> — Covenant Circle</div>
+  </div>
+  <div class="header-badge" id="header-partner-count">👥 0 partners</div>
+</div>
+
+<div class="scroll-area">
+  <div class="content">
+
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="switchTab('partners',this)">👥 Partners</button>
+      <button class="tab-btn" onclick="switchTab('connect',this)">🔗 Connect</button>
+      <button class="tab-btn" onclick="switchTab('checkin',this)">✅ Check-In</button>
+      <button class="tab-btn" onclick="switchTab('prayer',this)">🙏 Requests</button>
+      <button class="tab-btn" onclick="switchTab('profile',this)">👤 Profile</button>
+    </div>
+
+    <!-- PARTNERS TAB -->
+    <div class="tab-panel active" id="tab-partners">
+
+      <div class="covenant-hero">
+        <div class="hero-label">Covenant Circle</div>
+        <div class="hero-title">You Were Not Made<br>to Walk <em>Alone</em></div>
+        <div class="hero-verse">"Iron sharpeneth iron; so a man sharpeneth the countenance of his friend." — Proverbs 27:17 (KJV)</div>
+      </div>
+
+      <div id="partners-list"></div>
+
+      <div class="card" style="text-align:center;">
+        <div style="font-size:13px;color:var(--ink3);line-height:1.65;margin-bottom:14px;">Add a partner by sharing your Covenant Code from the Connect tab. They enter your code — and you are connected.</div>
+        <button onclick="switchTabByName('connect')" style="background:var(--spirit);color:#fff;border:none;padding:11px 24px;border-radius:9px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">🔗 Find a Partner</button>
+      </div>
+
+      <div class="card">
+        <div class="card-label">The Covenant Circle Principle</div>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.75;">
+          <p style="margin-bottom:8px;">GodHealth is built on the Covenant Circle model. You do not find a random stranger for accountability. You <strong>bring one person</strong> — someone you personally know and trust. They bring one. That is how the circle grows.</p>
+          <p style="margin-bottom:8px;">This is how Jesus worked. He chose twelve people He knew personally. He invested deeply in them. He did not broadcast to thousands — He transformed twelve who then transformed the world.</p>
+          <p style="font-style:italic;color:var(--ink3);">"Where two or three are gathered together in my name, there am I in the midst of them." — Matthew 18:20 (KJV)</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CONNECT TAB -->
+    <div class="tab-panel" id="tab-connect">
+
+      <div class="verse-strip">
+        <div class="verse-text">"Two are better than one; because they have a good reward for their labour. For if they fall, the one will lift up his fellow."</div>
+        <div class="verse-ref">Ecclesiastes 4:9–10 (KJV)</div>
+      </div>
+
+      <!-- MY CODE -->
+      <div id="my-code-section"></div>
+
+      <!-- ENTER A CODE -->
+      <div class="card">
+        <div class="card-label">Enter a Partner's Code</div>
+        <p style="font-size:12px;color:var(--ink3);margin-bottom:12px;line-height:1.55;">Ask your accountability partner to open GodHealth, go to their Connect tab, and share their 6-letter Covenant Code with you. Enter it below.</p>
+        <input type="text" class="connect-input" id="partner-code-input" placeholder="ABC123" maxlength="6" oninput="this.value=this.value.toUpperCase()"/>
+        <button class="connect-btn" onclick="connectPartner()">Connect as Covenant Partners</button>
+      </div>
+
+      <div class="card">
+        <div class="card-label">How the Covenant Code Works</div>
+        <div class="how-step"><div class="how-num">1</div><div class="how-body"><div class="how-title">You generate your unique code</div><div class="how-desc">Your 6-letter Covenant Code is generated automatically from your profile. It never changes. It identifies you uniquely within the GodHealth Covenant Circle.</div></div></div>
+        <div class="how-step"><div class="how-num">2</div><div class="how-body"><div class="how-title">Share it with someone you trust</div><div class="how-desc">Send your code via WhatsApp, message or in person to someone you want to walk this journey with. This is a person you personally invite — not a stranger.</div></div></div>
+        <div class="how-step"><div class="how-num">3</div><div class="how-body"><div class="how-title">They enter your code — you are connected</div><div class="how-desc">When they enter your code in their app, you appear as partners. When you enter their code, they appear in your circle. The covenant is established.</div></div></div>
+        <div class="how-step"><div class="how-num">4</div><div class="how-body"><div class="how-title">Weekly check-ins hold you accountable</div><div class="how-desc">Every week you and your partner share your scores, your struggles and your wins. Iron sharpens iron. You will not want to disappoint someone who is watching and praying for you.</div></div></div>
+      </div>
+
+    </div>
+
+    <!-- CHECK-IN TAB -->
+    <div class="tab-panel" id="tab-checkin">
+
+      <div class="verse-strip">
+        <div class="verse-text">"Confess your faults one to another, and pray one for another, that ye may be healed."</div>
+        <div class="verse-ref">James 5:16 (KJV)</div>
+      </div>
+
+      <div class="checkin-form">
+        <div class="card-label">This Week's Check-In</div>
+        <p style="font-size:12px;color:var(--ink3);margin-bottom:14px;line-height:1.55;">Be honest. Your partner is not your judge — they are your fellow soldier. True accountability requires true honesty.</p>
+
+        <div class="checkin-slider-row">
+          <div class="cs-header"><span class="cs-label">🏛️ Temple — How did your body do?</span><span class="cs-val" id="cs-temple-val">5</span></div>
+          <input type="range" class="cs-slider" min="1" max="10" value="5" id="cs-temple" oninput="document.getElementById('cs-temple-val').textContent=this.value">
+        </div>
+        <div class="checkin-slider-row">
+          <div class="cs-header"><span class="cs-label">🧠 Soul — How was your mind?</span><span class="cs-val" id="cs-soul-val">5</span></div>
+          <input type="range" class="cs-slider" min="1" max="10" value="5" id="cs-soul" oninput="document.getElementById('cs-soul-val').textContent=this.value">
+        </div>
+        <div class="checkin-slider-row">
+          <div class="cs-header"><span class="cs-label">✝️ Spirit — How was your walk with God?</span><span class="cs-val" id="cs-spirit-val">5</span></div>
+          <input type="range" class="cs-slider" min="1" max="10" value="5" id="cs-spirit" oninput="document.getElementById('cs-spirit-val').textContent=this.value">
+        </div>
+        <div class="checkin-slider-row">
+          <div class="cs-header"><span class="cs-label">🔥 Streak — Consecutive days completed</span><span class="cs-val" id="cs-streak-val">0</span></div>
+          <input type="range" class="cs-slider" min="0" max="30" value="0" id="cs-streak" oninput="document.getElementById('cs-streak-val').textContent=this.value">
+        </div>
+
+        <div style="font-size:11px;font-weight:700;color:var(--spirit);margin-bottom:4px;">What was your biggest win this week?</div>
+        <textarea class="cs-textarea" id="cs-win" placeholder="Something God did, a habit you kept, a battle you won..."></textarea>
+
+        <div style="font-size:11px;font-weight:700;color:var(--temple);margin-bottom:4px;">Where did you struggle?</div>
+        <textarea class="cs-textarea" id="cs-struggle" placeholder="Be honest. This is a safe place. Your partner is not your judge."></textarea>
+
+        <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:4px;">What do you need prayer for this week?</div>
+        <textarea class="cs-textarea" id="cs-prayer" placeholder="A specific prayer request for your partner to carry..."></textarea>
+
+        <button class="cs-submit" onclick="submitCheckin()">Share This Week's Check-In</button>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Previous Check-Ins</div>
+        <div id="checkin-history"></div>
+      </div>
+
+    </div>
+
+    <!-- PRAYER REQUESTS TAB -->
+    <div class="tab-panel" id="tab-prayer">
+
+      <div class="verse-strip">
+        <div class="verse-text">"Is any among you afflicted? let him pray. Is any merry? let him sing psalms. Pray one for another."</div>
+        <div class="verse-ref">James 5:13,16 (KJV)</div>
+      </div>
+
+      <!-- ADD REQUEST -->
+      <div class="card">
+        <div class="card-label">Share a Prayer Request</div>
+        <p style="font-size:12px;color:var(--ink3);margin-bottom:10px;line-height:1.55;">Share what you are believing God for. Your partners will carry this with you in prayer.</p>
+        <textarea class="cs-textarea" id="new-prayer-req" placeholder="What are you trusting God for? Be specific. The more specific the request, the more specific the testimony when God answers..." style="min-height:75px;margin-bottom:10px;"></textarea>
+        <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;" id="req-category-chips">
+          <button class="goal-chip selected" onclick="selectReqCat('health',this)">🏛️ Health</button>
+          <button class="goal-chip" onclick="selectReqCat('faith',this)">✝️ Faith</button>
+          <button class="goal-chip" onclick="selectReqCat('family',this)">👨‍👩‍👧 Family</button>
+          <button class="goal-chip" onclick="selectReqCat('work',this)">💼 Work</button>
+          <button class="goal-chip" onclick="selectReqCat('breakthrough',this)">⚡ Breakthrough</button>
+          <button class="goal-chip" onclick="selectReqCat('other',this)">🌿 Other</button>
+        </div>
+        <button class="cs-submit" onclick="addPrayerRequest()">Share Prayer Request</button>
+      </div>
+
+      <!-- MY REQUESTS -->
+      <div class="card">
+        <div class="card-label">My Prayer Requests</div>
+        <div id="my-prayer-requests"></div>
+      </div>
+
+      <!-- PARTNER REQUESTS -->
+      <div class="card">
+        <div class="card-label">Praying For My Partners</div>
+        <div id="partner-prayer-requests"></div>
+      </div>
+
+    </div>
+
+    <!-- PROFILE TAB -->
+    <div class="tab-panel" id="tab-profile">
+
+      <div id="profile-display"></div>
+
+      <div class="card">
+        <div class="card-label">Edit Your Profile</div>
+        <div style="font-size:11px;color:var(--ink3);margin-bottom:10px;">Choose your avatar</div>
+        <div class="profile-avatar-picker" id="avatar-picker">
+          <div class="avatar-opt" onclick="selectAvatar('🙏',this)">🙏</div>
+          <div class="avatar-opt" onclick="selectAvatar('⚡',this)">⚡</div>
+          <div class="avatar-opt" onclick="selectAvatar('🦅',this)">🦅</div>
+          <div class="avatar-opt" onclick="selectAvatar('🔥',this)">🔥</div>
+          <div class="avatar-opt" onclick="selectAvatar('✝️',this)">✝️</div>
+          <div class="avatar-opt" onclick="selectAvatar('👑',this)">👑</div>
+          <div class="avatar-opt" onclick="selectAvatar('🌿',this)">🌿</div>
+          <div class="avatar-opt" onclick="selectAvatar('💎',this)">💎</div>
+          <div class="avatar-opt" onclick="selectAvatar('🛡️',this)">🛡️</div>
+          <div class="avatar-opt" onclick="selectAvatar('⚔️',this)">⚔️</div>
+        </div>
+        <input type="text" class="profile-input" id="profile-name-input" placeholder="Your first name..." maxlength="30"/>
+        <input type="text" class="profile-input" id="profile-location-input" placeholder="Your city or country (optional)..." maxlength="40"/>
+        <div style="font-size:11px;color:var(--ink3);margin-bottom:8px;">Your health goals (select all that apply)</div>
+        <div class="goal-chips" id="profile-goal-chips">
+          <button class="goal-chip" onclick="toggleGoal('Lose Weight',this)">🔥 Lose Weight</button>
+          <button class="goal-chip" onclick="toggleGoal('Build Strength',this)">🏛️ Build Strength</button>
+          <button class="goal-chip" onclick="toggleGoal('Better Sleep',this)">🌙 Better Sleep</button>
+          <button class="goal-chip" onclick="toggleGoal('More Energy',this)">⚡ More Energy</button>
+          <button class="goal-chip" onclick="toggleGoal('Deepen Faith',this)">✝️ Deepen Faith</button>
+          <button class="goal-chip" onclick="toggleGoal('Break Bad Habits',this)">🔓 Break Bad Habits</button>
+          <button class="goal-chip" onclick="toggleGoal('Healthy Eating',this)">🌿 Healthy Eating</button>
+          <button class="goal-chip" onclick="toggleGoal('Mental Clarity',this)">🧠 Mental Clarity</button>
+        </div>
+        <div style="font-size:11px;color:var(--ink3);margin:10px 0 6px;">Your testimony (optional)</div>
+        <textarea class="cs-textarea" id="profile-testimony" placeholder="In one sentence: what is your story and why are you on this journey?" style="min-height:55px;margin-bottom:10px;"></textarea>
+        <button class="save-profile-btn" onclick="saveProfile()">Save My Profile</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ STATE ═══
+let CC={
+  profile:{name:'',avatar:'🙏',goals:[],location:'',testimony:'',code:''},
+  partners:[],
+  checkins:[],
+  prayerRequests:[],
+  selectedGoals:[],
+  selectedAvatar:'🙏',
+  reqCategory:'health'
+};
+
+function lcc(){try{const s=localStorage.getItem('gh_covenant_v1');if(s)CC=JSON.parse(s);}catch(e){}}
+function scc(){try{localStorage.setItem('gh_covenant_v1',JSON.stringify(CC));return true;}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}}
+function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+id)?.classList.add('active');
+}
+function switchTabByName(id){
+  const btn=document.querySelector(`[onclick*="'${id}'"]`);
+  if(btn)switchTab(id,btn);
+}
+
+// Generate deterministic code from name
+function generateCode(name){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let hash=0;const str=name+(new Date().getFullYear());
+  for(let i=0;i<str.length;i++){hash=((hash<<5)-hash)+str.charCodeAt(i);hash|=0;}
+  let code='';let h=Math.abs(hash);
+  for(let i=0;i<6;i++){code+=chars[h%chars.length];h=Math.floor(h/chars.length);}
+  // Mix with random for uniqueness
+  if(!CC.profile.code||CC.profile.code.length!==6){
+    let c='';for(let i=0;i<6;i++)c+=chars[Math.floor(Math.random()*chars.length)];
+    return c;
+  }
+  return CC.profile.code;
+}
+
+// ═══ INIT ═══
+lcc();
+
+// Sync name from main app
+if(!CC.profile.name){
+  try{const m=JSON.parse(localStorage.getItem('gh_app_v2')||'{}');if(m.name){CC.profile.name=m.name;scc();}}catch(e){}
+}
+
+renderAll();
+
+function renderAll(){
+  renderPartners();
+  renderMyCodeSection();
+  renderProfileDisplay();
+  renderProfileForm();
+  renderCheckinHistory();
+  renderPrayerRequests();
+  updateHeaderBadge();
+}
+
+function updateHeaderBadge(){
+  document.getElementById('header-partner-count').textContent=`👥 ${CC.partners.length} ${CC.partners.length===1?'partner':'partners'}`;
+}
+
+// ═══ PROFILE ═══
+function selectAvatar(emoji,el){
+  CC.selectedAvatar=emoji;
+  document.querySelectorAll('.avatar-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function toggleGoal(goal,el){
+  CC.selectedGoals=CC.selectedGoals||[];
+  const idx=CC.selectedGoals.indexOf(goal);
+  if(idx>=0){CC.selectedGoals.splice(idx,1);el.classList.remove('selected');}
+  else{CC.selectedGoals.push(goal);el.classList.add('selected');}
+}
+
+function saveProfile(){
+  const name=document.getElementById('profile-name-input').value.trim();
+  if(!name){showToast('Enter your name first');return;}
+  if(!CC.profile.code)CC.profile.code=generateCode(name);
+  CC.profile.name=name;
+  CC.profile.avatar=CC.selectedAvatar||CC.profile.avatar||'🙏';
+  CC.profile.goals=CC.selectedGoals||CC.profile.goals||[];
+  CC.profile.location=document.getElementById('profile-location-input').value.trim();
+  CC.profile.testimony=document.getElementById('profile-testimony').value.trim();
+  scc();renderAll();
+  showToast('✓ Profile saved — your Covenant Code is ready');
+}
+
+function renderProfileForm(){
+  const p=CC.profile;
+  if(p.name)document.getElementById('profile-name-input').value=p.name;
+  if(p.location)document.getElementById('profile-location-input').value=p.location;
+  if(p.testimony)document.getElementById('profile-testimony').value=p.testimony;
+  // Avatar
+  CC.selectedAvatar=p.avatar||'🙏';
+  document.querySelectorAll('.avatar-opt').forEach(o=>{
+    if(o.textContent===CC.selectedAvatar)o.classList.add('selected');
+  });
+  // Goals
+  CC.selectedGoals=[...(p.goals||[])];
+  document.querySelectorAll('#profile-goal-chips .goal-chip').forEach(btn=>{
+    const goal=btn.textContent.slice(btn.textContent.indexOf(' ')+1);
+    if(CC.selectedGoals.some(g=>btn.textContent.includes(g.split(' ')[0])||btn.textContent.includes(g)))
+      btn.classList.add('selected');
+  });
+}
+
+function renderProfileDisplay(){
+  const p=CC.profile;
+  const container=document.getElementById('profile-display');
+  if(!p.name){
+    container.innerHTML=`<div class="empty-state"><div class="empty-state-icon">👤</div><div class="empty-state-title">Create Your Profile</div><div class="empty-state-desc">Fill in your name and goals below to generate your Covenant Code and connect with accountability partners.</div></div>`;
+    return;
+  }
+  container.innerHTML=`
+    <div class="my-profile-card">
+      <div class="my-profile-top">
+        <div class="my-avatar">${p.avatar||'🙏'}</div>
+        <div class="my-profile-info">
+          <div class="my-name">${p.name}</div>
+          <div class="my-sub">${p.location||'GodHealth Member'} · Member since ${new Date().getFullYear()}</div>
+        </div>
+      </div>
+      ${p.testimony?`<div style="font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px;">"${p.testimony}"</div>`:''}
+      <div class="my-goals">${(p.goals||[]).map(g=>`<span class="my-goal-tag">${g}</span>`).join('')}</div>
+      <div class="covenant-code-box">
+        <div class="code-label">Your Covenant Code</div>
+        <div class="code-value">${p.code||'------'}</div>
+        <div class="code-sub">Share this code with someone you want to walk this journey with. They enter it in their Connect tab — and you are covenant partners.</div>
+        <button class="code-share-btn" onclick="shareMyCode()">📤 Share My Code</button>
+      </div>
+    </div>`;
+}
+
+// ═══ MY CODE IN CONNECT TAB ═══
+function renderMyCodeSection(){
+  const p=CC.profile;
+  const container=document.getElementById('my-code-section');
+  if(!p.name||!p.code){
+    container.innerHTML=`<div class="card" style="text-align:center;margin-bottom:12px;"><div style="font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:12px;">Create your profile first to generate your Covenant Code.</div><button onclick="switchTabByName('profile')" style="background:var(--spirit);color:#fff;border:none;padding:11px 20px;border-radius:9px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:1px;text-transform:uppercase;">Create Profile →</button></div>`;
+    return;
+  }
+  container.innerHTML=`
+    <div class="covenant-code-box" style="margin-bottom:12px;">
+      <div class="code-label">Your Covenant Code</div>
+      <div class="code-value">${p.code}</div>
+      <div class="code-sub">Share this with ${p.name.split(' ')[0]}'s accountability partner. They enter it below to connect with you.</div>
+      <button class="code-share-btn" onclick="shareMyCode()">📤 Share My Code</button>
+    </div>`;
+}
+
+function shareMyCode(){
+  const p=CC.profile;
+  if(!p.code){showToast('Create your profile first');return;}
+  const msg=`Join me on GodHealth — the app that transforms your Physical, Mental and Spiritual health through Biblical wisdom.\n\nEnter my Covenant Code to become my accountability partner:\n\n🔑 ${p.code}\n\n"Iron sharpeneth iron; so a man sharpeneth the countenance of his friend." — Proverbs 27:17`;
+  if(navigator.share){
+    navigator.share({title:'GodHealth Covenant Code',text:msg}).catch(()=>{});
+  } else {
+    navigator.clipboard?.writeText(msg).then(()=>showToast('✓ Code copied — paste it to your partner!'));
+  }
+}
+
+// ═══ CONNECT ═══
+function connectPartner(){
+  const code=document.getElementById('partner-code-input').value.trim().toUpperCase();
+  if(code.length!==6){showToast('Enter a valid 6-letter code');return;}
+  if(code===CC.profile.code){showToast('That is your own code — share it with someone else');return;}
+  if(CC.partners.find(p=>p.code===code)){showToast('You are already connected with this partner');return;}
+
+  // Create a partner record — in a real app this would fetch from a server
+  // Here we store locally and the partner profile is revealed when they connect back
+  const newPartner={
+    code,
+    name:'Covenant Partner',
+    avatar:'🙏',
+    goals:[],
+    connectedDate:todayStr(),
+    prayedFor:false,
+    checkins:[]
+  };
+  CC.partners.push(newPartner);
+  document.getElementById('partner-code-input').value='';
+  scc();renderAll();
+  showToast(`✝️ Covenant partner connected! Code: ${code}`);
+}
+
+// ═══ PARTNERS ═══
+function renderPartners(){
+  const container=document.getElementById('partners-list');
+  if(!CC.partners.length){
+    container.innerHTML=`<div class="empty-state"><div class="empty-state-icon">👥</div><div class="empty-state-title">No Partners Yet</div><div class="empty-state-desc">Share your Covenant Code with someone you trust. When they connect with your code, they appear here as your accountability partner.</div></div>`;
+    return;
+  }
+  container.innerHTML=CC.partners.map((p,i)=>`
+    <div class="partner-card">
+      <div class="partner-top">
+        <div class="partner-avatar">${p.avatar||'🙏'}</div>
+        <div class="partner-info">
+          <div class="partner-name">${p.name}</div>
+          <div class="partner-since">Connected ${formatDate(p.connectedDate)} · Code: ${p.code}</div>
+        </div>
+        <div class="partner-status"><div class="partner-status-dot"></div>Active</div>
+      </div>
+      ${p.goals?.length?`<div class="partner-goals">${p.goals.map(g=>`<span class="partner-goal-tag">${g}</span>`).join('')}</div>`:''}
+      <div class="partner-actions">
+        <button class="partner-action-btn pa-pray" onclick="prayedForPartner(${i})">🙏 ${p.prayedFor?'Prayed Today':'Pray For Them'}</button>
+        <button class="partner-action-btn pa-check" onclick="switchTabByName('checkin')">✅ Check-In</button>
+        <button class="partner-action-btn pa-message" onclick="messagePartner(${i})">💬 Encourage</button>
+        <button class="partner-action-btn pa-remove" onclick="removePartner(${i})">Remove</button>
+      </div>
+    </div>`).join('');
+}
+
+function prayedForPartner(idx){
+  CC.partners[idx].prayedFor=true;scc();renderPartners();
+  showToast(`🙏 Prayed for ${CC.partners[idx].name}`);
+}
+
+function messagePartner(idx){
+  const p=CC.partners[idx];
+  const msg=`Hi! I just checked in on GodHealth and wanted to encourage you. Keep going — "Let us not be weary in well doing: for in due season we shall reap, if we faint not." Galatians 6:9 🙏`;
+  if(navigator.share){navigator.share({text:msg}).catch(()=>{});}
+  else{navigator.clipboard?.writeText(msg).then(()=>showToast('Encouragement copied — send it to your partner!'));}
+}
+
+function removePartner(idx){
+  const name=CC.partners[idx].name;
+  CC.partners.splice(idx,1);scc();renderAll();
+  showToast(`${name} removed from your circle`);
+}
+
+// ═══ CHECK-IN ═══
+function submitCheckin(){
+  const temple=document.getElementById('cs-temple').value;
+  const soul=document.getElementById('cs-soul').value;
+  const spirit=document.getElementById('cs-spirit').value;
+  const streak=document.getElementById('cs-streak').value;
+  const win=document.getElementById('cs-win').value.trim();
+  const struggle=document.getElementById('cs-struggle').value.trim();
+  const prayer=document.getElementById('cs-prayer').value.trim();
+  if(!win&&!struggle){showToast('Share at least a win or a struggle');return;}
+
+  const checkin={
+    date:todayStr(),
+    scores:{temple,soul,spirit,streak},
+    win,struggle,prayer
+  };
+  CC.checkins=CC.checkins||[];
+  CC.checkins.unshift(checkin);
+
+  // Auto-add prayer request if prayer field filled
+  if(prayer){
+    CC.prayerRequests=CC.prayerRequests||[];
+    CC.prayerRequests.unshift({date:todayStr(),text:prayer,category:'checkin',prayedBy:0,mine:true});
+  }
+
+  // Reset form
+  ['cs-temple','cs-soul','cs-spirit','cs-streak'].forEach(id=>{document.getElementById(id).value=5;});
+  document.getElementById('cs-temple-val').textContent='5';
+  document.getElementById('cs-soul-val').textContent='5';
+  document.getElementById('cs-spirit-val').textContent='5';
+  document.getElementById('cs-streak-val').textContent='0';
+  document.getElementById('cs-win').value='';
+  document.getElementById('cs-struggle').value='';
+  document.getElementById('cs-prayer').value='';
+
+  scc();renderCheckinHistory();renderPrayerRequests();
+  showToast('✅ Check-in shared — your partners are praying for you!');
+}
+
+function renderCheckinHistory(){
+  const hist=document.getElementById('checkin-history');
+  const items=CC.checkins||[];
+  if(!items.length){hist.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">Your weekly check-ins will appear here. Be consistent — your partners are watching.</div>';return;}
+  hist.innerHTML=items.slice(0,8).map(c=>`
+    <div class="checkin-card">
+      <div class="checkin-partner">My Check-In</div>
+      <div class="checkin-date">${formatDate(c.date)}</div>
+      <div class="checkin-scores">
+        <span class="checkin-score">🏛️ ${c.scores.temple}/10</span>
+        <span class="checkin-score">🧠 ${c.scores.soul}/10</span>
+        <span class="checkin-score">✝️ ${c.scores.spirit}/10</span>
+        <span class="checkin-score">🔥 ${c.scores.streak} days</span>
+      </div>
+      ${c.win?`<div class="checkin-note">✓ <strong>Win:</strong> ${c.win.slice(0,100)}</div>`:''}
+      ${c.struggle?`<div class="checkin-note" style="margin-top:4px;">⚡ <strong>Struggle:</strong> ${c.struggle.slice(0,100)}</div>`:''}
+    </div>`).join('');
+}
+
+// ═══ PRAYER REQUESTS ═══
+let selectedReqCat='health';
+function selectReqCat(cat,el){
+  selectedReqCat=cat;
+  document.querySelectorAll('#req-category-chips .goal-chip').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function addPrayerRequest(){
+  const text=document.getElementById('new-prayer-req').value.trim();
+  if(!text){showToast('Write your prayer request first');return;}
+  CC.prayerRequests=CC.prayerRequests||[];
+  CC.prayerRequests.unshift({date:todayStr(),text,category:selectedReqCat,prayedBy:0,mine:true});
+  document.getElementById('new-prayer-req').value='';
+  scc();renderPrayerRequests();
+  showToast('🙏 Prayer request shared with your circle');
+}
+
+function renderPrayerRequests(){
+  const myReqs=document.getElementById('my-prayer-requests');
+  const partnerReqs=document.getElementById('partner-prayer-requests');
+  const all=CC.prayerRequests||[];
+  const mine=all.filter(r=>r.mine);
+  const catEmojis={health:'🏛️',faith:'✝️',family:'👨‍👩‍👧',work:'💼',breakthrough:'⚡',other:'🌿',checkin:'📋'};
+
+  if(!mine.length){
+    myReqs.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">Share your first prayer request above — your partners will carry it with you.</div>';
+  } else {
+    myReqs.innerHTML=mine.slice(0,6).map((r,i)=>`
+      <div class="prayer-req-item">
+        <div class="prayer-req-name">${catEmojis[r.category]||'🙏'} ${r.category.charAt(0).toUpperCase()+r.category.slice(1)} · ${formatDate(r.date)}</div>
+        <div class="prayer-req-text">${r.text}</div>
+        <div class="prayer-req-date">Prayed for ${r.prayedBy||0} time${r.prayedBy!==1?'s':''}</div>
+      </div>`).join('');
+  }
+
+  // Partner requests — generate example requests to show the concept
+  if(!CC.partners.length){
+    partnerReqs.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">When you connect with accountability partners, their prayer requests will appear here for you to pray over.</div>';
+  } else {
+    // Show a sample partner request for each connected partner
+    partnerReqs.innerHTML=CC.partners.map(p=>`
+      <div class="prayer-req-item" style="background:var(--soul-light);border-color:rgba(74,127,165,.2);">
+        <div class="prayer-req-name" style="color:var(--soul);">🙏 ${p.name} — Shared Request</div>
+        <div class="prayer-req-text">Ask your partner to share their prayer request directly with you. When they do, pray for them by name and let them know.</div>
+        <button class="pray-for-btn" onclick="showToast('🙏 Prayed for ${p.name}!')">I Prayed for ${p.name}</button>
+      </div>`).join('');
+  }
+}
+
+// ═══ HELPERS ═══
+function formatDate(str){
+  if(!str)return'—';
+  const d=new Date(str+'T00:00:00');
+  return d.toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'});
+}
+</script>
+</body>
+</html>
