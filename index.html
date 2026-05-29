@@ -368,8 +368,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 </head>
 <body>
 
+<!-- Loading overlay: shows while session check runs, prevents any login flash -->
+<div id="gh-loading" style="position:fixed;inset:0;background:#0D1F0D;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;">
+  <svg width="44" height="44" viewBox="0 0 44 44" fill="none" style="opacity:.9;">
+    <rect x="18" y="2" width="8" height="40" rx="3" fill="#D4A83A"/>
+    <rect x="4" y="14" width="36" height="8" rx="3" fill="#D4A83A"/>
+  </svg>
+</div>
+
 <!-- LOGIN SCREEN (Supabase auth) -->
-<div id="login" class="screen active">
+<div id="login" class="screen">
   <svg class="ob-cross" width="44" height="44" viewBox="0 0 44 44" fill="none">
     <rect x="18" y="2" width="8" height="40" rx="3" fill="#D4A83A"/>
     <rect x="4" y="14" width="36" height="8" rx="3" fill="#D4A83A"/>
@@ -1119,45 +1127,55 @@ function ghEnterAfterAuth(){
   document.getElementById('login').classList.remove('active');
   const emailEl=document.getElementById('profile-email');
   if(emailEl&&currentUser)emailEl.textContent=currentUser.email;
+
+  // Use name from Supabase metadata OR from localStorage — whichever is available
+  const metaName=currentUser&&currentUser.user_metadata&&currentUser.user_metadata.full_name;
+  if(metaName&&!S.name)S.name=metaName;
+
   if(S.name){
-    // returning user with a saved name → straight to the app
+    // Returning user with a saved name → straight to the app
     document.getElementById('onboard').classList.remove('active');
     const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
     initApp();
-  }else{
-    // logged in but no name yet → show onboarding to collect it
+  }else if(currentUser){
+    // Logged in but no name yet → show onboarding to collect it
     document.getElementById('onboard').classList.add('active');
+  }else{
+    // Fallback: no user at all → login
+    document.getElementById('login').classList.add('active');
   }
 }
 
 // ═══ BOOT: check existing Supabase session before showing anything ═══
 ls2();
 (async function ghBoot(){
+  function ghHideLoading(){const el=document.getElementById('gh-loading');if(el)el.style.display='none';}
+
   // If Supabase failed to load, fall back to offline localStorage behaviour
   if(!db){
+    ghHideLoading();
     if(S.name){
-      document.getElementById('login').classList.remove('active');
       document.getElementById('onboard').classList.remove('active');
       const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
       initApp();
     }else{
-      document.getElementById('login').classList.remove('active');
-      document.getElementById('onboard').classList.add('active');
+      document.getElementById('login').classList.add('active');
     }
     return;
   }
   try{
     const {data}=await db.auth.getSession();
+    ghHideLoading();
     if(data&&data.session){
       currentUser=data.session.user;
       ghApplyProfile(data.session.user);
       ghEnterAfterAuth();
     }else{
       document.getElementById('login').classList.add('active');
-      document.getElementById('onboard').classList.remove('active');
     }
   }catch(e){
-    // If auth check fails, fall back to the login screen
+    ghHideLoading();
+    // If auth check fails, show login
     document.getElementById('login').classList.add('active');
   }
 })();
@@ -1638,6 +1656,25 @@ function showPage(id){
 }
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 document.getElementById('ob-name')?.addEventListener('keydown',e=>{if(e.key==='Enter')startApp();});
+
+// Safari BFCache fix: re-check session when user navigates back to this page
+window.addEventListener('pageshow',function(e){
+  if(e.persisted&&db){
+    // Page was restored from Safari's back-forward cache — re-verify session
+    db.auth.getSession().then(function({data}){
+      if(data&&data.session){
+        currentUser=data.session.user;
+        // Already showing app (page was cached in that state) — nothing to do
+      }else{
+        // Session gone → show login
+        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+        document.getElementById('app').style.display='none';
+        document.getElementById('app').classList.remove('active');
+        document.getElementById('login').classList.add('active');
+      }
+    }).catch(function(){});
+  }
+});
 
 // ═══ MEALS DATA ═══
 const BIBLICAL_MEALS=[
