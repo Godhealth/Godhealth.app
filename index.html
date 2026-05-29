@@ -1622,6 +1622,17 @@ function renderTips(filter){
       <ul class="tip-steps">${t.steps.map(s=>`<li class="tip-step"><div class="tip-step-dot ${t.pillar}"></div><div>${s}</div></li>`).join('')}</ul>
     </div>`).join('');
 }
+--ink3);margin-top:2px;}
+
+/* EXTRA FIXES VOOR DE INLINE LAYOUT */
+#app { display: none; }
+#app.active { display: flex; }
+#onboard { display: none; }
+#onboard.active { display: block; }
+</style>
+</head>
+<body>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
@@ -1666,18 +1677,20 @@ async function handleInloggen(e) {
     const wakeUpInput = document.querySelector('input[type="time"]:nth-of-type(1)');
     const bedTimeInput = document.querySelector('input[type="time"]:nth-of-type(2)');
     
-    const uniekeNaam = nameInput.value.trim().replace(/\s+/g, '').toLowerCase();
-    if (!uniekeNaam) {
+    // Controleer of de naam is ingevuld
+    if (!nameInput || !nameInput.value.trim()) {
         alert("Please enter your name to begin.");
         return;
     }
 
-    // Maak een uniek account op de achtergrond aan op basis van hun naam
+    const uniekeNaam = nameInput.value.trim().replace(/\s+/g, '').toLowerCase();
+    
+    // Maak een uniek intern account aan op basis van hun naam
     const dummyEmail = `${uniekeNaam}@godhealth.internal`;
     const dummyPassword = "SecureWarrior123!"; 
 
     try {
-        // Probeer in te loggen
+        // Probeer eerst in te loggen
         let { data, error } = await supabase.auth.signInWithPassword({
             email: dummyEmail,
             password: dummyPassword
@@ -1695,7 +1708,7 @@ async function handleInloggen(e) {
 
         currentUser = data.user;
 
-        // Sla onboarding tijdelijk lokaal op voor de groet
+        // Sla onboarding tijdelijk lokaal op voor de groet op het scherm
         localStorage.setItem("gh_user_name", nameInput.value);
 
         toonAppDashboard();
@@ -1735,11 +1748,19 @@ function switchPagina(index) {
     const navItems = document.querySelectorAll(".nav-item");
     const pages = document.querySelectorAll(".page");
 
+    // Reset alle menu-items en pagina's
     navItems.forEach(nav => nav.classList.remove("active"));
-    pages.forEach(page => page.style.display = "none");
+    pages.forEach(page => {
+        page.style.display = "none";
+        page.classList.remove("active");
+    });
 
+    // Activeer de geselecteerde pagina
     if (navItems[index]) navItems[index].classList.add("active");
-    if (pages[index]) pages[index].style.display = "block";
+    if (pages[index]) {
+        pages[index].style.display = "block";
+        pages[index].classList.add("active");
+    }
 }
 </script>
 
