@@ -1059,33 +1059,38 @@ function todayStr(){const d=new Date();return `${d.getFullYear()}-${String(d.get
 function today(){return S.days[todayStr()]||{};}
 function setToday(key,val){if(!S.days[todayStr()])S.days[todayStr()]={habits:{},scores:{},data:{}};S.days[todayStr()][key]=val;ss2();}
 
-// ═══ SUPABASE AUTH LAYER (added — does not alter existing app logic) ═══
+// ═══ SUPABASE AUTH LAYER ═══
 const SUPABASE_URL='https://attnnjhkjwpunlnokgvx.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG';
 let db=null;
-try{ if(typeof supabase!=='undefined'&&supabase.createClient){ db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY); } }catch(e){ console.error('Supabase init failed:',e); }
+try{if(typeof supabase!=='undefined'&&supabase.createClient){db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);}}catch(e){}
 let currentUser=null;
+
+// ── Local session: persists across page loads even when Supabase CDN is blocked (Safari ITP) ──
+function ghSaveLocal(name,email){
+  try{localStorage.setItem('gh_auth_v1',JSON.stringify({name:name||'',email:email||'',ts:Date.now()}));}catch(e){}
+  if(name){S.name=name;try{ss2();}catch(e){}}
+}
+function ghLoadLocal(){try{const s=localStorage.getItem('gh_auth_v1');return s?JSON.parse(s):null;}catch(e){return null;}}
+function ghClearLocal(){try{localStorage.removeItem('gh_auth_v1');}catch(e){}}
 
 function ghAuthError(msg){const e=document.getElementById('login-error');if(e){e.textContent=msg;e.style.display='block';}}
 function ghClearError(){const e=document.getElementById('login-error');if(e)e.style.display='none';}
-
 function ghToggleAuth(which){
   ghClearError();
   document.getElementById('login-form').style.display=which==='login'?'block':'none';
   document.getElementById('signup-form').style.display=which==='signup'?'block':'none';
 }
-
-// Pull saved profile (name/wake/bed) from the auth user's metadata
 function ghApplyProfile(user){
   const m=user&&user.user_metadata?user.user_metadata:{};
-  if(m.full_name)S.name=m.full_name;
+  if(m.full_name&&!S.name)S.name=m.full_name;
   if(m.wake_time)S.wake=m.wake_time;
   if(m.bed_time)S.bed=m.bed_time;
 }
 
 async function ghLogin(){
   ghClearError();
-  if(!db){ghAuthError('Connection unavailable. Please refresh and try again.');return;}
+  if(!db){ghAuthError('Connection unavailable — check your internet and try again.');return;}
   const email=(document.getElementById('login-email').value||'').trim();
   const pass=document.getElementById('login-pass').value||'';
   if(!email||!pass){ghAuthError('Please enter your email and password.');return;}
@@ -1094,13 +1099,15 @@ async function ghLogin(){
     if(error)throw error;
     currentUser=data.user;
     ghApplyProfile(data.user);
-    ghEnterAfterAuth();
+    const name=S.name||(data.user.user_metadata&&data.user.user_metadata.full_name)||'';
+    ghSaveLocal(name,data.user.email);
+    ghEnterApp();
   }catch(e){ghAuthError('Sign in failed: '+(e.message||e));}
 }
 
 async function ghSignup(){
   ghClearError();
-  if(!db){ghAuthError('Connection unavailable. Please refresh and try again.');return;}
+  if(!db){ghAuthError('Connection unavailable — check your internet and try again.');return;}
   const name=(document.getElementById('signup-name').value||'').trim();
   const email=(document.getElementById('signup-email').value||'').trim();
   const pass=document.getElementById('signup-pass').value||'';
@@ -1112,72 +1119,64 @@ async function ghSignup(){
     if(error)throw error;
     currentUser=data.user;
     S.name=name;
-    ghEnterAfterAuth();
+    ghSaveLocal(name,data.user.email);
+    // New user: go to onboarding to set wake/bed time
+    document.getElementById('login').classList.remove('active');
+    document.getElementById('onboard').classList.add('active');
+    const nameEl=document.getElementById('ob-name');if(nameEl)nameEl.value=name;
   }catch(e){ghAuthError('Sign up failed: '+(e.message||e));}
 }
 
 async function ghLogout(){
-  try{await db.auth.signOut();}catch(e){}
+  ghClearLocal();
   currentUser=null;
+  S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};
+  try{if(db)await db.auth.signOut();}catch(e){}
   location.reload();
 }
 
-// Decide where to go after a successful login/signup
-function ghEnterAfterAuth(){
+// Show the app — called after confirmed session
+function ghEnterApp(){
   document.getElementById('login').classList.remove('active');
+  document.getElementById('onboard').classList.remove('active');
+  const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
   const emailEl=document.getElementById('profile-email');
   if(emailEl&&currentUser)emailEl.textContent=currentUser.email;
-
-  // Use name from Supabase metadata OR from localStorage — whichever is available
-  const metaName=currentUser&&currentUser.user_metadata&&currentUser.user_metadata.full_name;
-  if(metaName&&!S.name)S.name=metaName;
-
-  if(S.name){
-    // Returning user with a saved name → straight to the app
-    document.getElementById('onboard').classList.remove('active');
-    const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
-    initApp();
-  }else if(currentUser){
-    // Logged in but no name yet → show onboarding to collect it
-    document.getElementById('onboard').classList.add('active');
-  }else{
-    // Fallback: no user at all → login
-    document.getElementById('login').classList.add('active');
-  }
+  initApp();
 }
 
-// ═══ BOOT: check existing Supabase session before showing anything ═══
+// ── BOOT: localStorage-first (instant), then Supabase in background ──
 ls2();
 (async function ghBoot(){
   function ghHideLoading(){const el=document.getElementById('gh-loading');if(el)el.style.display='none';}
 
-  // If Supabase failed to load, fall back to offline localStorage behaviour
-  if(!db){
+  // STEP 1: local session check — instant, no network, survives Safari ITP + back navigation
+  const local=ghLoadLocal();
+  if(local&&local.name){
+    if(!S.name)S.name=local.name;
     ghHideLoading();
-    if(S.name){
-      document.getElementById('onboard').classList.remove('active');
-      const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
-      initApp();
-    }else{
-      document.getElementById('login').classList.add('active');
-    }
+    ghEnterApp();
+    // Silently verify/refresh Supabase token in background
+    if(db){db.auth.getSession().then(function(res){
+      const sess=res&&res.data&&res.data.session;
+      if(sess){currentUser=sess.user;ghApplyProfile(sess.user);}
+    }).catch(function(){});}
     return;
   }
+
+  // STEP 2: no local session — try Supabase (first login on this device)
+  if(!db){ghHideLoading();document.getElementById('login').classList.add('active');return;}
   try{
     const {data}=await db.auth.getSession();
     ghHideLoading();
     if(data&&data.session){
       currentUser=data.session.user;
       ghApplyProfile(data.session.user);
-      ghEnterAfterAuth();
-    }else{
-      document.getElementById('login').classList.add('active');
-    }
-  }catch(e){
-    ghHideLoading();
-    // If auth check fails, show login
-    document.getElementById('login').classList.add('active');
-  }
+      const name=S.name||(data.session.user.user_metadata&&data.session.user.user_metadata.full_name)||'';
+      if(name){ghSaveLocal(name,data.session.user.email);ghEnterApp();}
+      else{document.getElementById('login').classList.remove('active');document.getElementById('onboard').classList.add('active');}
+    }else{document.getElementById('login').classList.add('active');}
+  }catch(e){ghHideLoading();document.getElementById('login').classList.add('active');}
 })();
 
 function startApp(){
