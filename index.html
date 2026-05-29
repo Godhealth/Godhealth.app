@@ -24,6 +24,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<!-- Supabase Client Library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --bg:#0D1F0D;--bg2:#FFFFFF;--bg3:#F2EDE4;
@@ -365,8 +367,40 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 </head>
 <body>
 
+<!-- LOGIN SCREEN (Supabase auth) -->
+<div id="login" class="screen active">
+  <svg class="ob-cross" width="44" height="44" viewBox="0 0 44 44" fill="none">
+    <rect x="18" y="2" width="8" height="40" rx="3" fill="#D4A83A"/>
+    <rect x="4" y="14" width="36" height="8" rx="3" fill="#D4A83A"/>
+  </svg>
+  <div class="ob-eyebrow">GodHealth</div>
+  <h1 class="ob-title">Transform<br><em>Together</em></h1>
+  <div class="ob-form" style="margin-top:24px;">
+    <div id="login-error" style="display:none;background:rgba(196,87,58,.15);border:1px solid rgba(196,87,58,.35);color:#E8836A;padding:11px 14px;border-radius:10px;margin-bottom:12px;font-size:13px;text-align:left;"></div>
+    <!-- Sign in -->
+    <div id="login-form">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="you@email.com" autocomplete="email"/>
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="Your password" autocomplete="current-password"/>
+      <button class="btn-primary" onclick="ghLogin()">Sign In</button>
+      <p style="font-size:13px;color:rgba(245,237,216,.6);margin-top:14px;">New here? <span onclick="ghToggleAuth('signup')" style="color:var(--gold);font-weight:700;cursor:pointer;">Create an account</span></p>
+    </div>
+    <!-- Sign up -->
+    <div id="signup-form" style="display:none;">
+      <label>Email</label>
+      <input type="email" id="signup-email" placeholder="you@email.com" autocomplete="email"/>
+      <label>Password (min 8 characters)</label>
+      <input type="password" id="signup-pass" placeholder="Choose a password" autocomplete="new-password"/>
+      <button class="btn-primary" onclick="ghSignup()">Create Account</button>
+      <p style="font-size:13px;color:rgba(245,237,216,.6);margin-top:14px;">Already a member? <span onclick="ghToggleAuth('login')" style="color:var(--gold);font-weight:700;cursor:pointer;">Sign in</span></p>
+    </div>
+  </div>
+  <p class="ob-verse">"Know ye not that your body is the temple of the Holy Ghost?"<br>— 1 Corinthians 6:19 (KJV)</p>
+</div>
+
 <!-- ONBOARDING -->
-<div id="onboard" class="screen active">
+<div id="onboard" class="screen">
   <svg class="ob-cross" width="44" height="44" viewBox="0 0 44 44" fill="none">
     <rect x="18" y="2" width="8" height="40" rx="3" fill="#D4A83A"/>
     <rect x="4" y="14" width="36" height="8" rx="3" fill="#D4A83A"/>
@@ -896,6 +930,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
           <div><div class="setting-label">Community Access</div><div class="setting-sub">GodHealth Tribe on Circle</div></div>
           <button class="toggle on" onclick="this.classList.toggle('on')"></button>
         </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Account</div><div class="setting-sub" id="profile-email">—</div></div>
+          <button onclick="ghLogout()" style="background:var(--temple);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:'Lato',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Sign Out</button>
+        </div>
       </div>
       <div class="settings-section">
         <h4>The Three Pillars</h4>
@@ -987,23 +1025,146 @@ const HABIT_NAMES={prayer:'Morning Prayer',bible:'Bible Reading',gratitude:'Grat
 // ═══ STATE ═══
 let S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};
 function ls2(){try{const s=localStorage.getItem('gh_app_v2');if(s){const parsed=JSON.parse(s);if(parsed&&typeof parsed==='object')S={...S,...parsed};}}catch(e){console.warn('Could not load saved data:',e);}}
-function ss2(){try{localStorage.setItem('gh_app_v2',JSON.stringify(S));return true;}catch(e){console.error('Could not save data:',e);if(typeof showToast==='function')showToast('⚠️ Storage full — could not save');return false;}}
+function ss2(){try{localStorage.setItem('gh_app_v2',JSON.stringify(S));ghSyncToday();return true;}catch(e){console.error('Could not save data:',e);if(typeof showToast==='function')showToast('⚠️ Storage full — could not save');return false;}}
+// Best-effort sync of today's data to Supabase. Never throws; app works without it.
+function ghSyncToday(){
+  try{
+    if(typeof db==='undefined'||!currentUser)return;
+    const key=todayStr();
+    const d=S.days[key];if(!d)return;
+    const sc=d.scores||{};
+    db.from('daily_tracking').upsert({
+      user_id:currentUser.id,
+      tracking_date:key,
+      temple_score:sc.temple||0,
+      soul_score:sc.soul||0,
+      spirit_score:sc.spirit||0,
+      habits:d.habits||{},
+      updated_at:new Date()
+    },{onConflict:'user_id,tracking_date'}).then(()=>{}).catch(()=>{});
+  }catch(e){/* silent: localStorage remains source of truth */}
+}
 function todayStr(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function today(){return S.days[todayStr()]||{};}
 function setToday(key,val){if(!S.days[todayStr()])S.days[todayStr()]={habits:{},scores:{},data:{}};S.days[todayStr()][key]=val;ss2();}
 
-ls2();
-if(S.name){
-  document.getElementById('onboard').classList.remove('active');
-  const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
-  initApp();
+// ═══ SUPABASE AUTH LAYER (added — does not alter existing app logic) ═══
+const SUPABASE_URL='https://attnnjhkjwpunlnokgvx.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG';
+let db=null;
+try{ if(typeof supabase!=='undefined'&&supabase.createClient){ db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY); } }catch(e){ console.error('Supabase init failed:',e); }
+let currentUser=null;
+
+function ghAuthError(msg){const e=document.getElementById('login-error');if(e){e.textContent=msg;e.style.display='block';}}
+function ghClearError(){const e=document.getElementById('login-error');if(e)e.style.display='none';}
+
+function ghToggleAuth(which){
+  ghClearError();
+  document.getElementById('login-form').style.display=which==='login'?'block':'none';
+  document.getElementById('signup-form').style.display=which==='signup'?'block':'none';
 }
+
+// Pull saved profile (name/wake/bed) from the auth user's metadata
+function ghApplyProfile(user){
+  const m=user&&user.user_metadata?user.user_metadata:{};
+  if(m.full_name)S.name=m.full_name;
+  if(m.wake_time)S.wake=m.wake_time;
+  if(m.bed_time)S.bed=m.bed_time;
+}
+
+async function ghLogin(){
+  ghClearError();
+  if(!db){ghAuthError('Connection unavailable. Please refresh and try again.');return;}
+  const email=(document.getElementById('login-email').value||'').trim();
+  const pass=document.getElementById('login-pass').value||'';
+  if(!email||!pass){ghAuthError('Please enter your email and password.');return;}
+  try{
+    const {data,error}=await db.auth.signInWithPassword({email,password:pass});
+    if(error)throw error;
+    currentUser=data.user;
+    ghApplyProfile(data.user);
+    ghEnterAfterAuth();
+  }catch(e){ghAuthError('Sign in failed: '+(e.message||e));}
+}
+
+async function ghSignup(){
+  ghClearError();
+  if(!db){ghAuthError('Connection unavailable. Please refresh and try again.');return;}
+  const email=(document.getElementById('signup-email').value||'').trim();
+  const pass=document.getElementById('signup-pass').value||'';
+  if(!email||!pass){ghAuthError('Please enter your email and password.');return;}
+  if(pass.length<8){ghAuthError('Password must be at least 8 characters.');return;}
+  try{
+    const {data,error}=await db.auth.signUp({email,password:pass});
+    if(error)throw error;
+    currentUser=data.user;
+    ghEnterAfterAuth();
+  }catch(e){ghAuthError('Sign up failed: '+(e.message||e));}
+}
+
+async function ghLogout(){
+  try{await db.auth.signOut();}catch(e){}
+  currentUser=null;
+  location.reload();
+}
+
+// Decide where to go after a successful login/signup
+function ghEnterAfterAuth(){
+  document.getElementById('login').classList.remove('active');
+  const emailEl=document.getElementById('profile-email');
+  if(emailEl&&currentUser)emailEl.textContent=currentUser.email;
+  if(S.name){
+    // returning user with a saved name → straight to the app
+    document.getElementById('onboard').classList.remove('active');
+    const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
+    initApp();
+  }else{
+    // logged in but no name yet → show onboarding to collect it
+    document.getElementById('onboard').classList.add('active');
+  }
+}
+
+// ═══ BOOT: check existing Supabase session before showing anything ═══
+ls2();
+(async function ghBoot(){
+  // If Supabase failed to load, fall back to offline localStorage behaviour
+  if(!db){
+    if(S.name){
+      document.getElementById('login').classList.remove('active');
+      document.getElementById('onboard').classList.remove('active');
+      const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
+      initApp();
+    }else{
+      document.getElementById('login').classList.remove('active');
+      document.getElementById('onboard').classList.add('active');
+    }
+    return;
+  }
+  try{
+    const {data}=await db.auth.getSession();
+    if(data&&data.session){
+      currentUser=data.session.user;
+      ghApplyProfile(data.session.user);
+      ghEnterAfterAuth();
+    }else{
+      document.getElementById('login').classList.add('active');
+      document.getElementById('onboard').classList.remove('active');
+    }
+  }catch(e){
+    // If auth check fails, fall back to the login screen
+    document.getElementById('login').classList.add('active');
+  }
+})();
 
 function startApp(){
   S.name=document.getElementById('ob-name').value.trim()||'Warrior';
   S.wake=document.getElementById('ob-wake').value||'07:00';
   S.bed=document.getElementById('ob-bed').value||'23:00';
   ss2();
+  // Persist profile to the logged-in Supabase account (fire-and-forget, safe)
+  if(currentUser&&typeof db!=='undefined'){
+    db.auth.updateUser({data:{full_name:S.name,wake_time:S.wake,bed_time:S.bed}}).catch(()=>{});
+  }
   document.getElementById('onboard').classList.remove('active');
   const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
   initApp();
@@ -1622,9 +1783,6 @@ function renderTips(filter){
       <ul class="tip-steps">${t.steps.map(s=>`<li class="tip-step"><div class="tip-step-dot ${t.pillar}"></div><div>${s}</div></li>`).join('')}</ul>
     </div>`).join('');
 }
-</script>
-</body>
-</html>
 </script>
 </body>
 </html>
