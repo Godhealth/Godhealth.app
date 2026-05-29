@@ -362,51 +362,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
 </style>
-<!-- Supabase Client Library -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-// ═══ SUPABASE CONFIG (Injected) ═══
-const SUPABASE_URL = 'https://attnnjhkjwpunlnokgvx.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG';
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-let currentUser = null;
-</script>
-
 </head>
 <body>
 
 <!-- ONBOARDING -->
-<!-- LOGIN SCREEN (Injected) -->
-<div id="login" class="screen active" style="z-index:1000;">
-  <div style="text-align:center;margin-bottom:20px;">
-    <div style="font-size:48px;margin-bottom:20px;">✝</div>
-    <h1 style="font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:#F5EDD8;margin-bottom:8px;">God<em style="font-style:italic;color:var(--gold);">Health</em></h1>
-    <p style="color:var(--ink3);font-size:14px;">Transform Together</p>
-  </div>
-  
-  <div style="width:100%;max-width:340px;margin:0 auto;">
-    <div id="loginError" style="background:rgba(196,87,58,.15);border:1px solid rgba(196,87,58,.3);color:#C4573A;padding:12px;border-radius:8px;margin-bottom:12px;font-size:13px;display:none;"></div>
-    
-    <div id="loginFormDiv">
-      <input type="email" id="loginEmail" placeholder="Email address" style="width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;margin-bottom:12px;">
-      <input type="password" id="loginPassword" placeholder="Password" style="width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;margin-bottom:12px;">
-      <button id="loginBtn" onclick="ghAuthLogin()" style="width:100%;background:var(--ink);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;margin-bottom:12px;transition:all .25s;">Sign In</button>
-      <button id="signupToggleBtn" onclick="ghShowSignupForm()" style="width:100%;background:var(--gold);color:var(--ink);font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;margin-bottom:12px;transition:all .25s;">Create Account</button>
-    </div>
-    
-    <div id="signupFormDiv" style="display:none;border-top:1px solid var(--border);padding-top:16px;margin-top:16px;">
-      <input type="email" id="signupEmail" placeholder="Email address" style="width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;margin-bottom:12px;">
-      <input type="text" id="signupName" placeholder="Full name" style="width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;margin-bottom:12px;">
-      <input type="password" id="signupPassword" placeholder="Password (min 8 chars)" style="width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;margin-bottom:12px;">
-      <input type="password" id="signupPasswordConfirm" placeholder="Confirm password" style="width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;margin-bottom:12px;">
-      <button id="signupBtn" onclick="ghAuthSignup()" style="width:100%;background:var(--gold);color:var(--ink);font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;margin-bottom:12px;">Create Account</button>
-      <button id="backToLoginBtn" onclick="ghShowLoginForm()" style="width:100%;background:var(--ink3);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;">Back to Login</button>
-    </div>
-  </div>
-</div>
-
-
 <div id="onboard" class="screen active">
   <svg class="ob-cross" width="44" height="44" viewBox="0 0 44 44" fill="none">
     <rect x="18" y="2" width="8" height="40" rx="3" fill="#D4A83A"/>
@@ -1663,101 +1622,9 @@ function renderTips(filter){
       <ul class="tip-steps">${t.steps.map(s=>`<li class="tip-step"><div class="tip-step-dot ${t.pillar}"></div><div>${s}</div></li>`).join('')}</ul>
     </div>`).join('');
 }
-
-
-// ═══ SUPABASE AUTH FUNCTIONS (Injected) ═══
-function ghShowLoginForm(){
-  document.getElementById('loginFormDiv').style.display='block';
-  document.getElementById('signupFormDiv').style.display='none';
-}
-
-function ghShowSignupForm(){
-  document.getElementById('loginFormDiv').style.display='none';
-  document.getElementById('signupFormDiv').style.display='block';
-}
-
-async function ghAuthLogin(){
-  const email=document.getElementById('loginEmail').value.trim();
-  const pwd=document.getElementById('loginPassword').value;
-  const errDiv=document.getElementById('loginError');
-  errDiv.style.display='none';
-  
-  if(!email||!pwd){errDiv.textContent='Please fill all fields';errDiv.style.display='block';return;}
-  
-  try{
-    const {data,error}=await db.auth.signInWithPassword({email,password:pwd});
-    if(error)throw error;
-    currentUser=data.user;
-    document.getElementById('loginEmail').value='';
-    document.getElementById('loginPassword').value='';
-    document.getElementById('login').classList.remove('active');
-    if(typeof startApp==='function')startApp();
-    if(typeof showToast==='function')showToast('✅ Welcome back!');
-  }catch(e){
-    errDiv.textContent='❌ '+e.message;
-    errDiv.style.display='block';
-  }
-}
-
-async function ghAuthSignup(){
-  const email=document.getElementById('signupEmail').value.trim();
-  const name=document.getElementById('signupName').value.trim();
-  const pwd=document.getElementById('signupPassword').value;
-  const pwdConfirm=document.getElementById('signupPasswordConfirm').value;
-  const errDiv=document.getElementById('loginError');
-  errDiv.style.display='none';
-  
-  if(!email||!name||!pwd||!pwdConfirm){errDiv.textContent='Please fill all fields';errDiv.style.display='block';return;}
-  if(pwd.length<8){errDiv.textContent='Password must be at least 8 characters';errDiv.style.display='block';return;}
-  if(pwd!==pwdConfirm){errDiv.textContent='Passwords do not match';errDiv.style.display='block';return;}
-  
-  try{
-    const {data,error}=await db.auth.signUp({email,password:pwd,options:{data:{full_name:name}}});
-    if(error)throw error;
-    currentUser=data.user;
-    document.getElementById('signupEmail').value='';
-    document.getElementById('signupName').value='';
-    document.getElementById('signupPassword').value='';
-    document.getElementById('signupPasswordConfirm').value='';
-    document.getElementById('login').classList.remove('active');
-    if(typeof startApp==='function')startApp();
-    if(typeof showToast==='function')showToast('✅ Account created!');
-  }catch(e){
-    errDiv.textContent='❌ '+e.message;
-    errDiv.style.display='block';
-  }
-}
-
-async function ghCheckUserLoggedIn(){
-  try{
-    const {data,error}=await db.auth.getSession();
-    if(data.session){
-      currentUser=data.session.user;
-      document.getElementById('login').classList.remove('active');
-      return true;
-    }
-  }catch(e){
-    console.error('Auth check error:',e);
-  }
-  return false;
-}
-
-async function ghLogoutUser(){
-  try{
-    await db.auth.signOut();
-    currentUser=null;
-    document.getElementById('login').classList.add('active');
-    if(typeof showToast==='function')showToast('Signed out');
-  }catch(e){
-    console.error('Logout error:',e);
-  }
-}
-
-// ═══ AUTO-LOGIN ON PAGE LOAD ═══
-window.addEventListener('DOMContentLoaded',async()=>{
-  const loggedIn=await ghCheckUserLoggedIn();
-});
-
+</script>
+</body>
+</html>
 </script>
 </body>
 </html>
