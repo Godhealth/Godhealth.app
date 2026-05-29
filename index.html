@@ -1622,6 +1622,136 @@ function renderTips(filter){
       <ul class="tip-steps">${t.steps.map(s=>`<li class="tip-step"><div class="tip-step-dot ${t.pillar}"></div><div>${s}</div></li>`).join('')}</ul>
     </div>`).join('');
 }
+} // Dit is de sluitaccolade van jouw renderTips functie, laat deze staan!
+
+// =========================================================================
+// 1. DIRECTE VERBINDING MET JOUW GODHEALTH DATABASE (SUPABASE)
+// =========================================================================
+const SUPABASE_URL = "https://attnnjhkjwpunlnokgvx.supabase.co"; 
+const SUPABASE_ANON_KEY = "sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG";                 
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentUser = null;
+
+// Dit zorgt ervoor dat zodra de pagina laadt, we direct checken of iemand is ingelogd
+document.addEventListener("DOMContentLoaded", async () => {
+    // Check de inlogstatus bij Supabase
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session) {
+        currentUser = session.user;
+        toonAppDashboard();
+    } else {
+        // Niet ingelogd? Toon onboarding, verberg de app
+        document.getElementById("onboard").style.display = "block";
+        document.getElementById("onboard").classList.add("active");
+        document.getElementById("app").style.display = "none";
+        document.getElementById("app").classList.remove("active");
+    }
+
+    // Koppel de inlogfunctie aan de 'Begin My Journey' knop
+    const journeyBtn = document.querySelector('.btn-primary') || document.querySelector('#onboard button');
+    if (journeyBtn) {
+        journeyBtn.removeAttribute('onclick'); // Oude HTML-functies opschonen
+        journeyBtn.addEventListener('click', handleInloggen);
+    }
+    
+    // Start jouw navigatie op
+    initNavigatie();
+});
+
+// =========================================================================
+// 2. INLOG- EN REGISTRATIE LOGICA
+// =========================================================================
+async function handleInloggen(e) {
+    if(e) e.preventDefault();
+
+    const nameInput = document.querySelector('input[placeholder="Your name"]') || document.querySelector('#onboard input[type="text"]');
+    
+    if (!nameInput || !nameInput.value.trim()) {
+        alert("Please enter your name to begin.");
+        return;
+    }
+
+    const uniekeNaam = nameInput.value.trim().replace(/\s+/g, '').toLowerCase();
+    const dummyEmail = `${uniekeNaam}@godhealth.internal`;
+    const dummyPassword = "SecureWarrior123!"; 
+
+    try {
+        // Probeer in te loggen
+        let { data, error } = await supabase.auth.signInWithPassword({
+            email: dummyEmail,
+            password: dummyPassword
+        });
+
+        // Als het account nog niet bestaat, registreer de user direct
+        if (error) {
+            const registerResponse = await supabase.auth.signUp({
+                email: dummyEmail,
+                password: dummyPassword
+            });
+            if (registerResponse.error) throw registerResponse.error;
+            data = registerResponse.data;
+        }
+
+        currentUser = data.user;
+
+        // Sla de naam lokaal op voor de gepersonaliseerde groet
+        localStorage.setItem("gh_user_name", nameInput.value);
+
+        toonAppDashboard();
+
+    } catch (err) {
+        alert("Authentication failed: " + err.message);
+    }
+}
+
+// =========================================================================
+// 3. APP ACTIVEREN EN INTERACTIE
+// =========================================================================
+function toonAppDashboard() {
+    document.getElementById("onboard").style.display = "none";
+    document.getElementById("onboard").classList.remove("active");
+    document.getElementById("app").style.display = "flex";
+    document.getElementById("app").classList.add("active");
+    
+    // Zet de naam van de user live in de groet ("Good morning, [Naam]")
+    const opgeslagenNaam = localStorage.getItem("gh_user_name") || "Warrior";
+    const greetingHeader = document.querySelector(".today-greeting h2") || document.querySelector("h2");
+    if (greetingHeader) {
+        greetingHeader.innerHTML = `Good morning,<br>${opgeslagenNaam}.`;
+    }
+    
+    // Start standaard op het Today dashboard (eerste pagina)
+    switchPagina(0);
+}
+
+function initNavigatie() {
+    const navItems = document.querySelectorAll(".nav-item");
+    navItems.forEach((item, index) => {
+        item.addEventListener("click", () => switchPagina(index));
+    });
+}
+
+function switchPagina(index) {
+    const navItems = document.querySelectorAll(".nav-item");
+    const pages = document.querySelectorAll(".page");
+
+    navItems.forEach(nav => nav.classList.remove("active"));
+    pages.forEach(page => {
+        page.style.display = "none";
+        page.classList.remove("active");
+    });
+
+    if (navItems[index]) navItems[index].classList.add("active");
+    if (pages[index]) {
+        pages[index].style.display = "block";
+        pages[index].classList.add("active");
+    }
+}
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </body>
 </html>
