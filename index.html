@@ -21,6 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<!-- Supabase Client Library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
@@ -45,12 +46,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 .login-title{font-family:'Playfair Display',serif;font-size:clamp(28px,7vw,42px);font-weight:700;line-height:1.1;color:#F5EDD8;margin-bottom:8px;}
 .login-title em{font-style:italic;color:var(--gold);}
 .login-subtitle{font-size:14px;color:var(--ink3);margin-bottom:24px;}
-.login-form{width:100%;max-width:340px;margin: 0 auto;}
+.login-form{width:100%;max-width:340px;}
 .login-form input{width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;margin-bottom:12px;transition:border-color .25s;}
 .login-form input:focus{border-color:var(--gold);}
 .login-form button{width:100%;background:var(--ink);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;transition:all .25s;margin-bottom:12px;}
 .login-form button:hover{background:var(--gold);transform:translateY(-1px);}
+.login-toggle{font-size:13px;color:var(--ink3);margin-top:16px;cursor:pointer;}
+.login-toggle span{color:var(--gold);font-weight:700;}
 .login-error{background:rgba(196,87,58,.15);border:1px solid rgba(196,87,58,.3);color:var(--temple);padding:12px;border-radius:8px;margin-bottom:12px;font-size:13px;}
+.login-loading{opacity:0.6;pointer-events:none;}
 
 /* ONBOARDING */
 #onboard{background:var(--bg);align-items:center;justify-content:center;padding:40px 28px;text-align:center;overflow-y:auto;}
@@ -63,9 +67,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 .ob-pillar-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;}
 .ob-pillar-name{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 .ob-pillar-sub{font-size:9px;color:var(--ink3);}
-.ob-form{width:100%;max-width:360px;animation:riseUp 1.2s ease both;margin: 0 auto;}
+.ob-form{width:100%;max-width:360px;animation:riseUp 1.2s ease both;}
 .ob-form label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,216,.7);margin-bottom:6px;font-weight:700;text-align:left;}
-.ob-form input[type=text],.ob-form input[type=number],.ob-form input[type=time]{width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;transition:border-color .25s;margin-bottom:12px;}
+.ob-form input[type=text],.ob-form input[type=time]{width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;transition:border-color .25s;margin-bottom:12px;}
 .ob-form input:focus{border-color:var(--gold);}
 .ob-time-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
 .ob-time-row .ob-time-box label{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,216,.7);margin-bottom:5px;font-weight:700;}
@@ -82,7 +86,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 .header-right{display:flex;align-items:center;gap:8px;}
 .streak-badge{display:flex;align-items:center;gap:4px;background:rgba(184,145,42,.18);border:1px solid rgba(184,145,42,.35);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--gold);}
 .date-badge{font-size:11px;color:rgba(245,237,216,.55);}
-.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg3);}
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .scroll-area::-webkit-scrollbar{width:0;}
 .page{display:none;padding:16px;}
 .page.active{display:block;}
@@ -90,16 +94,16 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 /* TODAY PAGE */
 .today-greeting{margin-bottom:16px;}
 .today-greeting .day-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:4px;}
-.today-greeting h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--bg);line-height:1.15;}
-.today-greeting h2 em{font-style:italic;color:var(--gold-dark);}
+.today-greeting h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#FFFFFF;line-height:1.15;}
+.today-greeting h2 em{font-style:italic;color:var(--gold);}
 .verse-strip{background:var(--gold-light);border:1px solid rgba(184,145,42,.2);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
 .verse-strip::before{content:'✝';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.06;color:var(--gold);}
 .verse-strip .vs-text{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--ink);line-height:1.6;margin-bottom:4px;}
-.verse-strip .vs-ref{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-dark);font-weight:700;}
+.verse-strip .vs-ref{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;}
 .pillar-section{margin-bottom:14px;}
 .pillar-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
 .pillar-dot{width:8px;height:8px;border-radius:50%;}
-.pillar-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink2);}
+.pillar-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;}
 .pillar-why{font-size:11px;color:var(--ink3);margin-left:auto;font-style:italic;}
 .habit-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);}
 .habit-card:hover{border-color:var(--border2);transform:translateY(-1px);}
@@ -112,35 +116,47 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 .habit-card.checked.spirit .habit-check{background:var(--spirit);border-color:var(--spirit);color:#fff;}
 .habit-card.checked .habit-check::before{content:'✓';}
 .habit-text{flex:1;}
-.habit-name{font-weight:700;margin-bottom:2px;color:var(--ink);}
+.habit-name{font-weight:700;margin-bottom:2px;}
 .habit-hint{font-size:12px;color:var(--ink3);}
 .if-card{background:linear-gradient(135deg,rgba(74,127,165,.08) 0%,rgba(107,143,94,.08) 100%);border:1px solid rgba(184,145,42,.15);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
-.if-title{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px;}
+.if-title{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
 .if-meta{display:flex;justify-content:space-between;margin-bottom:8px;}
 .if-meta-item{font-size:13px;}
 .if-meta-label{color:var(--ink3);display:block;font-size:10px;margin-bottom:2px;}
-.if-timer{font-size:24px;font-weight:700;text-align:center;color:var(--gold-dark);font-family:'Playfair Display',serif;margin:12px 0;}
+.if-timer{font-size:24px;font-weight:700;text-align:center;color:var(--gold);font-family:'Playfair Display',serif;margin:12px 0;}
 .if-button{width:100%;background:var(--soul);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700;text-transform:uppercase;font-size:12px;cursor:pointer;transition:all .25s;letter-spacing:1px;}
 .if-button:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(74,127,165,.3);}
 .if-button.stop{background:var(--ink3);}
+
+/* MODALS */
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:999;align-items:center;justify-content:center;padding:20px;}
+.modal.active{display:flex;}
+.modal-card{background:var(--bg2);border-radius:var(--radius);max-width:340px;width:100%;max-height:80vh;overflow-y:auto;padding:20px;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.modal-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;}
+.modal-close{background:none;border:none;font-size:24px;cursor:pointer;padding:0;}
+.modal-body select,.modal-body input{width:100%;background:var(--bg3);border:1px solid var(--border);padding:10px 12px;margin-bottom:10px;border-radius:8px;font-family:'Lato',sans-serif;}
 
 /* BOTTOM NAV */
 .bottom-nav{display:flex;gap:0;background:var(--bg2);border-top:1px solid var(--border);padding:0;margin-top:auto;flex-shrink:0;}
 .nav-item{flex:1;background:none;border:none;padding:8px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:var(--ink3);text-decoration:none;}
 .nav-item:hover{background:var(--bg3);}
-.nav-item.active{color:var(--gold-dark);background:rgba(184,145,42,.08);}
+.nav-item.active{color:var(--gold);background:rgba(184,145,42,.08);}
 .nav-icon{font-size:20px;margin-bottom:4px;}
 .nav-label{font-size:10px;font-weight:700;letter-spacing:0.5px;}
 
-/* REUSABLE CLASSES */
+/* ANIMATIONS */
 @keyframes riseUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;z-index:1000;pointer-events:none;max-width:90%;display:none;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;z-index:1000;pointer-events:none;max-width:90%;}
+
+/* ACCESSIBILITY */
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #B8912A;outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 </style>
 </head>
 <body>
 
-<div id="toast" class="toast"></div>
-
+<!-- LOGIN SCREEN -->
 <div id="login" class="screen active">
   <div style="text-align:center;margin-bottom:20px;">
     <div class="login-cross">✝</div>
@@ -153,19 +169,20 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
     <input type="email" id="loginEmail" placeholder="Email address" aria-label="Email">
     <input type="password" id="loginPassword" placeholder="Password" aria-label="Password">
     <button id="loginBtn" onclick="handleLogin()">Sign In</button>
-    <button id="signupToggleBtn" onclick="showSignupForm()" style="background:var(--gold);color:var(--bg);">Create Account</button>
+    <button id="signupToggleBtn" onclick="showSignupForm()" style="background:var(--gold);color:var(--ink);">Create Account</button>
     
     <div id="signupForm" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
       <input type="email" id="signupEmail" placeholder="Email address" aria-label="Signup email">
       <input type="text" id="signupName" placeholder="Full name" aria-label="Full name">
-      <input type="password" id="signupPassword" placeholder="Password (min 6 chars)" aria-label="Password">
+      <input type="password" id="signupPassword" placeholder="Password (min 8 chars)" aria-label="Password">
       <input type="password" id="signupPasswordConfirm" placeholder="Confirm password" aria-label="Confirm password">
-      <button id="signupBtn" onclick="handleSignup()">Register Now</button>
+      <button id="signupBtn" onclick="handleSignup()">Create Account</button>
       <button id="backToLoginBtn" onclick="showLoginForm()" style="background:var(--ink3);color:#fff;margin-top:8px;">Back to Login</button>
     </div>
   </div>
 </div>
 
+<!-- ONBOARDING SCREEN -->
 <div id="onboard" class="screen">
   <div class="ob-cross">✝</div>
   <div class="ob-eyebrow">GodHealth</div>
@@ -213,7 +230,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
   <p class="ob-verse">"Know ye not that your body is the temple of the Holy Ghost?"<br>— 1 Corinthians 6:19 (KJV)</p>
 </div>
 
-<div id="app" class="screen">
+<!-- APP -->
+<div id="app">
   <div class="app-header">
     <div class="header-logo">God<em>Health</em></div>
     <div class="header-right">
@@ -223,16 +241,16 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
   </div>
   
   <div class="scroll-area">
+    <!-- TODAY PAGE -->
     <div id="page-today" class="page active">
       <div class="today-greeting">
         <div class="day-label">Day <span id="day-count">1</span></div>
-        <h2 id="today-greeting">Good morning,<br><em id="greeting-name">User.</em></h2>
+        <h2 id="today-greeting">Good morning,<br><em>Robin.</em></h2>
       </div>
       <div class="verse-strip" style="position:relative;">
         <div class="vs-text" id="verse-text">"Ye are the light of the world. A city that is set on an hill cannot be hid."</div>
         <div class="vs-ref" id="verse-ref">MATTHEW 5:14 (KJV)</div>
       </div>
-      
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
         <div style="background:var(--temple-light);border:1px solid rgba(196,87,58,.2);border-radius:var(--radius);padding:12px;text-align:center;">
           <div style="font-size:24px;font-weight:700;color:var(--temple);" id="temple-score">0</div>
@@ -264,15 +282,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
           <div class="pillar-label">Temple — Body</div>
           <div class="pillar-why">physical</div>
         </div>
-        <div id="h-pray-morning" class="habit-card temple" onclick="toggleHabit('prayer_morning','temple')">
+        <div id="h-pray" class="habit-card temple" onclick="toggleHabit(this,'prayer','temple')">
           <div class="habit-check"></div>
           <div class="habit-text"><div class="habit-name">Morning Prayer</div><div class="habit-hint">5 min – Seek God's wisdom</div></div>
         </div>
-        <div id="h-move" class="habit-card temple" onclick="toggleHabit('movement','temple')">
+        <div id="h-move" class="habit-card temple" onclick="toggleHabit(this,'movement','temple')">
           <div class="habit-check"></div>
           <div class="habit-text"><div class="habit-name">Move Your Body</div><div class="habit-hint">20 min – Walk, stretch, train</div></div>
         </div>
-        <div id="h-meal" class="habit-card temple" onclick="toggleHabit('meal','temple')">
+        <div id="h-meal" class="habit-card temple" onclick="toggleHabit(this,'meal','temple')">
           <div class="habit-check"></div>
           <div class="habit-text"><div class="habit-name">Biblical Meal</div><div class="habit-hint">Track nutrition – 1st meal</div></div>
         </div>
@@ -284,15 +302,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
           <div class="pillar-label">Soul — Mind</div>
           <div class="pillar-why">mental</div>
         </div>
-        <div id="h-read" class="habit-card soul" onclick="toggleHabit('read','soul')">
+        <div id="h-read" class="habit-card soul" onclick="toggleHabit(this,'read','soul')">
           <div class="habit-check"></div>
           <div class="habit-text"><div class="habit-name">Scripture Reading</div><div class="habit-hint">10 min – Feed your mind</div></div>
         </div>
-        <div id="h-journal" class="habit-card soul" onclick="toggleHabit('journal','soul')">
+        <div id="h-journal" class="habit-card soul" onclick="toggleHabit(this,'journal','soul')">
           <div class="habit-check"></div>
           <div class="habit-text"><div class="habit-name">Journaling</div><div class="habit-hint">Reflect – Write your truth</div></div>
         </div>
-        <div id="h-gratitude" class="habit-card soul" onclick="toggleHabit('gratitude','soul')">
+        <div id="h-gratitude" class="habit-card soul" onclick="toggleHabit(this,'gratitude','soul')">
           <div class="habit-check"></div>
           <div class="habit-text"><div class="habit-name">Gratitude Practice</div><div class="habit-hint">Name 3 things – Feel blessed</div></div>
         </div>
@@ -304,44 +322,49 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
           <div class="pillar-label">Spirit — God</div>
           <div class="pillar-why">spiritual</div>
         </div>
-        <div id="h-pray-evening" class="habit-card spirit" onclick="toggleHabit('prayer_evening','spirit')">
+        <div id="h-prayer" class="habit-card spirit" onclick="toggleHabit(this,'prayer','spirit')">
           <div class="habit-check"></div>
           <div class="habit-text"><div class="habit-name">Evening Prayer</div><div class="habit-hint">10 min – Thank the Lord</div></div>
         </div>
-        <div id="h-rest" class="habit-card spirit" onclick="toggleHabit('rest','spirit')">
+        <div id="h-rest" class="habit-card spirit" onclick="toggleHabit(this,'rest','spirit')">
           <div class="habit-check"></div>
           <div class="habit-text"><div class="habit-name">Sabbath Rest</div><div class="habit-hint">Sleep 7-9h – Restore</div></div>
         </div>
       </div>
     </div>
     
+    <!-- INSIGHTS PAGE (placeholder) -->
     <div id="page-insights" class="page" style="text-align:center;padding:40px 20px;">
       <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:16px;">Your Progress</h3>
       <p style="color:var(--ink3);">Track your Temple, Soul & Spirit transformation over time.</p>
-      <div style="margin-top:32px;padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);">
-        <div style="font-size:32px;font-weight:700;color:var(--gold-dark);" id="progress-percent">0%</div>
-        <p style="color:var(--ink3);margin-top:8px;">Overall progress today</p>
+      <div style="margin-top:32px;padding:20px;background:var(--bg3);border-radius:var(--radius);">
+        <div style="font-size:32px;font-weight:700;color:var(--gold);">0%</div>
+        <p style="color:var(--ink3);margin-top:8px;">Overall progress</p>
       </div>
     </div>
     
+    <!-- MEALS PAGE (placeholder) -->
     <div id="page-meals" class="page" style="text-align:center;padding:40px 20px;">
       <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:16px;">GodHealth Kitchen</h3>
       <p style="color:var(--ink3);">50 Biblical recipes — Nutrition science meets Scripture.</p>
       <button class="btn-primary" style="margin-top:20px;max-width:200px;">View Recipes</button>
     </div>
     
+    <!-- TIPS PAGE (placeholder) -->
     <div id="page-tips" class="page" style="text-align:center;padding:40px 20px;">
       <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:16px;">Daily Wisdom</h3>
       <p style="color:var(--ink3);">100+ health tips grounded in Scripture & science.</p>
       <button class="btn-primary" style="margin-top:20px;max-width:200px;">Read Tips</button>
     </div>
     
+    <!-- TRIBE PAGE (placeholder) -->
     <div id="page-tribe" class="page" style="text-align:center;padding:40px 20px;">
       <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:16px;">GodHealth Tribe</h3>
       <p style="color:var(--ink3);">Connect, share & grow with your community.</p>
-      <button class="btn-primary" onclick="window.open('https://circle.so','_blank')" style="margin-top:20px;max-width:200px;">Join Circle</button>
+      <button class="btn-primary" onclick="openCircle()" style="margin-top:20px;max-width:200px;">Join Circle</button>
     </div>
     
+    <!-- PROFILE PAGE -->
     <div id="page-profile" class="page" style="padding-bottom:80px;">
       <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:16px;">Settings & Profile</h3>
       
@@ -354,15 +377,20 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;">
         <h4 style="font-weight:700;margin-bottom:12px;">Wake & Sleep</h4>
         <label style="display:block;font-size:12px;color:var(--ink3);margin-bottom:4px;">Wake time</label>
-        <input type="time" id="prof-wake" value="07:00" onchange="saveProfileSettings()" style="width:100%;margin-bottom:12px;padding:8px;border:1px solid var(--border);border-radius:8px;">
+        <input type="time" id="set-wake" value="07:00" onchange="saveSettings()" style="width:100%;margin-bottom:12px;padding:8px;border:1px solid var(--border);border-radius:8px;">
         <label style="display:block;font-size:12px;color:var(--ink3);margin-bottom:4px;">Bedtime</label>
-        <input type="time" id="prof-bed" value="23:00" onchange="saveProfileSettings()" style="width:100%;margin-bottom:12px;padding:8px;border:1px solid var(--border);border-radius:8px;">
+        <input type="time" id="set-bed" value="23:00" onchange="saveSettings()" style="width:100%;margin-bottom:12px;padding:8px;border:1px solid var(--border);border-radius:8px;">
       </div>
       
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;">
         <h4 style="font-weight:700;margin-bottom:12px;">Intermittent Fasting</h4>
         <label style="display:block;font-size:12px;color:var(--ink3);margin-bottom:4px;">Fasting hours</label>
-        <input type="number" id="prof-if" value="16" min="8" max="24" onchange="saveProfileSettings()" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;">
+        <input type="number" id="set-if" value="16" min="8" max="24" onchange="saveSettings()" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;">
+      </div>
+      
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;">
+        <h4 style="font-weight:700;margin-bottom:12px;">Subscription</h4>
+        <p style="font-size:13px;color:var(--ink3);margin-bottom:8px;">Tier: <strong id="user-tier">App (€19.99/month)</strong></p>
       </div>
       
       <button class="btn-primary" onclick="logoutUser()" style="background:var(--temple);width:100%;">Sign Out</button>
@@ -370,12 +398,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
   </div>
   
   <nav class="bottom-nav" aria-label="Main navigation">
-    <button class="nav-item active" onclick="showPage('today')" data-page="today"><div class="nav-icon">☀️</div><div class="nav-label">Today</div></button>
-    <button class="nav-item" onclick="showPage('insights')" data-page="insights"><div class="nav-icon">📊</div><div class="nav-label">Insights</div></button>
-    <button class="nav-item" onclick="showPage('meals')" data-page="meals"><div class="nav-icon">🌿</div><div class="nav-label">Meals</div></button>
-    <button class="nav-item" onclick="showPage('tips')" data-page="tips"><div class="nav-icon">💡</div><div class="nav-label">Tips</div></button>
-    <button class="nav-item" onclick="showPage('tribe')" data-page="tribe"><div class="nav-icon">👥</div><div class="nav-label">Tribe</div></button>
-    <button class="nav-item" onclick="showPage('profile')" data-page="profile"><div class="nav-icon">✝️</div><div class="nav-label">Profile</div></button>
+    <button class="nav-item active" onclick="showPage('today')" data-page="today" aria-label="Today"><div class="nav-icon">☀️</div><div class="nav-label">Today</div></button>
+    <button class="nav-item" onclick="showPage('insights')" data-page="insights" aria-label="Insights"><div class="nav-icon">📊</div><div class="nav-label">Insights</div></button>
+    <button class="nav-item" onclick="showPage('meals')" data-page="meals" aria-label="Meals"><div class="nav-icon">🌿</div><div class="nav-label">Meals</div></button>
+    <button class="nav-item" onclick="showPage('tips')" data-page="tips" aria-label="Tips"><div class="nav-icon">💡</div><div class="nav-label">Tips</div></button>
+    <button class="nav-item" onclick="showPage('tribe')" data-page="tribe" aria-label="Tribe"><div class="nav-icon">👥</div><div class="nav-label">Tribe</div></button>
+    <button class="nav-item" onclick="showPage('profile')" data-page="profile" aria-label="Profile"><div class="nav-icon">✝️</div><div class="nav-label">Profile</div></button>
   </nav>
 </div>
 
@@ -387,369 +415,308 @@ const SUPABASE_ANON_KEY = 'sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG';
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ═══ STATE MANAGEMENT ═══
-let S = {
-  name: '',
-  wake: '07:00',
-  bed: '23:00',
-  fastHours: 16,
-  ifStart: null,
-  ifActive: false,
-  days: {}
-};
+// ═══ STATE ═══
+let S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};
 let currentUser = null;
 
-// ═══ APP STARTUP ═══
-window.addEventListener('DOMContentLoaded', async () => {
+// ═══ INIT ═══
+window.addEventListener('DOMContentLoaded',async()=>{
   updateTime();
-  setInterval(updateTime, 1000);
-  setInterval(updateIFTimer, 1000);
+  setInterval(updateTime,1000);
+  setInterval(updateIFTimer,1000);
   await checkUserLoggedIn();
 });
 
 // ═══ AUTH FUNCTIONS ═══
-async function checkUserLoggedIn() {
-  try {
-    const { data, error } = await db.auth.getSession();
-    if (data && data.session) {
-      currentUser = data.session.user;
-      
-      // Laad gebruikersgegevens uit de public.users tabel
-      const { data: userProfile } = await db
-        .from('users')
-        .select('*')
-        .eq('id', currentUser.id)
-        .single();
-        
-      if (userProfile) {
-        S.name = userProfile.full_name || 'Friend';
-        document.getElementById('greeting-name').textContent = S.name + '.';
-        document.getElementById('profile-name').textContent = S.name;
-        document.getElementById('profile-email').textContent = currentUser.email;
-        
-        // Synchroniseer opgeslagen profiel instellingen naar de UI
-        if(userProfile.wake_time) S.wake = userProfile.wake_time;
-        if(userProfile.bed_time) S.bed = userProfile.bed_time;
-        if(userProfile.fasting_hours) S.fastHours = parseInt(userProfile.fasting_hours);
-        
-        syncSettingsToUI();
-        await ls2(); // Laad database-tracking data van vandaag
-        showScreen('app');
-      } else {
-        // Wel ingelogd via Auth, maar geen profiel? Stuur naar onboarding
-        showScreen('onboard');
-      }
+async function checkUserLoggedIn(){
+  try{
+    const {data,error}=await db.auth.getSession();
+    if(data.session){
+      currentUser=data.session.user;
+      S.name=data.session.user.user_metadata?.full_name||'Friend';
+      showScreen('onboard');
       return true;
     }
-  } catch (e) {
-    console.error('Auth check error:', e);
+  }catch(e){
+    console.error('Auth check error:',e);
   }
-  showScreen('login');
   return false;
 }
 
-function showLoginForm() {
-  document.getElementById('signupForm').style.display = 'none';
-  document.getElementById('loginBtn').style.display = 'block';
-  document.getElementById('signupToggleBtn').style.display = 'block';
+function showLoginForm(){
+  document.getElementById('signupForm').style.display='none';
+  document.getElementById('loginBtn').style.display='block';
+  document.getElementById('signupToggleBtn').style.display='block';
+  document.getElementById('signupBtn').style.display='none';
+  document.getElementById('backToLoginBtn').style.display='none';
 }
 
-function showSignupForm() {
-  document.getElementById('signupForm').style.display = 'block';
-  document.getElementById('loginBtn').style.display = 'none';
-  document.getElementById('signupToggleBtn').style.display = 'none';
+function showSignupForm(){
+  document.getElementById('signupForm').style.display='block';
+  document.getElementById('loginBtn').style.display='none';
+  document.getElementById('signupToggleBtn').style.display='none';
+  document.getElementById('signupBtn').style.display='block';
+  document.getElementById('backToLoginBtn').style.display='block';
 }
 
-async function handleLogin() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const pwd = document.getElementById('loginPassword').value;
-  const errDiv = document.getElementById('loginError');
-  errDiv.style.display = 'none';
+async function handleLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pwd=document.getElementById('loginPassword').value;
+  const errDiv=document.getElementById('loginError');
+  errDiv.style.display='none';
   
-  if (!email || !pwd) { errDiv.textContent = 'Please fill all fields'; errDiv.style.display = 'block'; return; }
+  if(!email||!pwd){errDiv.textContent='Please fill all fields';errDiv.style.display='block';return;}
   
-  try {
-    const { data, error } = await db.auth.signInWithPassword({ email, password: pwd });
-    if (error) throw error;
-    await checkUserLoggedIn();
+  try{
+    const {data,error}=await db.auth.signInWithPassword({email,password:pwd});
+    if(error)throw error;
+    currentUser=data.user;
+    S.name=data.user.user_metadata?.full_name||'Friend';
+    document.getElementById('loginEmail').value='';
+    document.getElementById('loginPassword').value='';
     showToast('✅ Welcome back!');
-  } catch (e) {
-    errDiv.textContent = '❌ Login failed: ' + e.message;
-    errDiv.style.display = 'block';
+    showScreen('onboard');
+  }catch(e){
+    errDiv.textContent='❌ Login failed: '+e.message;
+    errDiv.style.display='block';
   }
 }
 
-async function handleSignup() {
-  const email = document.getElementById('signupEmail').value.trim();
-  const name = document.getElementById('signupName').value.trim();
-  const pwd = document.getElementById('signupPassword').value;
-  const pwdConfirm = document.getElementById('signupPasswordConfirm').value;
-  const errDiv = document.getElementById('loginError');
-  errDiv.style.display = 'none';
+async function handleSignup(){
+  const email=document.getElementById('signupEmail').value.trim();
+  const name=document.getElementById('signupName').value.trim();
+  const pwd=document.getElementById('signupPassword').value;
+  const pwdConfirm=document.getElementById('signupPasswordConfirm').value;
+  const errDiv=document.getElementById('loginError');
+  errDiv.style.display='none';
   
-  if (!email || !name || !pwd) { errDiv.textContent = 'Please fill all fields'; errDiv.style.display = 'block'; return; }
-  if (pwd !== pwdConfirm) { errDiv.textContent = 'Passwords do not match'; errDiv.style.display = 'block'; return; }
+  if(!email||!name||!pwd||!pwdConfirm){errDiv.textContent='Please fill all fields';errDiv.style.display='block';return;}
+  if(pwd.length<8){errDiv.textContent='Password must be at least 8 characters';errDiv.style.display='block';return;}
+  if(pwd!==pwdConfirm){errDiv.textContent='Passwords do not match';errDiv.style.display='block';return;}
   
-  try {
-    const { data, error } = await db.auth.signUp({
-      email,
-      password: pwd,
-      options: { data: { full_name: name } }
-    });
-    if (error) throw error;
-    
-    if (data.user) {
-      // Maak direct een regel aan in de gebruikers tabel
-      await db.from('users').insert({
-        id: data.user.id,
-        email: email,
-        full_name: name
-      });
-      
-      currentUser = data.user;
-      S.name = name;
-      document.getElementById('ob-name').value = name;
-      showScreen('onboard');
-      showToast('Account created! Please configure your journey.');
+  try{
+    const {data,error}=await db.auth.signUp({email,password:pwd,options:{data:{full_name:name}}});
+    if(error)throw error;
+    currentUser=data.user;
+    S.name=name;
+    document.getElementById('signupEmail').value='';
+    document.getElementById('signupName').value='';
+    document.getElementById('signupPassword').value='';
+    document.getElementById('signupPasswordConfirm').value='';
+    showToast('✅ Account created!');
+    showScreen('onboard');
+  }catch(e){
+    errDiv.textContent='❌ Signup failed: '+e.message;
+    errDiv.style.display='block';
+  }
+}
+
+async function logoutUser(){
+  try{
+    await db.auth.signOut();
+    currentUser=null;
+    S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};
+    showScreen('login');
+    showToast('Signed out');
+  }catch(e){
+    console.error('Logout error:',e);
+  }
+}
+
+// ═══ DATABASE SYNC ═══
+async function loadUserData(){
+  if(!currentUser)return;
+  try{
+    const {data,error}=await db.from('users').select('*').eq('id',currentUser.id).single();
+    if(error&&error.code!=='PGRST116')throw error;
+    if(data){
+      S.name=data.full_name||S.name;
+      S.wake=data.wake_time||S.wake;
+      S.bed=data.bed_time||S.bed;
+      S.fastHours=data.fast_hours||S.fastHours;
     }
-  } catch (e) {
-    errDiv.textContent = '❌ Registration failed: ' + e.message;
-    errDiv.style.display = 'block';
+  }catch(e){
+    console.error('Load user error:',e);
   }
 }
 
-async function logoutUser() {
-  await db.auth.signOut();
-  currentUser = null;
-  location.reload();
-}
-
-// ═══ ONBOARDING FINISH ═══
-async function finishOnboard() {
-  const customName = document.getElementById('ob-name').value.trim();
-  if (customName) S.name = customName;
-  
-  S.wake = document.getElementById('set-wake').value;
-  S.bed = document.getElementById('set-bed').value;
-  S.fastHours = parseInt(document.getElementById('set-if').value) || 16;
-  
-  try {
-    // Update de database profielinstellingen van de user
-    await db.from('users').upsert({
-      id: currentUser.id,
-      full_name: S.name,
-      wake_time: S.wake,
-      bed_time: S.bed,
-      fasting_hours: S.fastHours
-    });
-    
-    document.getElementById('greeting-name').textContent = S.name + '.';
-    document.getElementById('profile-name').textContent = S.name;
-    document.getElementById('profile-email').textContent = currentUser.email;
-    
-    syncSettingsToUI();
-    await ss2(); // Sla lege begintoestand op voor vandaag
-    showScreen('app');
-    showToast('🚀 Your journey has begun!');
-  } catch(e) {
-    console.error("Error finalizing onboarding:", e);
-    showToast('⚠️ Could not save settings to database');
+async function saveUserData(){
+  if(!currentUser)return;
+  try{
+    await db.from('users').upsert({id:currentUser.id,full_name:S.name,wake_time:S.wake,bed_time:S.bed,fast_hours:S.fastHours,updated_at:new Date()});
+  }catch(e){
+    console.error('Save user error:',e);
   }
 }
 
-function syncSettingsToUI() {
-  document.getElementById('prof-wake').value = S.wake;
-  document.getElementById('prof-bed').value = S.bed;
-  document.getElementById('prof-if').value = S.fastHours;
-  document.getElementById('if-card').querySelector('.if-title').textContent = S.fastHours + 'h Intermittent Fasting';
-}
-
-async function saveProfileSettings() {
-  S.wake = document.getElementById('prof-wake').value;
-  S.bed = document.getElementById('prof-bed').value;
-  S.fastHours = parseInt(document.getElementById('prof-if').value) || 16;
-  
-  document.getElementById('if-card').querySelector('.if-title').textContent = S.fastHours + 'h Intermittent Fasting';
-  
-  try {
-    await db.from('users').update({
-      wake_time: S.wake,
-      bed_time: S.bed,
-      fasting_hours: S.fastHours
-    }).eq('id', currentUser.id);
-    showToast('⚙️ Settings synchronized');
-  } catch(e) {
-    console.error(e);
+async function saveDayData(){
+  if(!currentUser)return;
+  const today=new Date().toISOString().split('T')[0];
+  const dayData=S.days[today]||{temple:0,soul:0,spirit:0,habits:{}};
+  try{
+    await db.from('daily_tracking').upsert({user_id:currentUser.id,tracking_date:today,temple_score:dayData.temple,soul_score:dayData.soul,spirit_score:dayData.spirit,habits:dayData.habits,updated_at:new Date()},{onConflict:'user_id,tracking_date'});
+  }catch(e){
+    console.error('Save day error:',e);
+    showToast('⚠️ Could not sync data');
   }
 }
 
-// ═══ SUPABASE DATABASE SYNC (TRACKING) ═══
-async function ls2() {
-  try {
-    if (!currentUser) return;
-    const today = new Date().toISOString().split('T')[0];
-    
-    const { data, error } = await db
-      .from('daily_tracking')
-      .select('*')
-      .eq('user_id', currentUser.id)
-      .eq('tracking_date', today)
-      .maybeSingle();
-    
-    if (error) throw error;
-    
-    if (data) {
-      S.days[today] = {
-        temple: data.temple_score || 0,
-        soul: data.soul_score || 0,
-        spirit: data.spirit_score || 0,
-        habits: data.habits || {}
-      };
-    } else {
-      S.days[today] = { temple: 0, soul: 0, spirit: 0, habits: {} };
-    }
-    
-    renderTodayHabits();
-  } catch (e) {
-    console.error('Data loading error:', e);
-  }
+// ═══ UI FUNCTIONS ═══
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='onboard')document.getElementById('app').classList.remove('active');
+  else if(id!=='login')document.getElementById('app').classList.add('active');
 }
 
-async function ss2() {
-  try {
-    if (!currentUser) return false;
-    const today = new Date().toISOString().split('T')[0];
-    const dayData = S.days[today] || { temple: 0, soul: 0, spirit: 0, habits: {} };
-    
-    const { error } = await db
-      .from('daily_tracking')
-      .upsert({
-        user_id: currentUser.id,
-        tracking_date: today,
-        temple_score: dayData.temple,
-        soul_score: dayData.soul,
-        spirit_score: dayData.spirit,
-        habits: dayData.habits,
-        updated_at: new Date()
-      }, { onConflict: 'user_id,tracking_date' });
-    
-    if (error) throw error;
-    return true;
-  } catch (e) {
-    console.error('Database sync error:', e);
-    showToast('⚠️ Sync error with cloud');
-    return false;
-  }
+function finishOnboard(){
+  const name=document.getElementById('ob-name').value.trim();
+  if(!name){showToast('Please enter your name');return;}
+  S.name=name;
+  S.wake=document.getElementById('set-wake').value;
+  S.bed=document.getElementById('set-bed').value;
+  S.fastHours=parseInt(document.getElementById('set-if').value);
+  saveUserData();
+  showScreen('app');
+  initApp();
 }
 
-// ═══ HABIT LOGIC ═══
-async function toggleHabit(habitKey, pillar) {
-  const today = new Date().toISOString().split('T')[0];
-  if (!S.days[today]) S.days[today] = { temple: 0, soul: 0, spirit: 0, habits: {} };
-  if (!S.days[today].habits) S.days[today].habits = {};
-  
-  // Toggle status
-  const currentStatus = !!S.days[today].habits[habitKey];
-  S.days[today].habits[habitKey] = !currentStatus;
-  
-  // Update scores
-  const scoreChange = !currentStatus ? 10 : -10;
-  S.days[today][pillar] = Math.max(0, (S.days[today][pillar] || 0) + scoreChange);
-  
-  renderTodayHabits();
-  await ss2(); // Sla direct live op in Supabase
+async function initApp(){
+  await loadUserData();
+  renderHeader();
+  renderTodayPage();
+  renderProfile();
+  restoreTodayState();
+  if(S.ifActive)startIFTimer();
 }
 
-function renderTodayHabits() {
-  const today = new Date().toISOString().split('T')[0];
-  const dayData = S.days[today] || { temple: 0, soul: 0, spirit: 0, habits: {} };
-  
-  document.getElementById('temple-score').textContent = dayData.temple || 0;
-  document.getElementById('soul-score').textContent = dayData.soul || 0;
-  document.getElementById('spirit-score').textContent = dayData.spirit || 0;
-  
-  // Loop door de HTML kaarten en zet ze actief/inactief
-  const habitCards = document.querySelectorAll('.habit-card');
-  let checkedCount = 0;
-  
-  habitCards.forEach(card => {
-    const id = card.id.replace('h-', '');
-    // Match de juiste keys
-    let key = id;
-    if(id === 'pray-morning') key = 'prayer_morning';
-    if(id === 'pray-evening') key = 'prayer_evening';
-    
-    if (dayData.habits && dayData.habits[key]) {
-      card.classList.add('checked');
-      checkedCount++;
-    } else {
-      card.classList.remove('checked');
-    }
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector('[data-page="'+id+'"]').classList.add('active');
+}
+
+function showToast(msg){
+  const t=document.createElement('div');
+  t.className='toast';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2500);
+}
+
+// ═══ RENDERING ═══
+function renderHeader(){
+  document.getElementById('profile-name').textContent=S.name;
+  document.getElementById('profile-email').textContent=currentUser?.email||'—';
+}
+
+function renderTodayPage(){
+  const hr=new Date().getHours();
+  const greet=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
+  document.getElementById('today-greeting').innerHTML=`${greet},<br><em>${S.name}.</em>`;
+  updateScores();
+  updateIFDisplay();
+}
+
+function renderProfile(){
+  document.getElementById('profile-name').textContent=S.name;
+  document.getElementById('profile-email').textContent=currentUser?.email||'—';
+  document.getElementById('set-wake').value=S.wake;
+  document.getElementById('set-bed').value=S.bed;
+  document.getElementById('set-if').value=S.fastHours;
+}
+
+function updateScores(){
+  const today=new Date().toISOString().split('T')[0];
+  const day=S.days[today]||{temple:0,soul:0,spirit:0};
+  document.getElementById('temple-score').textContent=day.temple+'%';
+  document.getElementById('soul-score').textContent=day.soul+'%';
+  document.getElementById('spirit-score').textContent=day.spirit+'%';
+}
+
+function updateTime(){
+  const now=new Date();
+  document.getElementById('dateNow').textContent=now.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  const day1=new Date(2025,0,1);
+  document.getElementById('day-count').textContent=Math.floor((now-day1)/(24*60*60*1000))+1;
+}
+
+function restoreTodayState(){
+  const today=new Date().toISOString().split('T')[0];
+  const day=S.days[today];
+  if(!day)return;
+  Object.keys(day.habits||{}).forEach(h=>{
+    const el=document.getElementById('h-'+h);
+    if(el&&day.habits[h])el.classList.add('checked');
   });
-  
-  // Bereken totale progressie
-  const totalHabits = habitCards.length;
-  const percentage = totalHabits > 0 ? Math.round((checkedCount / totalHabits) * 100) : 0;
-  document.getElementById('progress-percent').textContent = percentage + '%';
 }
 
-// ═══ FASTING LOGIC ═══
-function toggleFasting() {
-  S.ifActive = !S.ifActive;
-  const btn = document.getElementById('if-btn');
-  if (S.ifActive) {
-    S.ifStart = new Date().getTime();
-    btn.textContent = 'Stop Fast';
-    btn.classList.add('stop');
-    showToast('Fasting timer started. Stay strong!');
-  } else {
-    S.ifStart = null;
-    btn.textContent = 'Start Fast';
-    btn.classList.remove('stop');
-    document.getElementById('if-timer').textContent = '0:00';
-    showToast('Fasting timer reset.');
+// ═══ HABITS ═══
+function toggleHabit(el,id,pillar){
+  el.classList.toggle('checked');
+  const today=new Date().toISOString().split('T')[0];
+  if(!S.days[today])S.days[today]={temple:0,soul:0,spirit:0,habits:{}};
+  S.days[today].habits[id]=el.classList.contains('checked');
+  updateScores();
+  saveDayData();
+}
+
+function saveSettings(){
+  S.wake=document.getElementById('set-wake').value;
+  S.bed=document.getElementById('set-bed').value;
+  S.fastHours=parseInt(document.getElementById('set-if').value);
+  updateIFDisplay();
+  saveUserData();
+  showToast('✅ Settings saved');
+}
+
+// ═══ FASTING ═══
+function updateIFDisplay(){
+  const [wh,wm]=S.wake.split(':').map(Number);
+  const [bh,bm]=S.bed.split(':').map(Number);
+  const [oh,om]=[(wh+S.fastHours)%24,wm].map(n=>String(n).padStart(2,'0'));
+  document.getElementById('if-open').textContent=wh.toString().padStart(2,'0')+':'+String(wm).padStart(2,'0')+' AM';
+  document.getElementById('if-close').textContent=oh+':'+om;
+}
+
+function toggleFasting(){
+  if(!S.ifActive){
+    S.ifActive=true;
+    S.ifStart=Date.now();
+    document.getElementById('if-btn').textContent='Stop Fasting';
+    document.getElementById('if-btn').classList.add('stop');
+    showToast('🙏 Fast started – Focus on God');
+  }else{
+    S.ifActive=false;
+    document.getElementById('if-btn').textContent='Start Fast';
+    document.getElementById('if-btn').classList.remove('stop');
+    showToast('✅ Great work!');
   }
 }
 
-function updateIFTimer() {
-  if (!S.ifActive || !S.ifStart) return;
-  const now = new Date().getTime();
-  const diff = now - S.ifStart;
-  
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-  
-  document.getElementById('if-timer').textContent = 
-    `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+function updateIFTimer(){
+  if(!S.ifActive){document.getElementById('if-timer').textContent='0:00';return;}
+  const elapsed=Math.floor((Date.now()-S.ifStart)/1000);
+  const hrs=Math.floor(elapsed/3600);
+  const mins=Math.floor((elapsed%3600)/60);
+  document.getElementById('if-timer').textContent=hrs+':'+(mins<10?'0':'')+mins;
 }
 
-// ═══ NAVIGATION & UI ═══
-function showScreen(screenId) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
+// ═══ CIRCLE ═══
+function openCircle(){
+  showToast('Opening GodHealth Tribe...');
+  window.open('https://godhealth.circle.so','_blank');
 }
 
-function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  
-  document.getElementById('page-' + pageId).classList.add('active');
-  event.currentTarget.classList.add('active');
-}
-
-function updateTime() {
-  const now = new Date();
-  const options = { weekday: 'long', month: 'short', day: 'numeric' };
-  document.getElementById('dateNow').textContent = now.toLocaleDateString('en-US', options);
-}
-
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.style.display = 'block';
-  setTimeout(() => { toast.style.display = 'none'; }, 3000);
-}
+// ═══ INIT ON LOAD ═══
+document.addEventListener('DOMContentLoaded',async()=>{
+  updateTime();
+  setInterval(updateTime,1000);
+  setInterval(updateIFTimer,1000);
+  const loggedIn=await checkUserLoggedIn();
+  if(!loggedIn)showScreen('login');
+});
 </script>
 </body>
 </html>
