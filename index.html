@@ -24,8 +24,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-<!-- Supabase Client Library -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --bg:#0D1F0D;--bg2:#FFFFFF;--bg3:#F2EDE4;
@@ -45,7 +43,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 
 /* ONBOARDING */
 #onboard{background:var(--bg);align-items:center;justify-content:center;padding:40px 28px;text-align:center;overflow-y:auto;}
-#login{background:var(--bg);align-items:center;justify-content:center;padding:40px 28px;text-align:center;overflow-y:auto;}
 .ob-cross{margin-bottom:20px;animation:riseUp .8s ease both;}
 .ob-eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:700;animation:riseUp .9s ease both;}
 .ob-title{font-family:'Playfair Display',serif;font-size:clamp(36px,8vw,52px);font-weight:700;line-height:1.08;color:#F5EDD8;margin-bottom:8px;animation:riseUp 1s ease both;}
@@ -57,7 +54,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 .ob-pillar-sub{font-size:9px;color:var(--ink3);}
 .ob-form{width:100%;max-width:360px;animation:riseUp 1.2s ease both;}
 .ob-form label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,216,.7);margin-bottom:6px;font-weight:700;text-align:left;}
-.ob-form input[type=text],.ob-form input[type=time],.ob-form input[type=email],.ob-form input[type=password],.ob-form input[type=number]{width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;transition:border-color .25s;margin-bottom:12px;}
+.ob-form input[type=text],.ob-form input[type=time]{width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;transition:border-color .25s;margin-bottom:12px;}
 .ob-form input:focus{border-color:var(--gold);}
 .ob-time-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
 .ob-time-row .ob-time-box label{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,216,.7);margin-bottom:5px;font-weight:700;}
@@ -76,7 +73,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 .date-badge{font-size:11px;color:rgba(245,237,216,.55);}
 .scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .scroll-area::-webkit-scrollbar{width:0;}
-.page{display:none;padding:16px;padding-bottom:90px;}
+.page{display:none;padding:16px;padding-bottom:96px;}
 .page.active{display:block;}
 
 /* TODAY PAGE */
@@ -364,19 +361,24 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .nav-item:focus-visible{outline-offset:-2px;border-radius:8px;}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
+/* Login screen — matches onboard styling */
+#login{background:var(--bg);align-items:center;justify-content:center;padding:40px 28px;text-align:center;overflow-y:auto;}
+.ob-form input[type=email],.ob-form input[type=password]{width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;transition:border-color .25s;margin-bottom:12px;}
+.ob-form input[type=email]:focus,.ob-form input[type=password]:focus{border-color:var(--gold);}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-<!-- Loading overlay: shows while session check runs, prevents any login flash -->
-<div id="gh-loading" style="position:fixed;inset:0;background:#0D1F0D;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;">
-  <svg width="44" height="44" viewBox="0 0 44 44" fill="none" style="opacity:.9;">
+<!-- LOADING OVERLAY: shown while session is checked, prevents login flash -->
+<div id="gh-loading" style="position:fixed;inset:0;background:#0D1F0D;display:flex;align-items:center;justify-content:center;z-index:9999;">
+  <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
     <rect x="18" y="2" width="8" height="40" rx="3" fill="#D4A83A"/>
     <rect x="4" y="14" width="36" height="8" rx="3" fill="#D4A83A"/>
   </svg>
 </div>
 
-<!-- LOGIN SCREEN (Supabase auth) -->
+<!-- LOGIN SCREEN -->
 <div id="login" class="screen">
   <svg class="ob-cross" width="44" height="44" viewBox="0 0 44 44" fill="none">
     <rect x="18" y="2" width="8" height="40" rx="3" fill="#D4A83A"/>
@@ -386,7 +388,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   <h1 class="ob-title">Transform<br><em>Together</em></h1>
   <div class="ob-form" style="margin-top:28px;">
     <div id="login-error" style="display:none;background:rgba(196,87,58,.15);border:1px solid rgba(196,87,58,.35);color:#E8836A;padding:11px 14px;border-radius:10px;margin-bottom:14px;font-size:13px;text-align:left;line-height:1.5;"></div>
-    <!-- Sign in -->
     <div id="login-form">
       <label>Email</label>
       <input type="email" id="login-email" placeholder="you@email.com" autocomplete="email"/>
@@ -395,7 +396,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <button class="btn-primary" onclick="ghLogin()">Sign In</button>
       <button class="btn-primary" onclick="ghToggleAuth('signup')" style="background:transparent;border:1.5px solid rgba(184,145,42,.5);color:var(--gold);margin-top:4px;">Create Account</button>
     </div>
-    <!-- Sign up -->
     <div id="signup-form" style="display:none;">
       <label>Your name</label>
       <input type="text" id="signup-name" placeholder="Enter your name..." autocomplete="name"/>
@@ -626,22 +626,22 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         </div>
       </div>
       <button class="save-day-btn" id="save-day-btn" onclick="saveDay()">Save Today</button>
-      <a href="godhealth-tribe.html" onclick="window.location.href='godhealth-tribe.html';return false;" style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--spirit-light),var(--bg2));border:1.5px solid rgba(107,143,94,.3);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
+      <a href="godhealth-tribe.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--spirit-light),var(--bg2));border:1.5px solid rgba(107,143,94,.3);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
         👥 Covenant Circle — Accountability
       </a>
-      <a href="godhealth-training.html" onclick="window.location.href='godhealth-training.html';return false;" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--temple-light);border:1.5px solid rgba(196,87,58,.25);color:var(--temple);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
+      <a href="godhealth-training.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--temple-light);border:1.5px solid rgba(196,87,58,.25);color:var(--temple);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
         ⚡ Training Schedule
       </a>
-      <a href="godhealth-prayer.html" onclick="window.location.href='godhealth-prayer.html';return false;" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--spirit-light);border:1.5px solid rgba(107,143,94,.25);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
+      <a href="godhealth-prayer.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--spirit-light);border:1.5px solid rgba(107,143,94,.25);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
         🙏 Prayer Guide
       </a>
-      <a href="godhealth-21days.html" onclick="window.location.href='godhealth-21days.html';return false;" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--soul-light);border:1.5px solid rgba(74,127,165,.25);color:var(--soul);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
+      <a href="godhealth-21days.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--soul-light);border:1.5px solid rgba(74,127,165,.25);color:var(--soul);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
         ✝️ 21-Day Arise Challenge
       </a>
-      <a href="godhealth-meals-plan.html" onclick="window.location.href='godhealth-meals-plan.html';return false;" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--gold-light);border:1.5px solid rgba(184,145,42,.25);color:var(--gold);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
+      <a href="godhealth-meals-plan.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--gold-light);border:1.5px solid rgba(184,145,42,.25);color:var(--gold);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
         🌿 Generate My Meal Plan
       </a>
-      <a href="godhealth-tracker.html" onclick="window.location.href='godhealth-tracker.html';return false;" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--spirit-light);border:1.5px solid rgba(107,143,94,.25);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
+      <a href="godhealth-tracker.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--spirit-light);border:1.5px solid rgba(107,143,94,.25);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
         📊 Open Progress Tracker
       </a>
     </div>
@@ -905,6 +905,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         <div class="profile-avatar">✝️</div>
         <div class="profile-name" id="profile-name">Warrior</div>
         <div class="profile-sub">Member of the GodHealth Tribe</div>
+        <div class="profile-sub" id="profile-email" style="font-size:12px;color:rgba(26,20,16,.5);margin-top:2px;"></div>
         <div class="profile-stats">
           <div class="ps-box"><div class="ps-num" id="ps-days">0</div><div class="ps-lbl">Days Done</div></div>
           <div class="ps-box"><div class="ps-num" id="ps-streak">0</div><div class="ps-lbl">Streak</div></div>
@@ -941,10 +942,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
           <div><div class="setting-label">Community Access</div><div class="setting-sub">GodHealth Tribe on Circle</div></div>
           <button class="toggle on" onclick="this.classList.toggle('on')"></button>
         </div>
-        <div class="setting-row">
-          <div><div class="setting-label">Account</div><div class="setting-sub" id="profile-email">—</div></div>
-          <button onclick="ghLogout()" style="background:var(--temple);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:'Lato',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Sign Out</button>
-        </div>
       </div>
       <div class="settings-section">
         <h4>The Three Pillars</h4>
@@ -953,6 +950,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
           <p style="margin-bottom:8px;"><strong style="color:var(--soul);">🧠 Soul (Mental)</strong> — "Be ye transformed by the renewing of your mind." (Romans 12:2). Protect your dopamine. Journal. Build focus.</p>
           <p><strong style="color:var(--spirit);">✝️ Spirit (God)</strong> — "They that wait upon the LORD shall renew their strength." (Isaiah 40:31). Prayer first. Scripture daily. Gratitude always.</p>
         </div>
+      </div>
+      <div class="settings-section">
+        <button class="btn-primary" onclick="ghLogout()" style="background:transparent;border:1.5px solid rgba(196,87,58,.4);color:var(--temple);width:100%;">Sign Out</button>
       </div>
     </div>
 
@@ -1036,40 +1036,18 @@ const HABIT_NAMES={prayer:'Morning Prayer',bible:'Bible Reading',gratitude:'Grat
 // ═══ STATE ═══
 let S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};
 function ls2(){try{const s=localStorage.getItem('gh_app_v2');if(s){const parsed=JSON.parse(s);if(parsed&&typeof parsed==='object')S={...S,...parsed};}}catch(e){console.warn('Could not load saved data:',e);}}
-function ss2(){try{localStorage.setItem('gh_app_v2',JSON.stringify(S));ghSyncToday();return true;}catch(e){console.error('Could not save data:',e);if(typeof showToast==='function')showToast('⚠️ Storage full — could not save');return false;}}
-// Best-effort sync of today's data to Supabase. Never throws; app works without it.
-function ghSyncToday(){
-  try{
-    if(typeof db==='undefined'||!currentUser)return;
-    const key=todayStr();
-    const d=S.days[key];if(!d)return;
-    const sc=d.scores||{};
-    db.from('daily_tracking').upsert({
-      user_id:currentUser.id,
-      tracking_date:key,
-      temple_score:sc.temple||0,
-      soul_score:sc.soul||0,
-      spirit_score:sc.spirit||0,
-      habits:d.habits||{},
-      updated_at:new Date()
-    },{onConflict:'user_id,tracking_date'}).then(()=>{}).catch(()=>{});
-  }catch(e){/* silent: localStorage remains source of truth */}
-}
-function todayStr(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
-function today(){return S.days[todayStr()]||{};}
-function setToday(key,val){if(!S.days[todayStr()])S.days[todayStr()]={habits:{},scores:{},data:{}};S.days[todayStr()][key]=val;ss2();}
+function ss2(){try{localStorage.setItem('gh_app_v2',JSON.stringify(S));return true;}catch(e){console.error('Could not save data:',e);if(typeof showToast==='function')showToast('⚠️ Storage full — could not save');return false;}}
 
-// ═══ SUPABASE AUTH LAYER ═══
+// ═══════════════ SUPABASE AUTH LAYER ═══════════════
 const SUPABASE_URL='https://attnnjhkjwpunlnokgvx.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG';
 let db=null;
 try{if(typeof supabase!=='undefined'&&supabase.createClient){db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);}}catch(e){}
 let currentUser=null;
 
-// ── Local session: persists across page loads even when Supabase CDN is blocked (Safari ITP) ──
+// Local session: persists across loads, works without CDN (Safari ITP safe)
 function ghSaveLocal(name,email){
   try{localStorage.setItem('gh_auth_v1',JSON.stringify({name:name||'',email:email||'',ts:Date.now()}));}catch(e){}
-  if(name){S.name=name;try{ss2();}catch(e){}}
 }
 function ghLoadLocal(){try{const s=localStorage.getItem('gh_auth_v1');return s?JSON.parse(s):null;}catch(e){return null;}}
 function ghClearLocal(){try{localStorage.removeItem('gh_auth_v1');}catch(e){}}
@@ -1100,6 +1078,7 @@ async function ghLogin(){
     currentUser=data.user;
     ghApplyProfile(data.user);
     const name=S.name||(data.user.user_metadata&&data.user.user_metadata.full_name)||'';
+    if(name)ss2();
     ghSaveLocal(name,data.user.email);
     ghEnterApp();
   }catch(e){ghAuthError('Sign in failed: '+(e.message||e));}
@@ -1118,9 +1097,9 @@ async function ghSignup(){
     const {data,error}=await db.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
     if(error)throw error;
     currentUser=data.user;
-    S.name=name;
+    S.name=name;ss2();
     ghSaveLocal(name,data.user.email);
-    // New user: go to onboarding to set wake/bed time
+    // New user → onboarding to set wake/bed time
     document.getElementById('login').classList.remove('active');
     document.getElementById('onboard').classList.add('active');
     const nameEl=document.getElementById('ob-name');if(nameEl)nameEl.value=name;
@@ -1135,7 +1114,6 @@ async function ghLogout(){
   location.reload();
 }
 
-// Show the app — called after confirmed session
 function ghEnterApp(){
   document.getElementById('login').classList.remove('active');
   document.getElementById('onboard').classList.remove('active');
@@ -1144,39 +1122,45 @@ function ghEnterApp(){
   if(emailEl&&currentUser)emailEl.textContent=currentUser.email;
   initApp();
 }
+function todayStr(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function today(){return S.days[todayStr()]||{};}
+function setToday(key,val){if(!S.days[todayStr()])S.days[todayStr()]={habits:{},scores:{},data:{}};S.days[todayStr()][key]=val;ss2();}
 
-// ── BOOT: localStorage-first (instant), then Supabase in background ──
 ls2();
+// ═══════════════ BOOT: localStorage-first, then Supabase ═══════════════
 (async function ghBoot(){
-  function ghHideLoading(){const el=document.getElementById('gh-loading');if(el)el.style.display='none';}
+  function hideLoading(){const el=document.getElementById('gh-loading');if(el)el.style.display='none';}
 
-  // STEP 1: local session check — instant, no network, survives Safari ITP + back navigation
+  // STEP 1: local session (instant, survives Safari ITP + back navigation)
   const local=ghLoadLocal();
-  if(local&&local.name){
-    if(!S.name)S.name=local.name;
-    ghHideLoading();
+  if((local&&local.name)||S.name){
+    if(local&&local.name&&!S.name)S.name=local.name;
+    hideLoading();
     ghEnterApp();
-    // Silently verify/refresh Supabase token in background
+    // Verify Supabase token in background (non-blocking)
     if(db){db.auth.getSession().then(function(res){
       const sess=res&&res.data&&res.data.session;
-      if(sess){currentUser=sess.user;ghApplyProfile(sess.user);}
+      if(sess){currentUser=sess.user;ghApplyProfile(sess.user);
+        const emailEl=document.getElementById('profile-email');if(emailEl)emailEl.textContent=sess.user.email;}
     }).catch(function(){});}
     return;
   }
 
-  // STEP 2: no local session — try Supabase (first login on this device)
-  if(!db){ghHideLoading();document.getElementById('login').classList.add('active');return;}
+  // STEP 2: no local session — try Supabase
+  if(!db){hideLoading();document.getElementById('login').classList.add('active');return;}
   try{
     const {data}=await db.auth.getSession();
-    ghHideLoading();
+    hideLoading();
     if(data&&data.session){
       currentUser=data.session.user;
       ghApplyProfile(data.session.user);
       const name=S.name||(data.session.user.user_metadata&&data.session.user.user_metadata.full_name)||'';
-      if(name){ghSaveLocal(name,data.session.user.email);ghEnterApp();}
-      else{document.getElementById('login').classList.remove('active');document.getElementById('onboard').classList.add('active');}
-    }else{document.getElementById('login').classList.add('active');}
-  }catch(e){ghHideLoading();document.getElementById('login').classList.add('active');}
+      if(name){ss2();ghSaveLocal(name,data.session.user.email);ghEnterApp();}
+      else{document.getElementById('onboard').classList.add('active');}
+    }else{
+      document.getElementById('login').classList.add('active');
+    }
+  }catch(e){hideLoading();document.getElementById('login').classList.add('active');}
 })();
 
 function startApp(){
@@ -1184,10 +1168,10 @@ function startApp(){
   S.wake=document.getElementById('ob-wake').value||'07:00';
   S.bed=document.getElementById('ob-bed').value||'23:00';
   ss2();
-  // Persist profile to the logged-in Supabase account (fire-and-forget, safe)
-  if(currentUser&&typeof db!=='undefined'){
-    db.auth.updateUser({data:{full_name:S.name,wake_time:S.wake,bed_time:S.bed}}).catch(()=>{});
-  }
+  // Persist name to local auth session + Supabase metadata
+  ghSaveLocal(S.name, currentUser?currentUser.email:'');
+  if(db&&currentUser){try{db.auth.updateUser({data:{full_name:S.name,wake_time:S.wake,bed_time:S.bed}});}catch(e){}}
+  document.getElementById('login').classList.remove('active');
   document.getElementById('onboard').classList.remove('active');
   const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
   initApp();
@@ -1655,25 +1639,6 @@ function showPage(id){
 }
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 document.getElementById('ob-name')?.addEventListener('keydown',e=>{if(e.key==='Enter')startApp();});
-
-// Safari BFCache fix: re-check session when user navigates back to this page
-window.addEventListener('pageshow',function(e){
-  if(e.persisted&&db){
-    // Page was restored from Safari's back-forward cache — re-verify session
-    db.auth.getSession().then(function({data}){
-      if(data&&data.session){
-        currentUser=data.session.user;
-        // Already showing app (page was cached in that state) — nothing to do
-      }else{
-        // Session gone → show login
-        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-        document.getElementById('app').style.display='none';
-        document.getElementById('app').classList.remove('active');
-        document.getElementById('login').classList.add('active');
-      }
-    }).catch(function(){});
-  }
-});
 
 // ═══ MEALS DATA ═══
 const BIBLICAL_MEALS=[
