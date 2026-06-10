@@ -395,6 +395,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <input type="password" id="login-pass" placeholder="Your password" autocomplete="current-password"/>
       <button class="btn-primary" onclick="ghLogin()">Sign In</button>
       <button class="btn-primary" onclick="ghToggleAuth('signup')" style="background:transparent;border:1.5px solid rgba(184,145,42,.5);color:var(--gold);margin-top:4px;">Create Account</button>
+      <p style="margin-top:14px;font-size:13px;"><span onclick="ghToggleAuth('forgot')" style="color:rgba(245,237,216,.6);cursor:pointer;text-decoration:underline;">Forgot your password?</span></p>
     </div>
     <div id="signup-form" style="display:none;">
       <label>Your name</label>
@@ -404,6 +405,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <label>Password (min 8 characters)</label>
       <input type="password" id="signup-pass" placeholder="Choose a password" autocomplete="new-password"/>
       <button class="btn-primary" onclick="ghSignup()" style="background:var(--gold);color:var(--ink);">Create Account</button>
+      <button class="btn-primary" onclick="ghToggleAuth('login')" style="background:transparent;border:1.5px solid rgba(245,237,216,.2);color:rgba(245,237,216,.6);margin-top:4px;">Back to Sign In</button>
+    </div>
+    <div id="forgot-form" style="display:none;">
+      <p style="font-size:13px;color:rgba(245,237,216,.7);margin-bottom:14px;line-height:1.6;text-align:left;">Enter your email and we'll send you a link to reset your password.</p>
+      <label>Email</label>
+      <input type="email" id="forgot-email" placeholder="you@email.com" autocomplete="email"/>
+      <button class="btn-primary" onclick="ghForgotPassword()" style="background:var(--gold);color:var(--ink);">Send Reset Link</button>
       <button class="btn-primary" onclick="ghToggleAuth('login')" style="background:transparent;border:1.5px solid rgba(245,237,216,.2);color:rgba(245,237,216,.6);margin-top:4px;">Back to Sign In</button>
     </div>
   </div>
@@ -1052,12 +1060,26 @@ function ghSaveLocal(name,email){
 function ghLoadLocal(){try{const s=localStorage.getItem('gh_auth_v1');return s?JSON.parse(s):null;}catch(e){return null;}}
 function ghClearLocal(){try{localStorage.removeItem('gh_auth_v1');}catch(e){}}
 
-function ghAuthError(msg){const e=document.getElementById('login-error');if(e){e.textContent=msg;e.style.display='block';}}
+function ghAuthError(msg){const e=document.getElementById('login-error');if(e){e.textContent=msg;e.style.display='block';e.style.background='rgba(196,87,58,.15)';e.style.borderColor='rgba(196,87,58,.35)';e.style.color='#E8836A';}}
+function ghAuthSuccess(msg){const e=document.getElementById('login-error');if(e){e.textContent=msg;e.style.display='block';e.style.background='rgba(107,143,94,.15)';e.style.borderColor='rgba(107,143,94,.4)';e.style.color='#8FB87A';}}
 function ghClearError(){const e=document.getElementById('login-error');if(e)e.style.display='none';}
 function ghToggleAuth(which){
   ghClearError();
   document.getElementById('login-form').style.display=which==='login'?'block':'none';
   document.getElementById('signup-form').style.display=which==='signup'?'block':'none';
+  const ff=document.getElementById('forgot-form');if(ff)ff.style.display=which==='forgot'?'block':'none';
+}
+
+async function ghForgotPassword(){
+  ghClearError();
+  if(!db){ghAuthError('Connection unavailable — check your internet and try again.');return;}
+  const email=(document.getElementById('forgot-email').value||'').trim();
+  if(!email){ghAuthError('Please enter your email address.');return;}
+  try{
+    const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/reset-password.html'});
+    if(error)throw error;
+    ghAuthSuccess('Reset link sent! Check your email inbox (and spam folder) for instructions to reset your password.');
+  }catch(e){ghAuthError('Could not send reset link: '+(e.message||e));}
 }
 function ghApplyProfile(user){
   const m=user&&user.user_metadata?user.user_metadata:{};
