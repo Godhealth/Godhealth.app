@@ -1111,7 +1111,11 @@ async function ghLogout(){
   currentUser=null;
   S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};
   try{if(db)await db.auth.signOut();}catch(e){}
-  location.reload();
+  // Show login screen directly without reload (prevents re-auth on Safari ITP)
+  document.getElementById('app').style.display='none';
+  document.getElementById('app').classList.remove('active');
+  document.getElementById('onboard').classList.remove('active');
+  document.getElementById('login').classList.add('active');
 }
 
 function ghEnterApp(){
