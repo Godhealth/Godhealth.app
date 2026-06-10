@@ -181,6 +181,44 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 (async function ghAuthGuard(){
   function ghShow(){const s=document.getElementById('gh-hide');if(s)s.remove();}
 
+  // CHECK 1: gh_auth_v1 (set by new login flow)
+  try{
+    const a=localStorage.getItem('gh_auth_v1');
+    if(a){const p=JSON.parse(a);if(p&&p.name){ghShow();return;}}
+  }catch(e){}
+
+  // CHECK 2: gh_app_v2 (set by original app — name stored here)
+  try{
+    const b=localStorage.getItem('gh_app_v2');
+    if(b){const p=JSON.parse(b);if(p&&p.name){ghShow();return;}}
+  }catch(e){}
+
+  // CHECK 3: Supabase session (fallback when above keys missing)
+  try{
+    if(typeof supabase!=='undefined'){
+      const db=supabase.createClient(
+        'https://attnnjhkjwpunlnokgvx.supabase.co',
+        'sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG'
+      );
+      const {data}=await db.auth.getSession();
+      if(data&&data.session){
+        // Save locally so future loads are instant
+        const name=(data.session.user.user_metadata&&data.session.user.user_metadata.full_name)||'';
+        if(name)try{localStorage.setItem('gh_auth_v1',JSON.stringify({name,email:data.session.user.email||'',ts:Date.now()}));}catch(e){}
+        ghShow();
+        return;
+      }
+    }
+  }catch(e){}
+
+  // Nothing found → back to login
+  window.location.replace('index.html');
+})();
+</script>
+<script>
+(async function ghAuthGuard(){
+  function ghShow(){const s=document.getElementById('gh-hide');if(s)s.remove();}
+
   // STEP 1: check local session first (instant, no CDN, survives Safari ITP)
   try{
     const local=localStorage.getItem('gh_auth_v1');
