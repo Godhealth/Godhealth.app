@@ -145,6 +145,73 @@ body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:f
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #B8912A;outline-offset:2px;}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 </style>
+<!-- GodHealth Auth Guard: redirect to login if no active session -->
+<style id="gh-hide">body{visibility:hidden;}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async function ghAuthGuard(){
+  function ghShow(){const s=document.getElementById('gh-hide');if(s)s.remove();}
+
+  // STEP 1: check local session first (instant, no CDN, survives Safari ITP)
+  try{
+    const local=localStorage.getItem('gh_auth_v1');
+    if(local){
+      const parsed=JSON.parse(local);
+      if(parsed&&parsed.name){
+        window.currentUser={email:parsed.email||''};
+        ghShow();
+        return;
+      }
+    }
+  }catch(e){}
+
+  // STEP 2: no local session — try Supabase
+  try{
+    if(typeof supabase==='undefined'){
+      // CDN blocked and no local session → back to login
+      window.location.replace('index.html');
+      return;
+    }
+    const db=supabase.createClient(
+      'https://attnnjhkjwpunlnokgvx.supabase.co',
+      'sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG'
+    );
+    const {data}=await db.auth.getSession();
+    if(data&&data.session){
+      window.currentUser=data.session.user;
+      ghShow();
+    }else{
+      window.location.replace('index.html');
+    }
+  }catch(e){
+    // On any error: if we have no local session, go to login
+    window.location.replace('index.html');
+  }
+})();
+</script>
+<script>
+(async function ghAuthGuard(){
+  function ghShow(){const s=document.getElementById('gh-hide');if(s)s.remove();}
+  try{
+    if(typeof supabase==='undefined'){ghShow();return;}
+    const db=supabase.createClient(
+      'https://attnnjhkjwpunlnokgvx.supabase.co',
+      'sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG'
+    );
+    const {data}=await db.auth.getSession();
+    if(data&&data.session){
+      window.currentUser=data.session.user;
+      ghShow();
+    }else{
+      window.location.replace('index.html');
+    }
+  }catch(e){
+    // If Supabase fails to load, show the page anyway (offline graceful fallback)
+    const s=document.getElementById('gh-hide');if(s)s.remove();
+    console.warn('GodHealth auth guard error:',e);
+  }
+})();
+</script>
 </head>
 <body>
 
