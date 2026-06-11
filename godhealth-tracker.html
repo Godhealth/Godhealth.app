@@ -20,8 +20,8 @@
   --temple:#C4573A;--temple-light:#FAF0ED;
   --soul:#4A7FA5;--soul-light:#EEF4F9;
   --spirit:#6B8F5E;--spirit-light:#EFF4EE;
-  --gold:#B8912A;--gold-light:#FBF5E6;
-  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);
+  --gold:#B8912A;--gold-light:#FBF5E6;--gold-dark:#9A7020;
+  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);--canvas:#FDFBF6;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overflow:hidden;}
@@ -36,7 +36,7 @@ body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);font-size
 .header-badge{display:flex;align-items:center;gap:4px;background:rgba(184,145,42,.18);border:1px solid rgba(184,145,42,.35);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--gold);}
 
 /* SCROLL */
-.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--canvas);background-image:radial-gradient(ellipse 140% 320px at 50% -40px,rgba(184,145,42,.10) 0%,rgba(184,145,42,0) 70%);}
 .scroll-area::-webkit-scrollbar{width:0;}
 .page-content{padding:16px;}
 
@@ -48,7 +48,7 @@ body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);font-size
 .tab-panel.active{display:block;}
 
 /* CARDS */
-.card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:17px;margin-bottom:13px;box-shadow:0 1px 3px rgba(26,20,16,.04),0 3px 16px rgba(26,20,16,.04);transition:box-shadow .25s;}
 .card h4{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px;}
 .card-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
 
@@ -110,8 +110,12 @@ body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);font-size
 .vitality-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
 .vitality-name{font-size:12px;font-weight:700;color:var(--ink);}
 .vitality-val{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;}
-.vitality-slider{width:100%;-webkit-appearance:none;height:5px;border-radius:100px;outline:none;cursor:pointer;margin-bottom:3px;}
-.vitality-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.vitality-slider{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:100px;outline:none;cursor:pointer;margin-bottom:3px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold) 50%,var(--bg3) 50%,var(--bg3) 100%);}
+.vitality-slider::-webkit-slider-runnable-track{height:6px;border-radius:100px;background:transparent;}
+.vitality-slider::-moz-range-track{height:6px;border-radius:100px;background:var(--bg3);}
+.vitality-slider::-moz-range-progress{height:6px;border-radius:100px;background:var(--gold);}
+.vitality-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;cursor:pointer;background:var(--gold);border:3px solid #fff;box-shadow:0 2px 6px rgba(184,145,42,.4);margin-top:-7px;}
+.vitality-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cursor:pointer;background:var(--gold);border:3px solid #fff;box-shadow:0 2px 6px rgba(184,145,42,.4);}
 .vitality-desc{font-size:10px;color:var(--ink3);}
 
 /* HISTORY LIST */
@@ -162,6 +166,8 @@ body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);font-size
 /* ACCESSIBILITY */
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #B8912A;outline-offset:2px;}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+
+.scroll-area>*{animation:ghFade .45s ease;}@keyframes ghFade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 </style>
 <!-- GodHealth Auth Guard -->
 <style id="gh-hide">body{visibility:hidden}</style>
@@ -330,8 +336,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             <span class="vitality-name">⚡ Energy Level</span>
             <span class="vitality-val" id="vval-energy" style="color:var(--temple);">5</span>
           </div>
-          <input type="range" class="vitality-slider" id="vslider-energy" min="1" max="10" value="5"
-            style="accent-color:var(--temple);" oninput="updateVitality('energy',this.value)">
+          <input type="range" class="vitality-slider" id="vslider-energy" min="1" max="10" value="5" oninput="updateVitality('energy',this.value)">
           <div class="vitality-desc">How energetic do you feel right now?</div>
         </div>
 
@@ -340,8 +345,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             <span class="vitality-name">🌙 Sleep Quality</span>
             <span class="vitality-val" id="vval-sleep" style="color:var(--soul);">5</span>
           </div>
-          <input type="range" class="vitality-slider" id="vslider-sleep" min="1" max="10" value="5"
-            style="accent-color:var(--soul);" oninput="updateVitality('sleep',this.value)">
+          <input type="range" class="vitality-slider" id="vslider-sleep" min="1" max="10" value="5" oninput="updateVitality('sleep',this.value)">
           <div class="vitality-desc">How well did you sleep last night?</div>
         </div>
 
@@ -350,8 +354,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             <span class="vitality-name">✝️ With God</span>
             <span class="vitality-val" id="vval-god" style="color:var(--spirit);">5</span>
           </div>
-          <input type="range" class="vitality-slider" id="vslider-god" min="1" max="10" value="5"
-            style="accent-color:var(--spirit);" oninput="updateVitality('god',this.value)">
+          <input type="range" class="vitality-slider" id="vslider-god" min="1" max="10" value="5" oninput="updateVitality('god',this.value)">
           <div class="vitality-desc">How close do you feel to God today?</div>
         </div>
 
@@ -360,8 +363,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             <span class="vitality-name">🌅 Morning Freshness</span>
             <span class="vitality-val" id="vval-fresh" style="color:var(--gold);">5</span>
           </div>
-          <input type="range" class="vitality-slider" id="vslider-fresh" min="1" max="10" value="5"
-            style="accent-color:var(--gold);" oninput="updateVitality('fresh',this.value)">
+          <input type="range" class="vitality-slider" id="vslider-fresh" min="1" max="10" value="5" oninput="updateVitality('fresh',this.value)">
           <div class="vitality-desc">How fresh did you wake up this morning?</div>
         </div>
 
@@ -370,8 +372,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             <span class="vitality-name">😊 Joy & Purpose</span>
             <span class="vitality-val" id="vval-joy" style="color:var(--spirit);">5</span>
           </div>
-          <input type="range" class="vitality-slider" id="vslider-joy" min="1" max="10" value="5"
-            style="accent-color:var(--spirit);" oninput="updateVitality('joy',this.value)">
+          <input type="range" class="vitality-slider" id="vslider-joy" min="1" max="10" value="5" oninput="updateVitality('joy',this.value)">
           <div class="vitality-desc">How much joy and peace do you feel today?</div>
         </div>
 
@@ -815,6 +816,14 @@ const VITALITY_COLORS={energy:'var(--temple)',sleep:'var(--soul)',god:'var(--spi
 
 function updateVitality(key,val){
   document.getElementById('vval-'+key).textContent=val;
+  ghFillSlider(document.getElementById('vslider-'+key));
+}
+// Fill the slider track gold up to the thumb position
+function ghFillSlider(el){
+  if(!el)return;
+  const min=el.min?parseFloat(el.min):0, max=el.max?parseFloat(el.max):100;
+  const pct=((parseFloat(el.value)-min)/(max-min))*100;
+  el.style.background='linear-gradient(90deg,var(--gold) 0%,var(--gold) '+pct+'%,var(--bg3) '+pct+'%,var(--bg3) 100%)';
 }
 
 function saveVitality(){
@@ -836,6 +845,7 @@ function renderVitalityTab(){
     const val=today[key]||5;
     document.getElementById('vslider-'+key).value=val;
     document.getElementById('vval-'+key).textContent=val;
+    ghFillSlider(document.getElementById('vslider-'+key));
   });
 
   // Weekly averages

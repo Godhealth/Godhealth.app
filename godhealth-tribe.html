@@ -10,7 +10,7 @@
 <meta name="format-detection" content="telephone=no">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='9' fill='%230D1F0D'/%3E%3Crect x='18' y='6' width='8' height='32' rx='3' fill='%23B8912A'/%3E%3Crect x='8' y='16' width='28' height='8' rx='3' fill='%23B8912A'/%3E%3C/svg%3E">
-<title>GodHealth — Covenant Circle</title>
+<title>GodHealth — Do It Together</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -20,8 +20,8 @@
   --temple:#C4573A;--temple-light:#FAF0ED;
   --soul:#4A7FA5;--soul-light:#EEF4F9;
   --spirit:#6B8F5E;--spirit-light:#EFF4EE;
-  --gold:#B8912A;--gold-light:#FBF5E6;
-  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);
+  --gold:#B8912A;--gold-light:#FBF5E6;--gold-dark:#9A7020;
+  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);--canvas:#FDFBF6;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overflow:hidden;}
@@ -36,7 +36,7 @@ body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:f
 .header-badge{background:rgba(107,143,94,.2);border:1px solid rgba(107,143,94,.35);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--spirit);}
 
 /* SCROLL */
-.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--canvas);background-image:radial-gradient(ellipse 140% 320px at 50% -40px,rgba(184,145,42,.10) 0%,rgba(184,145,42,0) 70%);}
 .scroll-area::-webkit-scrollbar{width:0;}
 .content{padding:16px;}
 
@@ -56,7 +56,7 @@ body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:f
 .hero-verse{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:rgba(245,237,216,.5);line-height:1.65;}
 
 /* CARD */
-.card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:17px;margin-bottom:13px;box-shadow:0 1px 3px rgba(26,20,16,.04),0 3px 16px rgba(26,20,16,.04);transition:box-shadow .25s;}
 .card-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
 
 /* PROFILE SETUP */
@@ -121,7 +121,12 @@ body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:f
 .cs-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
 .cs-label{font-size:12px;font-weight:700;color:var(--ink);}
 .cs-val{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--spirit);}
-.cs-slider{width:100%;-webkit-appearance:none;height:5px;border-radius:100px;accent-color:var(--spirit);outline:none;cursor:pointer;}
+.cs-slider{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:100px;outline:none;cursor:pointer;background:linear-gradient(90deg,var(--gold) 0%,var(--gold) 50%,var(--bg3) 50%,var(--bg3) 100%);}
+.cs-slider::-webkit-slider-runnable-track{height:6px;border-radius:100px;background:transparent;}
+.cs-slider::-moz-range-track{height:6px;border-radius:100px;background:var(--bg3);}
+.cs-slider::-moz-range-progress{height:6px;border-radius:100px;background:var(--gold);}
+.cs-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;cursor:pointer;background:var(--gold);border:3px solid #fff;box-shadow:0 2px 6px rgba(184,145,42,.4);margin-top:-7px;}
+.cs-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;cursor:pointer;background:var(--gold);border:3px solid #fff;box-shadow:0 2px 6px rgba(184,145,42,.4);}
 .cs-textarea{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:13px;line-height:1.65;padding:10px 12px;resize:vertical;min-height:65px;outline:none;border-radius:9px;transition:border-color .25s;margin-bottom:10px;}
 .cs-textarea:focus{border-color:var(--spirit);}
 .cs-submit{width:100%;background:var(--spirit);color:#fff;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:12px;border:none;border-radius:9px;cursor:pointer;transition:all .25s;}
@@ -167,6 +172,8 @@ body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:f
 /* ACCESSIBILITY */
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #B8912A;outline-offset:2px;}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+
+.scroll-area>*{animation:ghFade .45s ease;}@keyframes ghFade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 </style>
 <!-- GodHealth Auth Guard -->
 <style id="gh-hide">body{visibility:hidden}</style>
@@ -205,7 +212,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div class="app-header">
   <div class="header-left">
     <a class="back-btn" href="index.html" aria-label="Back to home">←</a>
-    <div class="header-logo">God<em>Health</em> — Covenant Circle</div>
+    <div class="header-logo">God<em>Health</em> — Do It Together</div>
   </div>
   <div class="header-badge" id="header-partner-count">👥 0 partners</div>
 </div>
@@ -225,7 +232,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <div class="tab-panel active" id="tab-partners">
 
       <div class="covenant-hero">
-        <div class="hero-label">Covenant Circle</div>
+        <div class="hero-label">Do It Together</div>
         <div class="hero-title">You Were Not Made<br>to Walk <em>Alone</em></div>
         <div class="hero-verse">"Iron sharpeneth iron; so a man sharpeneth the countenance of his friend." — Proverbs 27:17 (KJV)</div>
       </div>
@@ -238,9 +245,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       </div>
 
       <div class="card">
-        <div class="card-label">The Covenant Circle Principle</div>
+        <div class="card-label">The Do It Together Principle</div>
         <div style="font-size:13px;color:var(--ink2);line-height:1.75;">
-          <p style="margin-bottom:8px;">GodHealth is built on the Covenant Circle model. You do not find a random stranger for accountability. You <strong>bring one person</strong> — someone you personally know and trust. They bring one. That is how the circle grows.</p>
+          <p style="margin-bottom:8px;">GodHealth is built on the Do It Together model. You do not find a random stranger for accountability. You <strong>bring one person</strong> — someone you personally know and trust. They bring one. That is how the circle grows.</p>
           <p style="margin-bottom:8px;">This is how Jesus worked. He chose twelve people He knew personally. He invested deeply in them. He did not broadcast to thousands — He transformed twelve who then transformed the world.</p>
           <p style="font-style:italic;color:var(--ink3);">"Where two or three are gathered together in my name, there am I in the midst of them." — Matthew 18:20 (KJV)</p>
         </div>
@@ -269,7 +276,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
       <div class="card">
         <div class="card-label">How the Covenant Code Works</div>
-        <div class="how-step"><div class="how-num">1</div><div class="how-body"><div class="how-title">You generate your unique code</div><div class="how-desc">Your 6-letter Covenant Code is generated automatically from your profile. It never changes. It identifies you uniquely within the GodHealth Covenant Circle.</div></div></div>
+        <div class="how-step"><div class="how-num">1</div><div class="how-body"><div class="how-title">You generate your unique code</div><div class="how-desc">Your 6-letter Covenant Code is generated automatically from your profile. It never changes. It identifies you uniquely within the GodHealth Kingdom Builder.</div></div></div>
         <div class="how-step"><div class="how-num">2</div><div class="how-body"><div class="how-title">Share it with someone you trust</div><div class="how-desc">Send your code via WhatsApp, message or in person to someone you want to walk this journey with. This is a person you personally invite — not a stranger.</div></div></div>
         <div class="how-step"><div class="how-num">3</div><div class="how-body"><div class="how-title">They enter your code — you are connected</div><div class="how-desc">When they enter your code in their app, you appear as partners. When you enter their code, they appear in your circle. The covenant is established.</div></div></div>
         <div class="how-step"><div class="how-num">4</div><div class="how-body"><div class="how-title">Weekly check-ins hold you accountable</div><div class="how-desc">Every week you and your partner share your scores, your struggles and your wins. Iron sharpens iron. You will not want to disappoint someone who is watching and praying for you.</div></div></div>
@@ -424,6 +431,20 @@ function lcc(){try{const s=localStorage.getItem('gh_covenant_v1');if(s)CC=JSON.p
 function scc(){try{localStorage.setItem('gh_covenant_v1',JSON.stringify(CC));return true;}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}}
 function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+// Fill a slider track gold up to the thumb position
+function ghFillSlider(el){
+  if(!el)return;
+  const min=el.min?parseFloat(el.min):0, max=el.max?parseFloat(el.max):100;
+  const pct=((parseFloat(el.value)-min)/(max-min))*100;
+  el.style.background='linear-gradient(90deg,var(--gold) 0%,var(--gold) '+pct+'%,var(--bg3) '+pct+'%,var(--bg3) 100%)';
+}
+// Apply gold fill to all check-in sliders and keep them updated on input
+function ghInitCheckinSliders(){
+  document.querySelectorAll('.cs-slider').forEach(function(s){
+    ghFillSlider(s);
+    s.addEventListener('input',function(){ghFillSlider(s);});
+  });
+}
 function switchTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
@@ -459,6 +480,7 @@ if(!CC.profile.name){
 }
 
 renderAll();
+ghInitCheckinSliders();
 
 function renderAll(){
   renderPartners();

@@ -34,6 +34,7 @@
   --spirit:#6B8F5E;--spirit-light:#EFF4EE;
   --gold:#B8912A;--gold-light:#FBF5E6;--gold-dark:#9A7020;
   --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);
+  --canvas:#FDFBF6;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overflow:hidden;}
@@ -65,33 +66,35 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 /* APP SHELL */
 #app{display:none;flex:1;flex-direction:column;overflow:hidden;}
 #app.active{display:flex;}
-.app-header{background:#0D1F0D;border-bottom:1px solid rgba(107,143,94,.25);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.3);}
-.header-logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#F5EDD8;}
+.app-header{background:linear-gradient(180deg,#102810 0%,#0D1F0D 100%);border-bottom:1px solid rgba(184,145,42,.22);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 16px rgba(0,0,0,.35);position:relative;z-index:10;}
+.header-logo{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#F5EDD8;letter-spacing:.2px;}
 .header-logo em{font-style:italic;color:var(--gold);}
 .header-right{display:flex;align-items:center;gap:8px;}
-.streak-badge{display:flex;align-items:center;gap:4px;background:rgba(184,145,42,.18);border:1px solid rgba(184,145,42,.35);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--gold);}
+.streak-badge{display:flex;align-items:center;gap:4px;background:rgba(184,145,42,.18);border:1px solid rgba(184,145,42,.4);border-radius:20px;padding:5px 11px;font-size:11px;font-weight:700;color:var(--gold);box-shadow:0 1px 8px rgba(184,145,42,.15);}
 .date-badge{font-size:11px;color:rgba(245,237,216,.55);}
-.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--canvas);background-image:radial-gradient(ellipse 140% 320px at 50% -40px,rgba(184,145,42,.10) 0%,rgba(184,145,42,0) 70%);}
 .scroll-area::-webkit-scrollbar{width:0;}
-.page{display:none;padding:16px;padding-bottom:96px;}
-.page.active{display:block;}
+.page{display:none;padding:18px 16px;padding-bottom:96px;}
+.page.active{display:block;animation:ghFade .45s ease;}
+@keyframes ghFade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
 /* TODAY PAGE */
-.today-greeting{margin-bottom:16px;}
-.today-greeting .day-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:4px;}
-.today-greeting h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#FFFFFF;line-height:1.15;}
-.today-greeting h2 em{font-style:italic;color:var(--gold);}
-.verse-strip{background:var(--gold-light);border:1px solid rgba(184,145,42,.2);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
-.verse-strip::before{content:'✝';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.06;color:var(--gold);}
-.verse-strip .vs-text{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--ink);line-height:1.6;margin-bottom:4px;}
+.today-greeting{margin-bottom:18px;}
+.today-greeting .day-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-dark);font-weight:700;margin-bottom:5px;}
+.today-greeting h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--ink);line-height:1.12;letter-spacing:-.3px;}
+.today-greeting h2 em{font-style:italic;color:var(--gold-dark);}
+.verse-strip{position:relative;overflow:hidden;background:linear-gradient(135deg,#FCF7E9 0%,#F8EFD6 100%);border:1px solid rgba(184,145,42,.28);border-radius:16px;padding:18px 20px;margin-bottom:18px;box-shadow:0 4px 20px rgba(184,145,42,.10);}
+.verse-strip::before{content:'✝';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:60px;opacity:.07;color:var(--gold);font-family:'Playfair Display',serif;}
+.verse-strip::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--gold) 0%,rgba(184,145,42,.3) 100%);}
+.verse-strip .vs-text{font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:var(--ink);line-height:1.65;margin-bottom:6px;position:relative;}
 .verse-strip .vs-ref{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;}
 .pillar-section{margin-bottom:14px;}
 .pillar-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
 .pillar-dot{width:8px;height:8px;border-radius:50%;}
 .pillar-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;}
 .pillar-why{font-size:11px;color:var(--ink3);margin-left:auto;font-style:italic;}
-.habit-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);}
-.habit-card:hover{border-color:var(--border2);transform:translateY(-1px);}
+.habit-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:15px 16px;margin-bottom:9px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 3px rgba(26,20,16,.04),0 2px 12px rgba(26,20,16,.03);}
+.habit-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 18px rgba(26,20,16,.09);}
 .habit-card.checked.temple{background:var(--temple-light);border-color:rgba(224,104,72,.3);}
 .habit-card.checked.soul{background:var(--soul-light);border-color:rgba(90,159,200,.3);}
 .habit-card.checked.spirit{background:var(--spirit-light);border-color:rgba(122,191,106,.3);}
@@ -113,7 +116,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 .habit-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.4);}
 
 /* IF CARD */
-.if-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow-sm);}
+.if-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:0 1px 3px rgba(26,20,16,.04),0 3px 16px rgba(26,20,16,.04);}
 .if-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .if-proto{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--soul);}
 .if-proto-meta{font-size:10px;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
@@ -136,17 +139,17 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 .if-stop{background:rgba(196,87,58,.08);border:1.5px solid rgba(196,87,58,.3)!important;color:var(--temple);}
 
 /* SCORE ROW */
-.score-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
-.score-box{background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:12px 10px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);}
-.score-box:hover{border-color:rgba(212,168,58,.35);transform:translateY(-1px);}
-.score-box.scored.temple{border-color:rgba(196,87,58,.3);background:var(--temple-light);}
-.score-box.scored.soul{border-color:rgba(74,127,165,.3);background:var(--soul-light);}
-.score-box.scored.spirit{border-color:rgba(107,143,94,.3);background:var(--spirit-light);}
-.score-icon{font-size:20px;margin-bottom:4px;}
+.score-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px;}
+.score-box{background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 3px rgba(26,20,16,.04),0 2px 12px rgba(26,20,16,.03);}
+.score-box:hover{border-color:rgba(212,168,58,.45);transform:translateY(-2px);box-shadow:0 5px 20px rgba(184,145,42,.12);}
+.score-box.scored.temple{border-color:rgba(196,87,58,.35);background:var(--temple-light);box-shadow:0 3px 14px rgba(196,87,58,.10);}
+.score-box.scored.soul{border-color:rgba(74,127,165,.35);background:var(--soul-light);box-shadow:0 3px 14px rgba(74,127,165,.10);}
+.score-box.scored.spirit{border-color:rgba(107,143,94,.35);background:var(--spirit-light);box-shadow:0 3px 14px rgba(107,143,94,.10);}
+.score-icon{font-size:22px;margin-bottom:5px;}
 .score-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:5px;}
-.score-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);}
+.score-val{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--ink);}
 .score-sub{font-size:9px;color:var(--ink3);}
-.save-day-btn{width:100%;background:var(--gold);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:15px;border:none;border-radius:12px;cursor:pointer;transition:all .25s;margin-top:4px;margin-bottom:8px;}
+.save-day-btn{width:100%;background:linear-gradient(135deg,#C9A03A 0%,#B8912A 50%,#9A7020 100%);color:#fff;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px;border:none;border-radius:13px;cursor:pointer;transition:all .25s;margin-top:4px;margin-bottom:8px;box-shadow:0 4px 16px rgba(184,145,42,.28);}
 .save-day-btn:hover{background:#9A7020;box-shadow:0 4px 16px rgba(184,145,42,.35);}
 .save-day-btn.saved{background:var(--spirit);color:#fff;pointer-events:none;}
 
@@ -635,7 +638,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       </div>
       <button class="save-day-btn" id="save-day-btn" onclick="saveDay()">Save Today</button>
       <a href="godhealth-tribe.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--spirit-light),var(--bg2));border:1.5px solid rgba(107,143,94,.3);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
-        👥 Covenant Circle — Accountability
+        👥 Do It Together — Kingdom Builder
       </a>
       <a href="godhealth-training.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--temple-light);border:1.5px solid rgba(196,87,58,.25);color:var(--temple);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
         ⚡ Training Schedule
@@ -818,7 +821,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             <option value="Read 1 chapter of the Bible every single day">Read 1 chapter of the Bible every single day</option>
             <option value="Write 3 specific things of gratitude every day">Write 3 specific things of gratitude every day</option>
             <option value="Fast and pray one full day this week">Fast and pray one full day this week</option>
-            <option value="Reach out to 1 person from the Tribe daily">Reach out to 1 person from the Tribe daily</option>
+            <option value="Reach out to 1 person from the Kingdom Builder daily">Reach out to 1 person from the Kingdom Builder daily</option>
             <option value="Memorise 1 Bible verse this week">Memorise 1 Bible verse this week</option>
             <option value="custom">Write my own...</option>
           </select>
@@ -879,29 +882,30 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <!-- TRIBE -->
     <div class="page" id="page-tribe">
       <div class="tribe-hero">
-        <h3>GodHealth Tribe</h3>
-        <p>You were not made to do this alone. The Tribe is your community of believers doing this together — holding each other accountable, celebrating victories, carrying burdens.</p>
+        <h3>GodHealth Kingdom Builder</h3>
+        <p>You were not made to do this alone. The Kingdom Builder is your community on Circle — connect with other believers, share your progress, and unlock the monthly video workouts that move your body toward its God-given strength.</p>
         <p style="font-size:11px;font-style:italic;color:var(--spirit);margin-bottom:12px;margin-top:4px;">"Iron sharpeneth iron; so a man sharpeneth the countenance of his friend." — Proverbs 27:17 (KJV)</p>
-        <button class="tribe-btn" onclick="openCircle()">🌿 Open GodHealth Tribe on Circle</button>
+        <button class="tribe-btn" onclick="openCircle()">🌿 Open Kingdom Builder on Circle</button>
       </div>
       <div class="share-card">
-        <h4>Share Today's Victory</h4>
+        <h4>Share Your Progress</h4>
+        <p style="font-size:12px;color:var(--ink3);line-height:1.6;margin-bottom:10px;">Copy today's progress and post it in the Kingdom Builder community to celebrate wins and stay accountable.</p>
         <div class="share-template" id="share-template"></div>
-        <button class="share-btn" onclick="copyShare()">📋 Copy & Share to Tribe</button>
+        <button class="share-btn" onclick="copyShare()">📋 Copy & Share to Kingdom Builder</button>
       </div>
       <div class="accountability-card">
-        <div class="acc-title">Accountability Partners</div>
+        <div class="acc-title">Monthly Video Workouts</div>
         <div class="acc-partner">
-          <div class="acc-avatar">👤</div>
-          <div><div class="acc-name">Your Partner</div><div class="acc-streak">Add via Circle Tribe →</div></div>
-          <button class="acc-ping" onclick="openCircle()">Ping</button>
+          <div class="acc-avatar">🎥</div>
+          <div><div class="acc-name">This Month's Workouts</div><div class="acc-streak">Available in the Kingdom Builder →</div></div>
+          <button class="acc-ping" onclick="openCircle()">Watch</button>
         </div>
-        <div style="margin-top:12px;font-size:12px;color:var(--ink3);line-height:1.6;">The GodHealth Tribe uses the Covenant Circle model — you bring one person, they bring one. Accountability partners are people you personally invite.</div>
+        <div style="margin-top:12px;font-size:12px;color:var(--ink3);line-height:1.6;">Every month, new guided video workouts are released inside the Kingdom Builder on Circle — train your Temple with structure, purpose and community.</div>
       </div>
       <div class="insight-block">
         <h4>Why Community Accelerates Transformation</h4>
         <div style="font-size:13px;color:var(--ink2);line-height:1.75;">
-          <p>Research shows that people who track habits with an accountability partner are <strong>65% more likely</strong> to achieve their goals. With a specific accountability appointment that number rises to <strong>95%</strong>.</p>
+          <p>Research shows that people who track habits with an accountability community are <strong>65% more likely</strong> to achieve their goals. With a specific accountability appointment that number rises to <strong>95%</strong>.</p>
           <p style="margin-top:8px;">"Two are better than one; because they have a good reward for their labour." (Ecclesiastes 4:9 KJV)</p>
         </div>
       </div>
@@ -912,7 +916,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <div class="profile-header">
         <div class="profile-avatar">✝️</div>
         <div class="profile-name" id="profile-name">Warrior</div>
-        <div class="profile-sub">Member of the GodHealth Tribe</div>
+        <div class="profile-sub">Member of the GodHealth Kingdom Builder</div>
         <div class="profile-sub" id="profile-email" style="font-size:12px;color:rgba(26,20,16,.5);margin-top:2px;"></div>
         <div class="profile-stats">
           <div class="ps-box"><div class="ps-num" id="ps-days">0</div><div class="ps-lbl">Days Done</div></div>
@@ -941,13 +945,19 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         </div>
       </div>
       <div class="settings-section">
-        <h4>Subscription — €19.99/month</h4>
+        <h4>Subscription — €47/month</h4>
         <div class="setting-row">
           <div><div class="setting-label">Status</div><div class="setting-sub">Active member</div></div>
           <div style="color:var(--spirit);font-weight:700;font-size:12px;">✓ Active</div>
         </div>
         <div class="setting-row">
-          <div><div class="setting-label">Community Access</div><div class="setting-sub">GodHealth Tribe on Circle</div></div>
+          <div><div class="setting-label">What's Included</div><div class="setting-sub">Full app access + GodHealth Kingdom Builder on Circle</div></div>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Monthly Workouts</div><div class="setting-sub">New video workouts in the Kingdom Builder</div></div>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Community Chat</div><div class="setting-sub">Connect with members in the Kingdom Builder</div></div>
           <button class="toggle on" onclick="this.classList.toggle('on')"></button>
         </div>
       </div>
@@ -971,7 +981,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <button class="nav-item" onclick="showPage('insights')" data-page="insights" aria-label="Insights"><div class="nav-icon" aria-hidden="true">📊</div><div class="nav-label">Insights</div></button>
     <button class="nav-item" onclick="showPage('meals')" data-page="meals" aria-label="Meals"><div class="nav-icon" aria-hidden="true">🌿</div><div class="nav-label">Meals</div></button>
     <button class="nav-item" onclick="showPage('tips')" data-page="tips" aria-label="Tips"><div class="nav-icon" aria-hidden="true">💡</div><div class="nav-label">Tips</div></button>
-    <button class="nav-item" onclick="showPage('tribe')" data-page="tribe" aria-label="Tribe"><div class="nav-icon" aria-hidden="true">👥</div><div class="nav-label">Tribe</div></button>
+    <button class="nav-item" onclick="showPage('tribe')" data-page="tribe" aria-label="Kingdom Builder"><div class="nav-icon" aria-hidden="true">👥</div><div class="nav-label">Kingdom</div></button>
     <button class="nav-item" onclick="showPage('profile')" data-page="profile" aria-label="Profile"><div class="nav-icon" aria-hidden="true">✝️</div><div class="nav-label">Profile</div></button>
   </nav>
 </div>
@@ -989,9 +999,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
 <script>
 // ═══ CONFIG ═══
-// 👉 Vul hier je echte Circle Tribe-link in. Eén plek, overal gebruikt.
+// 👉 Vul hier je echte Circle Kingdom Builder-link in. Eén plek, overal gebruikt.
 const GODHEALTH_CONFIG={
-  circleTribeUrl:'https://godhealth.circle.so', // <-- vervang door je echte Tribe-URL
+  kingdomBuilderUrl:'https://godhealth.circle.so', // <-- TODO: vervang door je echte Kingdom Builder-URL op Circle
 };
 
 // ═══ DATA ═══
@@ -1616,14 +1626,14 @@ function updateShareTemplate(){
   const scores=t.scores||{};const day=calcTotalDays();
   const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
   const v=DAILY_VERSES[doy%DAILY_VERSES.length];
-  const tmpl=`✝️ GodHealth — Day ${day}\n\n🏛️ Temple: ${scores.temple?scores.temple+'/10':'—'}\n🧠 Soul: ${scores.soul?scores.soul+'/10':'—'}\n✝️ Spirit: ${scores.spirit?scores.spirit+'/10':'—'}\n\n✓ ${done}/${HABITS.length} habits completed\n\n"${v.text.slice(0,60)}..."\n— ${v.ref}\n\n#GodHealthTribe`;
+  const tmpl=`✝️ GodHealth — Day ${day}\n\n🏛️ Temple: ${scores.temple?scores.temple+'/10':'—'}\n🧠 Soul: ${scores.soul?scores.soul+'/10':'—'}\n✝️ Spirit: ${scores.spirit?scores.spirit+'/10':'—'}\n\n✓ ${done}/${HABITS.length} habits completed\n\n"${v.text.slice(0,60)}..."\n— ${v.ref}\n\n#GodHealthKingdomBuilder`;
   const el=document.getElementById('share-template');if(el)el.textContent=tmpl;
 }
-function copyShare(){navigator.clipboard?.writeText(document.getElementById('share-template')?.textContent||'').then(()=>showToast('✓ Copied! Paste in the Tribe')).catch(()=>showToast('Select and copy the text'));}
+function copyShare(){navigator.clipboard?.writeText(document.getElementById('share-template')?.textContent||'').then(()=>showToast('✓ Copied! Paste in the Kingdom Builder')).catch(()=>showToast('Select and copy the text'));}
 function openCircle(){
-  const url=GODHEALTH_CONFIG.circleTribeUrl;
-  if(url&&url.startsWith('http')){window.open(url,'_blank','noopener');showToast('Opening GodHealth Tribe...');}
-  else{showToast('Tribe link not set yet');}
+  const url=GODHEALTH_CONFIG.kingdomBuilderUrl;
+  if(url&&url.startsWith('http')){window.open(url,'_blank','noopener');showToast('Opening Kingdom Builder...');}
+  else{showToast('Kingdom Builder link not set yet');}
 }
 
 // PROFILE

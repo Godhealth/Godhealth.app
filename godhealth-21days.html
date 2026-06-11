@@ -20,8 +20,8 @@
   --temple:#C4573A;--temple-light:#FAF0ED;
   --soul:#4A7FA5;--soul-light:#EEF4F9;
   --spirit:#6B8F5E;--spirit-light:#EFF4EE;
-  --gold:#B8912A;--gold-light:#FBF5E6;
-  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);
+  --gold:#B8912A;--gold-light:#FBF5E6;--gold-dark:#9A7020;
+  --radius:14px;--shadow:0 2px 16px rgba(26,20,16,.07);--shadow-sm:0 1px 6px rgba(26,20,16,.06);--canvas:#FDFBF6;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overflow:hidden;}
@@ -37,7 +37,7 @@ body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:f
 .day-badge{background:rgba(184,145,42,.18);border:1px solid rgba(184,145,42,.35);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--gold);}
 
 /* SCROLL */
-.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--canvas);background-image:radial-gradient(ellipse 140% 320px at 50% -40px,rgba(184,145,42,.10) 0%,rgba(184,145,42,0) 70%);}
 .scroll-area::-webkit-scrollbar{width:0;}
 .content{padding:16px;}
 
@@ -144,6 +144,8 @@ body{font-family:'Lato',sans-serif;background:#0D1F0D;color:var(--ink);display:f
 /* ACCESSIBILITY */
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid #B8912A;outline-offset:2px;}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+
+.scroll-area>*{animation:ghFade .45s ease;}@keyframes ghFade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 </style>
 <!-- GodHealth Auth Guard -->
 <style id="gh-hide">body{visibility:hidden}</style>
