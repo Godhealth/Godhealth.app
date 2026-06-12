@@ -1056,6 +1056,60 @@ let S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false
 function ls2(){try{const s=localStorage.getItem('gh_app_v2');if(s){const parsed=JSON.parse(s);if(parsed&&typeof parsed==='object')S={...S,...parsed};}}catch(e){console.warn('Could not load saved data:',e);}}
 function ss2(){try{localStorage.setItem('gh_app_v2',JSON.stringify(S));return true;}catch(e){console.error('Could not save data:',e);if(typeof showToast==='function')showToast('⚠️ Storage full — could not save');return false;}}
 
+// ═══════════════ CLOUD SYNC (daily_tracking) ═══════════════
+// Push one day's data to Supabase, tied to the user's account
+async function ghSyncDayToCloud(dateKey){
+  if(!db||!currentUser)return;
+  const day=S.days[dateKey];if(!day)return;
+  const sc=day.scores||{};const d=day.data||{};
+  const row={
+    user_id:currentUser.id,
+    tracking_date:dateKey,
+    temple_score:sc.temple!=null?sc.temple:null,
+    soul_score:sc.soul!=null?sc.soul:null,
+    spirit_score:sc.spirit!=null?sc.spirit:null,
+    habits:day.habits||{},
+    meal_logged:!!(d.meal1||d.meal2||d.meal3),
+    water_intake:d.water!=null?parseInt(d.water)||0:0,
+    notes:JSON.stringify({data:d,saved:!!day.saved}),
+    updated_at:new Date().toISOString()
+  };
+  try{
+    await db.from('daily_tracking').upsert(row,{onConflict:'user_id,tracking_date'});
+  }catch(e){console.warn('Cloud sync failed (saved locally):',e);}
+}
+
+// Pull all days from Supabase into S.days on login
+async function ghLoadFromCloud(){
+  if(!db||!currentUser)return;
+  try{
+    const {data,error}=await db.from('daily_tracking').select('*').eq('user_id',currentUser.id);
+    if(error)throw error;
+    if(!data||!data.length)return;
+    data.forEach(function(row){
+      const key=row.tracking_date;
+      if(!key)return;
+      let extra={};let saved=false;
+      try{const parsed=JSON.parse(row.notes||'{}');extra=parsed.data||{};saved=!!parsed.saved;}catch(e){}
+      const existing=S.days[key]||{habits:{},scores:{},data:{}};
+      S.days[key]={
+        habits:row.habits||existing.habits||{},
+        scores:{
+          temple:row.temple_score!=null?row.temple_score:(existing.scores||{}).temple,
+          soul:row.soul_score!=null?row.soul_score:(existing.scores||{}).soul,
+          spirit:row.spirit_score!=null?row.spirit_score:(existing.scores||{}).spirit
+        },
+        data:Object.keys(extra).length?extra:(existing.data||{}),
+        saved:saved||existing.saved||false
+      };
+    });
+    ss2();
+    if(typeof initApp==='function'&&document.getElementById('app').classList.contains('active')){
+      try{renderTodayPage();renderInsights();renderProfile();updateStreakDisplay();}catch(e){}
+    }
+  }catch(e){console.warn('Could not load cloud data:',e);}
+}
+
 // ═══════════════ SUPABASE AUTH LAYER ═══════════════
 const SUPABASE_URL='https://attnnjhkjwpunlnokgvx.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG';
@@ -1157,10 +1211,12 @@ function ghEnterApp(){
   const emailEl=document.getElementById('profile-email');
   if(emailEl&&currentUser)emailEl.textContent=currentUser.email;
   initApp();
+  // Pull saved progress from the cloud so it's restored on any device
+  ghLoadFromCloud();
 }
 function todayStr(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function today(){return S.days[todayStr()]||{};}
-function setToday(key,val){if(!S.days[todayStr()])S.days[todayStr()]={habits:{},scores:{},data:{}};S.days[todayStr()][key]=val;ss2();}
+function setToday(key,val){if(!S.days[todayStr()])S.days[todayStr()]={habits:{},scores:{},data:{}};S.days[todayStr()][key]=val;ss2();ghSyncDayToCloud(todayStr());}
 
 ls2();
 // ═══════════════ BOOT: localStorage-first, then Supabase ═══════════════
@@ -1470,7 +1526,7 @@ function saveReflection(){
   S.days[todayKey].data.j1=document.getElementById('ref-j1').value;
   S.days[todayKey].data.j2=document.getElementById('ref-j2').value;
   S.days[todayKey].data.j3=document.getElementById('ref-j3').value;
-  ss2();renderJournalHistory();showToast('📖 Reflection saved');
+  ss2();ghSyncDayToCloud(todayKey);renderJournalHistory();showToast('📖 Reflection saved');
 }
 
 function saveWeeklyReflection(){
