@@ -225,15 +225,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       </div>
     </div>
 
-    <!-- DAYS LIST -->
-    <div id="days-container"></div>
-
-    <!-- START BUTTON (if not started) -->
+    <!-- START BUTTON (shown above days when not yet started) -->
     <div id="start-section">
       <button class="complete-day-btn" onclick="openStartModal()" style="background:var(--spirit);margin-top:0;">
         ✝️ Begin the 21-Day Arise Challenge
       </button>
     </div>
+
+    <!-- DAYS LIST -->
+    <div id="days-container"></div>
 
   </div>
 </div>
@@ -276,7 +276,7 @@ async function load21DaysFromCloud(){
     const {data:{session}}=await sb.auth.getSession();
     if(!session)return;
     const {data}=await sb.from('user_app_data').select('data').eq('user_id',session.user.id).eq('data_key','21days_v1').maybeSingle();
-    if(data&&data.data){A={...A,...data.data};try{localStorage.setItem('gh_21days_v1',JSON.stringify(A));}catch(e){}renderProgram();}
+    if(data&&data.data){A={...A,...data.data};try{localStorage.setItem('gh_21days_v1',JSON.stringify(A));}catch(e){}renderPage();}
   }catch(e){}
 }
 function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
@@ -564,8 +564,8 @@ function renderDays(){
 
     const isDone=A.completedDays[d.day];
     const isToday=A.started&&d.day===currentDay;
-    const isLocked=A.started&&d.day>currentDay&&!isDone;
-    const isUpcoming=!A.started||(d.day<currentDay&&!isDone);
+    const isLocked=!A.started||(A.started&&d.day>currentDay&&!isDone);
+    const isUpcoming=A.started&&d.day<currentDay&&!isDone;
 
     const numClass=isDone?'done':isToday?'active':isLocked?'locked-num':'upcoming';
     const cardClass=`day-card${isDone?' completed':''}${isToday?' today-card':''}${isLocked?' locked':''}`;
