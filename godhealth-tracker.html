@@ -476,7 +476,28 @@ let T={
 };
 
 function ls(){try{const s=localStorage.getItem('gh_tracker_v1');if(s)T=JSON.parse(s);}catch(e){}}
-function ss(){try{localStorage.setItem('gh_tracker_v1',JSON.stringify(T));return true;}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}}
+function ss(){
+  try{localStorage.setItem('gh_tracker_v1',JSON.stringify(T));}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}
+  // Cloud sync (debounced)
+  clearTimeout(window._tSaveTimer);
+  window._tSaveTimer=setTimeout(async function(){
+    try{
+      const sb=supabase.createClient('https://attnnjhkjwpunlnokgvx.supabase.co','sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG');
+      const {data:{session}}=await sb.auth.getSession();
+      if(session)await sb.from('user_app_data').upsert({user_id:session.user.id,data_key:'tracker_v1',data:T,updated_at:new Date().toISOString()},{onConflict:'user_id,data_key'});
+    }catch(e){}
+  },2000);
+  return true;
+}
+async function loadTrackerFromCloud(){
+  try{
+    const sb=supabase.createClient('https://attnnjhkjwpunlnokgvx.supabase.co','sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG');
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session)return;
+    const {data}=await sb.from('user_app_data').select('data').eq('user_id',session.user.id).eq('data_key','tracker_v1').maybeSingle();
+    if(data&&data.data){T={...T,...data.data};try{localStorage.setItem('gh_tracker_v1',JSON.stringify(T));}catch(e){}renderAll();}
+  }catch(e){}
+}
 function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 function goBack(){if(window.history.length>1&&document.referrer&&new URL(document.referrer).pathname!==location.pathname){history.back();}else{location.href='index.html';}}
@@ -557,6 +578,8 @@ renderWeightTab();
 renderVitalityTab();
 renderBadges();
 renderNotifyTab();
+// Load cloud data and refresh if newer
+loadTrackerFromCloud();
 
 function initStreak(){
   // Sync with main app
