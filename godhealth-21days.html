@@ -258,7 +258,27 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 // ═══ STATE ═══
 let A={started:false,startDate:null,name:'',completedDays:{},reflections:{}};
 function la(){try{const s=localStorage.getItem('gh_21days_v1');if(s)A=JSON.parse(s);}catch(e){}}
-function sa(){try{localStorage.setItem('gh_21days_v1',JSON.stringify(A));return true;}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}}
+function sa(){
+  try{localStorage.setItem('gh_21days_v1',JSON.stringify(A));}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}
+  clearTimeout(window._aSaveTimer);
+  window._aSaveTimer=setTimeout(async function(){
+    try{
+      const sb=supabase.createClient('https://attnnjhkjwpunlnokgvx.supabase.co','sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG');
+      const {data:{session}}=await sb.auth.getSession();
+      if(session)await sb.from('user_app_data').upsert({user_id:session.user.id,data_key:'21days_v1',data:A,updated_at:new Date().toISOString()},{onConflict:'user_id,data_key'});
+    }catch(e){}
+  },2000);
+  return true;
+}
+async function load21DaysFromCloud(){
+  try{
+    const sb=supabase.createClient('https://attnnjhkjwpunlnokgvx.supabase.co','sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG');
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session)return;
+    const {data}=await sb.from('user_app_data').select('data').eq('user_id',session.user.id).eq('data_key','21days_v1').maybeSingle();
+    if(data&&data.data){A={...A,...data.data};try{localStorage.setItem('gh_21days_v1',JSON.stringify(A));}catch(e){}renderProgram();}
+  }catch(e){}
+}
 function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 
@@ -486,6 +506,7 @@ const PHASE_COLORS={Foundation:'var(--spirit)',Discipline:'var(--soul)',Transfor
 // ═══ INIT ═══
 la();
 renderPage();
+load21DaysFromCloud();
 
 function renderPage(){
   const started=A.started;
