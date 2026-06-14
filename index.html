@@ -1060,7 +1060,25 @@ const HABIT_NAMES={prayer:'Morning Prayer',bible:'Bible Reading',gratitude:'Grat
 // ═══ STATE ═══
 let S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};
 function ls2(){try{const s=localStorage.getItem('gh_app_v2');if(s){const parsed=JSON.parse(s);if(parsed&&typeof parsed==='object')S={...S,...parsed};}}catch(e){console.warn('Could not load saved data:',e);}}
-function ss2(){try{localStorage.setItem('gh_app_v2',JSON.stringify(S));return true;}catch(e){console.error('Could not save data:',e);if(typeof showToast==='function')showToast('⚠️ Storage full — could not save');return false;}}
+function ss2(){try{localStorage.setItem('gh_app_v2',JSON.stringify(S));ghCloudSave('app_v2',S);return true;}catch(e){console.error('Could not save data:',e);if(typeof showToast==='function')showToast('⚠️ Storage full — could not save');return false;}}
+
+// ── Cloud sync helpers ──────────────────────────────────────
+let _cloudSaveTimer=null;
+function ghCloudSave(key,data){
+  if(!db||!currentUser)return;
+  clearTimeout(_cloudSaveTimer);
+  _cloudSaveTimer=setTimeout(async function(){
+    try{await db.from('user_app_data').upsert({user_id:currentUser.id,data_key:key,data:data,updated_at:new Date().toISOString()},{onConflict:'user_id,data_key'});}catch(e){}
+  },2000);
+}
+async function ghCloudLoad(key){
+  if(!db||!currentUser)return null;
+  try{const {data}=await db.from('user_app_data').select('data').eq('user_id',currentUser.id).eq('data_key',key).maybeSingle();return data?data.data:null;}catch(e){return null;}
+}
+async function ghCloudSaveNow(key,data){
+  if(!db||!currentUser)return;
+  try{await db.from('user_app_data').upsert({user_id:currentUser.id,data_key:key,data:data,updated_at:new Date().toISOString()},{onConflict:'user_id,data_key'});}catch(e){}
+}
 
 // ═══════════════ SUPABASE AUTH LAYER ═══════════════
 const SUPABASE_URL='https://attnnjhkjwpunlnokgvx.supabase.co';
@@ -1184,20 +1202,26 @@ async function ghSignup(){
 }
 
 async function ghLogout(){
+  await ghCloudSaveNow('app_v2',S);
   ghClearLocal();
   currentUser=null;
   S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};
   try{if(db)await db.auth.signOut();}catch(e){}
-  // Show login screen directly without reload (prevents re-auth on Safari ITP)
   document.getElementById('app').style.display='none';
   document.getElementById('app').classList.remove('active');
   document.getElementById('onboard').classList.remove('active');
   document.getElementById('login').classList.add('active');
 }
 
-function ghEnterApp(){
+async function ghEnterApp(){
   document.getElementById('login').classList.remove('active');
   document.getElementById('onboard').classList.remove('active');
+  // Load cloud data first, then render
+  const cloud=await ghCloudLoad('app_v2');
+  if(cloud&&typeof cloud==='object'){
+    const name=S.name;S={...S,...cloud};if(name)S.name=name;
+    try{localStorage.setItem('gh_app_v2',JSON.stringify(S));}catch(e){}
+  }
   const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
   const emailEl=document.getElementById('profile-email');
   if(emailEl&&currentUser)emailEl.textContent=currentUser.email;
