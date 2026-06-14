@@ -495,7 +495,15 @@ async function loadTrackerFromCloud(){
     const {data:{session}}=await sb.auth.getSession();
     if(!session)return;
     const {data}=await sb.from('user_app_data').select('data').eq('user_id',session.user.id).eq('data_key','tracker_v1').maybeSingle();
-    if(data&&data.data){T={...T,...data.data};try{localStorage.setItem('gh_tracker_v1',JSON.stringify(T));}catch(e){}renderAll();}
+    if(data&&data.data){
+      T={...T,...data.data};
+      try{localStorage.setItem('gh_tracker_v1',JSON.stringify(T));}catch(e){}
+      initStreak();
+      renderStreakTab();
+      renderWeightTab();
+      renderVitalityTab();
+      renderBadges();
+    }
   }catch(e){}
 }
 function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
