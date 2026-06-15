@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -225,15 +230,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       </div>
     </div>
 
-    <!-- START BUTTON (shown above days when not yet started) -->
+    <!-- DAYS LIST -->
+    <div id="days-container"></div>
+
+    <!-- START BUTTON (if not started) -->
     <div id="start-section">
       <button class="complete-day-btn" onclick="openStartModal()" style="background:var(--spirit);margin-top:0;">
         ✝️ Begin the 21-Day Arise Challenge
       </button>
     </div>
-
-    <!-- DAYS LIST -->
-    <div id="days-container"></div>
 
   </div>
 </div>
@@ -258,27 +263,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 // ═══ STATE ═══
 let A={started:false,startDate:null,name:'',completedDays:{},reflections:{}};
 function la(){try{const s=localStorage.getItem('gh_21days_v1');if(s)A=JSON.parse(s);}catch(e){}}
-function sa(){
-  try{localStorage.setItem('gh_21days_v1',JSON.stringify(A));}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}
-  clearTimeout(window._aSaveTimer);
-  window._aSaveTimer=setTimeout(async function(){
-    try{
-      const sb=supabase.createClient('https://attnnjhkjwpunlnokgvx.supabase.co','sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG');
-      const {data:{session}}=await sb.auth.getSession();
-      if(session)await sb.from('user_app_data').upsert({user_id:session.user.id,data_key:'21days_v1',data:A,updated_at:new Date().toISOString()},{onConflict:'user_id,data_key'});
-    }catch(e){}
-  },2000);
-  return true;
-}
-async function load21DaysFromCloud(){
-  try{
-    const sb=supabase.createClient('https://attnnjhkjwpunlnokgvx.supabase.co','sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG');
-    const {data:{session}}=await sb.auth.getSession();
-    if(!session)return;
-    const {data}=await sb.from('user_app_data').select('data').eq('user_id',session.user.id).eq('data_key','21days_v1').maybeSingle();
-    if(data&&data.data){A={...A,...data.data};try{localStorage.setItem('gh_21days_v1',JSON.stringify(A));}catch(e){}renderPage();}
-  }catch(e){}
-}
+function sa(){try{localStorage.setItem('gh_21days_v1',JSON.stringify(A));return true;}catch(e){console.error('Save failed:',e);if(typeof showToast==='function')showToast('⚠️ Storage full');return false;}}
 function todayStr(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 
@@ -506,7 +491,6 @@ const PHASE_COLORS={Foundation:'var(--spirit)',Discipline:'var(--soul)',Transfor
 // ═══ INIT ═══
 la();
 renderPage();
-load21DaysFromCloud();
 
 function renderPage(){
   const started=A.started;
@@ -564,8 +548,8 @@ function renderDays(){
 
     const isDone=A.completedDays[d.day];
     const isToday=A.started&&d.day===currentDay;
-    const isLocked=!A.started||(A.started&&d.day>currentDay&&!isDone);
-    const isUpcoming=A.started&&d.day<currentDay&&!isDone;
+    const isLocked=A.started&&d.day>currentDay&&!isDone;
+    const isUpcoming=!A.started||(d.day<currentDay&&!isDone);
 
     const numClass=isDone?'done':isToday?'active':isLocked?'locked-num':'upcoming';
     const cardClass=`day-card${isDone?' completed':''}${isToday?' today-card':''}${isLocked?' locked':''}`;
@@ -714,6 +698,12 @@ function startProgram(){
   document.getElementById('start-overlay').classList.remove('open');
   renderPage();
   showToast(`${name} — your 21 days begin now. 🙏`);
+}
+</script>
+<!-- PWA Service Worker -->
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}));
 }
 </script>
 </body>
