@@ -69,7 +69,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 /* APP SHELL */
 #app{display:none;flex:1;flex-direction:column;overflow:hidden;}
 #app.active{display:flex;}
-.app-header{background:linear-gradient(180deg,#102810 0%,#0D1F0D 100%);border-bottom:1px solid rgba(184,145,42,.22);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 16px rgba(0,0,0,.35);position:relative;z-index:10;}
+.app-header{background:linear-gradient(180deg,#102810 0%,#0D1F0D 100%);border-bottom:1px solid rgba(184,145,42,.22);padding:calc(env(safe-area-inset-top) + 13px) 18px 13px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 16px rgba(0,0,0,.35);position:relative;z-index:10;}
 .header-logo{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#F5EDD8;letter-spacing:.2px;}
 .header-logo em{font-style:italic;color:var(--gold);}
 .header-right{display:flex;align-items:center;gap:8px;}
