@@ -195,25 +195,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--ink);font-si
 .jec-date{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:6px;}
 .jec-text{font-size:12px;color:var(--ink2);line-height:1.6;font-style:italic;}
 
-/* TRIBE */
-.tribe-hero{background:linear-gradient(135deg,var(--spirit-light),var(--bg2));border:1.5px solid rgba(107,143,94,.2);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
-.tribe-hero h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:5px;}
-.tribe-hero p{font-size:12px;color:var(--ink3);line-height:1.6;margin-bottom:12px;}
-.tribe-btn{display:flex;align-items:center;justify-content:center;gap:7px;background:var(--spirit);color:#fff;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:11px;border-radius:9px;cursor:pointer;border:none;width:100%;transition:all .25s;}
-.tribe-btn:hover{background:#5a7a4e;}
-.share-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
-.share-card h4{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;}
-.share-template{background:var(--bg3);border-radius:9px;padding:12px;font-size:12px;color:var(--ink2);line-height:1.7;margin-bottom:10px;font-style:italic;white-space:pre-line;}
-.share-btn{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--ink);color:#fff;font-family:'Lato',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px;border-radius:8px;cursor:pointer;border:none;width:100%;transition:all .22s;}
-.share-btn:hover{background:var(--gold);}
-.accountability-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
-.acc-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;}
-.acc-partner{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
-.acc-partner:last-child{border-bottom:none;}
-.acc-avatar{width:36px;height:36px;border-radius:50%;background:var(--spirit-light);border:2px solid rgba(122,191,106,.3);display:flex;align-items:center;justify-content:center;font-size:14px;}
-.acc-name{font-size:13px;font-weight:700;color:var(--ink);}
-.acc-streak{font-size:11px;color:var(--spirit);}
-.acc-ping{margin-left:auto;background:var(--spirit-light);border:1px solid rgba(107,143,94,.25);color:var(--spirit);font-size:10px;font-weight:700;letter-spacing:1px;padding:5px 10px;border-radius:20px;cursor:pointer;font-family:'Lato',sans-serif;}
 
 /* PROFILE */
 .profile-header{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;text-align:center;box-shadow:var(--shadow-sm);}
@@ -370,8 +351,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 #login{background:var(--bg);align-items:center;justify-content:center;padding:40px 28px;text-align:center;overflow-y:auto;}
 .ob-form input[type=email],.ob-form input[type=password]{width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--ink);font-family:'Lato',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;transition:border-color .25s;margin-bottom:12px;}
 .ob-form input[type=email]:focus,.ob-form input[type=password]:focus{border-color:var(--gold);}
+/* Paywall — shown to signed-in users without an active subscription */
+#paywall{background:var(--bg);align-items:center;justify-content:center;padding:40px 28px;text-align:center;overflow-y:auto;}
+.pw-price{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--gold);margin:6px 0 2px;}
+.pw-price small{font-family:'Lato',sans-serif;font-size:14px;font-weight:400;color:rgba(245,237,216,.6);}
+.pw-list{list-style:none;text-align:left;margin:18px 0 22px;padding:0;}
+.pw-list li{font-size:13px;color:rgba(245,237,216,.8);line-height:1.5;padding:6px 0 6px 26px;position:relative;}
+.pw-list li::before{content:'✓';position:absolute;left:0;color:var(--gold);font-weight:700;}
+.pw-note{font-size:12px;color:rgba(245,237,216,.55);line-height:1.6;margin-top:12px;}
+.pw-link{color:rgba(245,237,216,.6);cursor:pointer;text-decoration:underline;background:none;border:none;font:inherit;font-size:13px;padding:6px;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="gh-access.js"></script>
 </head>
 <body>
 
@@ -424,6 +415,28 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     </div>
   </div>
   <p class="ob-verse">"Know ye not that your body is the temple of the Holy Ghost?"<br>— 1 Corinthians 6:19 (KJV)</p>
+</div>
+
+<!-- PAYWALL -->
+<div id="paywall" class="screen">
+  <img src="icons/icon-192x192.png" class="ob-cross" style="width:80px;height:80px;border-radius:18px;" alt="GodHealth logo">
+  <div class="ob-eyebrow">GodHealth Membership</div>
+  <h1 class="ob-title">Unlock<br><em>GodHealth</em></h1>
+  <div class="ob-form" style="margin-top:14px;">
+    <div class="pw-price">$20<small> / month</small></div>
+    <ul class="pw-list">
+      <li>Daily Temple, Soul &amp; Spirit habit tracker</li>
+      <li>Training schedule, prayer guide &amp; 21-Day Arise Challenge</li>
+      <li>Biblical meal plans and health tips</li>
+      <li>Your progress saved securely in your account</li>
+      <li>Cancel anytime</li>
+    </ul>
+    <div id="paywall-msg" style="display:none;background:rgba(184,145,42,.12);border:1px solid rgba(184,145,42,.35);color:#E6C872;padding:11px 14px;border-radius:10px;margin-bottom:14px;font-size:13px;text-align:left;line-height:1.5;"></div>
+    <button class="btn-primary" id="paywall-subscribe" onclick="ghSubscribe()" style="background:var(--gold);color:var(--ink);">Subscribe — $20/month</button>
+    <button class="btn-primary" id="paywall-recheck" onclick="ghRecheckAccess()" style="background:transparent;border:1.5px solid rgba(184,145,42,.5);color:var(--gold);margin-top:4px;">I've already paid — check again</button>
+    <p class="pw-note">Signed in as <span id="paywall-email"></span>. Use the same email address at checkout.</p>
+    <button class="pw-link" onclick="ghLogout()">Sign out</button>
+  </div>
 </div>
 
 <!-- ONBOARDING -->
@@ -639,9 +652,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         </div>
       </div>
       <button class="save-day-btn" id="save-day-btn" onclick="saveDay()">Save Today</button>
-      <a href="godhealth-tribe.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--spirit-light),var(--bg2));border:1.5px solid rgba(107,143,94,.3);color:var(--spirit);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
-        👥 Do It Together — Kingdom Builder
-      </a>
       <a href="godhealth-training.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--temple-light);border:1.5px solid rgba(196,87,58,.25);color:var(--temple);font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border-radius:12px;text-decoration:none;margin-bottom:8px;transition:all .25s;position:relative;z-index:5;cursor:pointer;-webkit-tap-highlight-color:rgba(184,145,42,.3);">
         ⚡ Training Schedule
       </a>
@@ -823,7 +833,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             <option value="Read 1 chapter of the Bible every single day">Read 1 chapter of the Bible every single day</option>
             <option value="Write 3 specific things of gratitude every day">Write 3 specific things of gratitude every day</option>
             <option value="Fast and pray one full day this week">Fast and pray one full day this week</option>
-            <option value="Reach out to 1 person from the Kingdom Builder daily">Reach out to 1 person from the Kingdom Builder daily</option>
             <option value="Memorise 1 Bible verse this week">Memorise 1 Bible verse this week</option>
             <option value="custom">Write my own...</option>
           </select>
@@ -881,44 +890,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <div id="tips-list"></div>
     </div>
 
-    <!-- TRIBE -->
-    <div class="page" id="page-tribe">
-      <div class="tribe-hero">
-        <h3>GodHealth Kingdom Builder</h3>
-        <p>You were not made to do this alone. The Kingdom Builder is your community on Circle — connect with other believers, share your progress, and unlock the monthly video workouts that move your body toward its God-given strength.</p>
-        <p style="font-size:11px;font-style:italic;color:var(--spirit);margin-bottom:12px;margin-top:4px;">"Iron sharpeneth iron; so a man sharpeneth the countenance of his friend." — Proverbs 27:17 (KJV)</p>
-        <button class="tribe-btn" onclick="openCircle()">🌿 Open Kingdom Builder on Circle</button>
-      </div>
-      <div class="share-card">
-        <h4>Share Your Progress</h4>
-        <p style="font-size:12px;color:var(--ink3);line-height:1.6;margin-bottom:10px;">Copy today's progress and post it in the Kingdom Builder community to celebrate wins and stay accountable.</p>
-        <div class="share-template" id="share-template"></div>
-        <button class="share-btn" onclick="copyShare()">📋 Copy & Share to Kingdom Builder</button>
-      </div>
-      <div class="accountability-card">
-        <div class="acc-title">Monthly Video Workouts</div>
-        <div class="acc-partner">
-          <div class="acc-avatar">🎥</div>
-          <div><div class="acc-name">This Month's Workouts</div><div class="acc-streak">Available in the Kingdom Builder →</div></div>
-          <button class="acc-ping" onclick="openCircle()">Watch</button>
-        </div>
-        <div style="margin-top:12px;font-size:12px;color:var(--ink3);line-height:1.6;">Every month, new guided video workouts are released inside the Kingdom Builder on Circle — train your Temple with structure, purpose and community.</div>
-      </div>
-      <div class="insight-block">
-        <h4>Why Community Accelerates Transformation</h4>
-        <div style="font-size:13px;color:var(--ink2);line-height:1.75;">
-          <p>Research shows that people who track habits with an accountability community are <strong>65% more likely</strong> to achieve their goals. With a specific accountability appointment that number rises to <strong>95%</strong>.</p>
-          <p style="margin-top:8px;">"Two are better than one; because they have a good reward for their labour." (Ecclesiastes 4:9 KJV)</p>
-        </div>
-      </div>
-    </div>
-
     <!-- PROFILE -->
     <div class="page" id="page-profile">
       <div class="profile-header">
         <div class="profile-avatar"><img src="icons/icon-192x192.png" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" alt="GodHealth"></div>
         <div class="profile-name" id="profile-name">Warrior</div>
-        <div class="profile-sub">Member of the GodHealth Kingdom Builder</div>
+        <div class="profile-sub">GodHealth Member</div>
         <div class="profile-sub" id="profile-email" style="font-size:12px;color:rgba(26,20,16,.5);margin-top:2px;"></div>
         <div class="profile-stats">
           <div class="ps-box"><div class="ps-num" id="ps-days">0</div><div class="ps-lbl">Days Done</div></div>
@@ -947,20 +924,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         </div>
       </div>
       <div class="settings-section">
-        <h4>Subscription — €47/month</h4>
+        <h4>Subscription — <span class="gh-price">$20/month</span></h4>
         <div class="setting-row">
-          <div><div class="setting-label">Status</div><div class="setting-sub">Active member</div></div>
-          <div style="color:var(--spirit);font-weight:700;font-size:12px;">✓ Active</div>
+          <div><div class="setting-label">Status</div><div class="setting-sub" id="sub-detail">Full access to GodHealth</div></div>
+          <div id="sub-status" style="color:var(--spirit);font-weight:700;font-size:12px;">✓ Active</div>
         </div>
-        <div class="setting-row">
-          <div><div class="setting-label">What's Included</div><div class="setting-sub">Full app access + GodHealth Kingdom Builder on Circle</div></div>
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-label">Monthly Workouts</div><div class="setting-sub">New video workouts in the Kingdom Builder</div></div>
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-label">Community Chat</div><div class="setting-sub">Connect with members in the Kingdom Builder</div></div>
-          <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+        <div class="setting-row" id="sub-manage-row" style="display:none;">
+          <div><div class="setting-label">Manage Subscription</div><div class="setting-sub">Update your card or cancel</div></div>
+          <a class="setting-input" id="sub-manage-link" href="#" target="_blank" rel="noopener" style="text-decoration:none;font-size:12px;font-weight:700;color:var(--gold);">Manage →</a>
         </div>
       </div>
       <div class="settings-section">
@@ -983,7 +954,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <button class="nav-item" onclick="showPage('insights')" data-page="insights" aria-label="Insights"><div class="nav-icon" aria-hidden="true">📊</div><div class="nav-label">Insights</div></button>
     <button class="nav-item" onclick="showPage('meals')" data-page="meals" aria-label="Meals"><div class="nav-icon" aria-hidden="true">🌿</div><div class="nav-label">Meals</div></button>
     <button class="nav-item" onclick="showPage('tips')" data-page="tips" aria-label="Tips"><div class="nav-icon" aria-hidden="true">💡</div><div class="nav-label">Tips</div></button>
-    <button class="nav-item" onclick="showPage('tribe')" data-page="tribe" aria-label="Kingdom Builder"><div class="nav-icon" aria-hidden="true">👥</div><div class="nav-label">Kingdom</div></button>
     <button class="nav-item" onclick="showPage('profile')" data-page="profile" aria-label="Profile"><div class="nav-icon" aria-hidden="true">✝️</div><div class="nav-label">Profile</div></button>
   </nav>
 </div>
@@ -1000,12 +970,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══ CONFIG ═══
-// 👉 Vul hier je echte Circle Kingdom Builder-link in. Eén plek, overal gebruikt.
-const GODHEALTH_CONFIG={
-  kingdomBuilderUrl:'https://godhealth.circle.so', // <-- TODO: vervang door je echte Kingdom Builder-URL op Circle
-};
-
 // ═══ DATA ═══
 const DAILY_VERSES=[
   {text:"What? know ye not that your body is the temple of the Holy Ghost?",ref:"1 Corinthians 6:19 (KJV)"},
@@ -1043,7 +1007,6 @@ const DAILY_VERSES=[
 const WEEKLY_INSIGHTS=[
   {title:"Why fasting sharpens your mind",body:"After 14–16 hours of fasting, your brain produces more BDNF — a protein that builds new neural connections. God designed hunger as a tool for mental sharpening, not just physical healing.",verse:"\"Is not this the fast that I have chosen?\" — Isaiah 58:6 (KJV)"},
   {title:"The science of morning sunlight",body:"Morning light within 30 minutes of waking triggers a cortisol pulse that sets your entire circadian clock for the day. It increases serotonin, sharpens focus for 4–6 hours, and primes your body to produce melatonin at the right time. God separated light from darkness on Day 1 — this was biological design.",verse:"\"And God saw the light, that it was good.\" — Genesis 1:4 (KJV)"},
-  {title:"Why community changes everything",body:"Harvard's 85-year study found that the single greatest predictor of health and happiness was the quality of relationships. The GodHealth Tribe is not an add-on. It is the foundation.",verse:"\"Two are better than one.\" — Ecclesiastes 4:9 (KJV)"},
   {title:"How biblical food stabilises your brain",body:"The biblical diet — lentils, fish, olive oil, figs, barley, pomegranate — is almost identical to the Mediterranean diet, the most validated eating pattern for brain health. These foods reduce neuroinflammation and stabilise dopamine.",verse:"\"Daniel was found ten times better.\" — Daniel 1:20 (KJV)"},
 ];
 
@@ -1056,7 +1019,7 @@ const HABIT_NAMES={prayer:'Morning Prayer',bible:'Bible Reading',gratitude:'Grat
 // ═══ STATE ═══
 let S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};
 function ls2(){try{const s=localStorage.getItem('gh_app_v2');if(s){const parsed=JSON.parse(s);if(parsed&&typeof parsed==='object')S={...S,...parsed};}}catch(e){console.warn('Could not load saved data:',e);}}
-function ss2(){try{localStorage.setItem('gh_app_v2',JSON.stringify(S));ghCloudSave('app_v2',S);return true;}catch(e){console.error('Could not save data:',e);if(typeof showToast==='function')showToast('⚠️ Storage full — could not save');return false;}}
+function ss2(){try{S.savedAt=Date.now();localStorage.setItem('gh_app_v2',JSON.stringify(S));ghCloudSave('app_v2',S);return true;}catch(e){console.error('Could not save data:',e);if(typeof showToast==='function')showToast('⚠️ Storage full — could not save');return false;}}
 
 // ── Cloud sync helpers ──────────────────────────────────────
 let _cloudSaveTimer=null;
@@ -1076,19 +1039,14 @@ async function ghCloudSaveNow(key,data){
   try{await db.from('user_app_data').upsert({user_id:currentUser.id,data_key:key,data:data,updated_at:new Date().toISOString()},{onConflict:'user_id,data_key'});}catch(e){}
 }
 
-// ═══════════════ SUPABASE AUTH LAYER ═══════════════
-const SUPABASE_URL='https://attnnjhkjwpunlnokgvx.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG';
-let db=null;
-try{if(typeof supabase!=='undefined'&&supabase.createClient){db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);}}catch(e){}
+// ═══════════════ SUPABASE AUTH + ACCESS LAYER ═══════════════
+// Access rule: signed in AND an active Stripe subscription (see gh-access.js + supabase/).
+const db=GH.db();
 let currentUser=null;
+let ghAccess=null;
+let ghRecovery=/type=recovery/.test(location.hash);
 
-// Local session: persists across loads, works without CDN (Safari ITP safe)
-function ghSaveLocal(name,email){
-  try{localStorage.setItem('gh_auth_v1',JSON.stringify({name:name||'',email:email||'',ts:Date.now()}));}catch(e){}
-}
-function ghLoadLocal(){try{const s=localStorage.getItem('gh_auth_v1');return s?JSON.parse(s):null;}catch(e){return null;}}
-function ghClearLocal(){try{localStorage.removeItem('gh_auth_v1');}catch(e){}}
+function defaultState(){return {name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};}
 
 function ghAuthError(msg){const e=document.getElementById('login-error');if(e){e.textContent=msg;e.style.display='block';e.style.background='rgba(196,87,58,.15)';e.style.borderColor='rgba(196,87,58,.35)';e.style.color='#E8836A';}}
 function ghAuthSuccess(msg){const e=document.getElementById('login-error');if(e){e.textContent=msg;e.style.display='block';e.style.background='rgba(107,143,94,.15)';e.style.borderColor='rgba(107,143,94,.4)';e.style.color='#8FB87A';}}
@@ -1100,6 +1058,13 @@ function ghToggleAuth(which){
   const ff=document.getElementById('forgot-form');if(ff)ff.style.display=which==='forgot'?'block':'none';
   const nf=document.getElementById('newpass-form');if(nf)nf.style.display=which==='newpass'?'block':'none';
 }
+function hideLoading(){const el=document.getElementById('gh-loading');if(el)el.style.display='none';}
+function ghShow(screen){
+  ['login','onboard','paywall'].forEach(id=>document.getElementById(id).classList.toggle('active',id===screen));
+  const app=document.getElementById('app');
+  if(screen==='app'){app.style.display='flex';app.classList.add('active');}
+  else{app.style.display='none';app.classList.remove('active');}
+}
 
 async function ghUpdatePassword(){
   ghClearError();
@@ -1108,27 +1073,16 @@ async function ghUpdatePassword(){
   try{
     const {error}=await db.auth.updateUser({password:pass});
     if(error)throw error;
-    ghAuthSuccess('Password updated! You can now sign in with your new password.');
-    setTimeout(()=>ghToggleAuth('login'),2000);
+    ghAuthSuccess('Password updated!');
+    ghRecovery=false;
+    history.replaceState(null,'',location.pathname);
+    setTimeout(()=>{ghToggleAuth('login');ghRoute();},1200);
   }catch(e){ghAuthError('Could not update password: '+(e.message||e));}
 }
 
-async function ghCheckToken(userId){
-  if(!db||!userId)return false;
-  try{
-    const {data}=await db.from('tokens').select('id').eq('user_id',userId).eq('active',true).gt('end_date',new Date().toISOString()).maybeSingle();
-    return data!==null;
-  }catch(e){return false;}
-}
-
-// onAuthStateChange: catches PASSWORD_RECOVERY when user clicks reset link
-if(db){db.auth.onAuthStateChange(function(event,session){
-  if(event==='PASSWORD_RECOVERY'){
-    document.getElementById('login').classList.add('active');
-    document.getElementById('app').style.display='none';
-    document.getElementById('app').classList.remove('active');
-    ghToggleAuth('newpass');
-  }
+// PASSWORD_RECOVERY fires when the user opens the reset link from their email
+if(db){db.auth.onAuthStateChange(function(event){
+  if(event==='PASSWORD_RECOVERY'){ghRecovery=true;hideLoading();ghShow('login');ghToggleAuth('newpass');}
 });}
 
 async function ghForgotPassword(){
@@ -1148,6 +1102,66 @@ function ghApplyProfile(user){
   if(m.wake_time)S.wake=m.wake_time;
   if(m.bed_time)S.bed=m.bed_time;
 }
+// Keep each account's data separate when several people use the same device
+function ghBindUser(user){
+  if(S.uid&&S.uid!==user.id){S=defaultState();}
+  S.uid=user.id;
+  ghApplyProfile(user);
+}
+
+// Decides where the user goes: login → onboarding → paywall → app
+async function ghRoute(opts){
+  opts=opts||{};
+  if(ghRecovery){hideLoading();ghShow('login');ghToggleAuth('newpass');return null;}
+  const r=await GH.check();
+  ghAccess=r;
+  hideLoading();
+  if(r.state==='signed_out'){currentUser=null;ghShow('login');return r;}
+  if(r.user){currentUser=r.user;ghBindUser(r.user);}
+  if(r.state==='active'){
+    if(!S.name){ghShowOnboard();return r;}
+    await ghEnterApp();
+    return r;
+  }
+  if(r.state==='error')ghShowPaywall('We could not verify your subscription. Check your internet connection and tap "check again".');
+  else ghShowPaywall(opts.msg);
+  return r;
+}
+
+function ghShowOnboard(){
+  const nameEl=document.getElementById('ob-name');if(nameEl&&!nameEl.value)nameEl.value=S.name||'';
+  ghShow('onboard');
+}
+function ghShowPaywall(msg){
+  const e=document.getElementById('paywall-email');if(e)e.textContent=currentUser?currentUser.email:'';
+  const m=document.getElementById('paywall-msg');if(m){m.textContent=msg||'';m.style.display=msg?'block':'none';}
+  ghShow('paywall');
+}
+function ghSubscribe(){
+  if(!currentUser){ghShow('login');return;}
+  window.location.href=GH.checkoutUrl(currentUser);
+}
+let _recheckBusy=false;
+async function ghRecheckAccess(){
+  if(_recheckBusy)return;_recheckBusy=true;
+  const btn=document.getElementById('paywall-recheck');const label=btn.textContent;
+  btn.textContent='Checking…';btn.disabled=true;
+  try{await ghRoute({msg:'No active subscription found yet for '+(currentUser?currentUser.email:'this account')+'. If you just paid, wait a moment and check again — and make sure you used this same email address at checkout.'});}
+  finally{btn.textContent=label;btn.disabled=false;_recheckBusy=false;}
+}
+// Back from Stripe (?paid=1): the webhook can take a few seconds to activate the membership
+async function ghAwaitPayment(){
+  for(let i=0;i<15;i++){
+    const r=await GH.check();
+    if(r.state==='active'||r.state==='signed_out')break;
+    if(r.user)currentUser=r.user;
+    hideLoading();
+    ghShowPaywall('Thank you! Activating your membership…');
+    await new Promise(res=>setTimeout(res,3000));
+  }
+  history.replaceState(null,'',location.pathname);
+  await ghRoute({msg:'We have not received confirmation from Stripe yet. This can take a minute — tap "check again". If it keeps failing, contact us.'});
+}
 
 async function ghLogin(){
   ghClearError();
@@ -1159,19 +1173,8 @@ async function ghLogin(){
     const {data,error}=await db.auth.signInWithPassword({email,password:pass});
     if(error)throw error;
     currentUser=data.user;
-    // Token check: alleen betalende gebruikers krijgen toegang
-    const hasAccess=await ghCheckToken(data.user.id);
-    if(!hasAccess){
-      await db.auth.signOut();
-      currentUser=null;
-      ghAuthError('No active subscription found. Please complete your payment to access GodHealth.');
-      return;
-    }
-    ghApplyProfile(data.user);
-    const name=S.name||(data.user.user_metadata&&data.user.user_metadata.full_name)||'';
-    if(name)ss2();
-    ghSaveLocal(name,data.user.email);
-    ghEnterApp();
+    document.getElementById('login-pass').value='';
+    await ghRoute();
   }catch(e){ghAuthError('Sign in failed: '+(e.message||e));}
 }
 
@@ -1185,83 +1188,93 @@ async function ghSignup(){
   if(!email||!pass){ghAuthError('Please enter your email and password.');return;}
   if(pass.length<8){ghAuthError('Password must be at least 8 characters.');return;}
   try{
-    const {data,error}=await db.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
+    const {data,error}=await db.auth.signUp({email,password:pass,options:{data:{full_name:name},emailRedirectTo:window.location.origin}});
     if(error)throw error;
+    if(!data.session){
+      // Email confirmation is enabled: the user must confirm before signing in
+      ghToggleAuth('login');
+      document.getElementById('login-email').value=email;
+      ghAuthSuccess('Account created! Check your email to confirm your address, then sign in here.');
+      return;
+    }
     currentUser=data.user;
+    ghBindUser(currentUser);
     S.name=name;ss2();
-    ghSaveLocal(name,data.user.email);
-    // New user → onboarding to set wake/bed time
-    document.getElementById('login').classList.remove('active');
-    document.getElementById('onboard').classList.add('active');
-    const nameEl=document.getElementById('ob-name');if(nameEl)nameEl.value=name;
+    ghShowOnboard();
   }catch(e){ghAuthError('Sign up failed: '+(e.message||e));}
 }
 
 async function ghLogout(){
-  await ghCloudSaveNow('app_v2',S);
-  ghClearLocal();
-  currentUser=null;
-  S={name:'',wake:'07:00',bed:'23:00',fastHours:16,ifStart:null,ifActive:false,days:{},weekOffset:0,modal:{pillar:'',selected:0}};
+  if(currentUser)await ghCloudSaveNow('app_v2',S);
+  clearInterval(ifInterval);
+  currentUser=null;ghAccess=null;
+  GH.clearCache();
+  try{localStorage.removeItem('gh_auth_v1');}catch(e){}
+  S=defaultState();
   try{if(db)await db.auth.signOut();}catch(e){}
-  document.getElementById('app').style.display='none';
-  document.getElementById('app').classList.remove('active');
-  document.getElementById('onboard').classList.remove('active');
-  document.getElementById('login').classList.add('active');
+  ghToggleAuth('login');
+  ghShow('login');
 }
 
 async function ghEnterApp(){
-  document.getElementById('login').classList.remove('active');
-  document.getElementById('onboard').classList.remove('active');
-  // Load cloud data first, then render
+  // Take whichever copy (this device or cloud) was saved most recently
   const cloud=await ghCloudLoad('app_v2');
-  if(cloud&&typeof cloud==='object'){
-    const name=S.name;S={...S,...cloud};if(name)S.name=name;
+  if(cloud&&typeof cloud==='object'&&(cloud.savedAt||0)>=(S.savedAt||0)){
+    const name=S.name,uid=S.uid;S={...defaultState(),...cloud};if(name)S.name=name;if(uid)S.uid=uid;
     try{localStorage.setItem('gh_app_v2',JSON.stringify(S));}catch(e){}
+  }else if(currentUser){
+    ghCloudSave('app_v2',S);
   }
-  const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
+  S.modal={pillar:'',selected:0};
+  ghShow('app');
   const emailEl=document.getElementById('profile-email');
   if(emailEl&&currentUser)emailEl.textContent=currentUser.email;
+  renderSubscription();
   initApp();
 }
+
+function renderSubscription(){
+  const sub=(ghAccess&&ghAccess.sub)||{};
+  const detail=document.getElementById('sub-detail'),status=document.getElementById('sub-status');
+  if(!detail||!status)return;
+  let txt='Full access to GodHealth';
+  if(sub.current_period_end){
+    const dt=new Date(sub.current_period_end).toLocaleDateString('en',{day:'numeric',month:'short',year:'numeric'});
+    txt=sub.cancel_at_period_end?`Cancelled — access until ${dt}`:`Renews on ${dt}`;
+  }
+  detail.textContent=txt;
+  status.textContent=sub.cancel_at_period_end?'Ending':'✓ Active';
+  status.style.color=sub.cancel_at_period_end?'var(--gold)':'var(--spirit)';
+  const row=document.getElementById('sub-manage-row'),link=document.getElementById('sub-manage-link');
+  if(row&&link&&GH.config.stripePortalLink){
+    const u=new URL(GH.config.stripePortalLink);
+    if(currentUser&&currentUser.email)u.searchParams.set('prefilled_email',currentUser.email);
+    link.href=u.toString();row.style.display='flex';
+  }
+}
+
+// Re-verify the subscription when the app comes back to the foreground (at most once an hour)
+let _lastAccessCheck=Date.now();
+document.addEventListener('visibilitychange',async function(){
+  if(document.visibilityState!=='visible'||!document.getElementById('app').classList.contains('active'))return;
+  if(Date.now()-_lastAccessCheck<60*60*1000)return;
+  _lastAccessCheck=Date.now();
+  const r=await GH.check();
+  if(r.state==='signed_out'){ghAccess=r;ghShow('login');}
+  else if(r.state==='unpaid'){ghAccess=r;ghShowPaywall('Your subscription is no longer active. Subscribe again to continue using GodHealth.');}
+  else if(r.state==='active'){ghAccess=r;renderSubscription();}
+});
 function todayStr(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function today(){return S.days[todayStr()]||{};}
 function setToday(key,val){if(!S.days[todayStr()])S.days[todayStr()]={habits:{},scores:{},data:{}};S.days[todayStr()][key]=val;ss2();}
 
 ls2();
-// ═══════════════ BOOT: localStorage-first, then Supabase ═══════════════
+// ═══════════════ BOOT ═══════════════
 (async function ghBoot(){
-  function hideLoading(){const el=document.getElementById('gh-loading');if(el)el.style.display='none';}
-
-  // STEP 1: local session (instant, survives Safari ITP + back navigation)
-  const local=ghLoadLocal();
-  if((local&&local.name)||S.name){
-    if(local&&local.name&&!S.name)S.name=local.name;
-    hideLoading();
-    ghEnterApp();
-    // Verify Supabase token in background (non-blocking)
-    if(db){db.auth.getSession().then(function(res){
-      const sess=res&&res.data&&res.data.session;
-      if(sess){currentUser=sess.user;ghApplyProfile(sess.user);
-        const emailEl=document.getElementById('profile-email');if(emailEl)emailEl.textContent=sess.user.email;}
-    }).catch(function(){});}
-    return;
-  }
-
-  // STEP 2: no local session — try Supabase
-  if(!db){hideLoading();document.getElementById('login').classList.add('active');return;}
-  try{
-    const {data}=await db.auth.getSession();
-    hideLoading();
-    if(data&&data.session){
-      currentUser=data.session.user;
-      ghApplyProfile(data.session.user);
-      const name=S.name||(data.session.user.user_metadata&&data.session.user.user_metadata.full_name)||'';
-      if(name){ss2();ghSaveLocal(name,data.session.user.email);ghEnterApp();}
-      else{document.getElementById('onboard').classList.add('active');}
-    }else{
-      document.getElementById('login').classList.add('active');
-    }
-  }catch(e){hideLoading();document.getElementById('login').classList.add('active');}
+  if(!db){hideLoading();ghShow('login');ghAuthError('Connection unavailable — check your internet and try again.');return;}
+  if(new URLSearchParams(location.search).get('paid')==='1'){await ghAwaitPayment();return;}
+  try{await ghRoute();}
+  catch(e){hideLoading();ghShow('login');}
 })();
 
 function startApp(){
@@ -1269,17 +1282,12 @@ function startApp(){
   S.wake=document.getElementById('ob-wake').value||'07:00';
   S.bed=document.getElementById('ob-bed').value||'23:00';
   ss2();
-  // Persist name to local auth session + Supabase metadata
-  ghSaveLocal(S.name, currentUser?currentUser.email:'');
-  if(db&&currentUser){try{db.auth.updateUser({data:{full_name:S.name,wake_time:S.wake,bed_time:S.bed}});}catch(e){}}
-  document.getElementById('login').classList.remove('active');
-  document.getElementById('onboard').classList.remove('active');
-  const app=document.getElementById('app');app.style.display='flex';app.classList.add('active');
-  initApp();
+  if(db&&currentUser){db.auth.updateUser({data:{full_name:S.name,wake_time:S.wake,bed_time:S.bed}}).catch(function(){});}
+  ghRoute();
 }
 
 function initApp(){
-  renderHeader();renderTodayPage();renderInsights();renderTribe();renderProfile();
+  renderHeader();renderTodayPage();renderInsights();renderProfile();
   restoreTodayState();
   if(S.ifActive)startIFTimer();
   const sw=document.getElementById('set-wake');if(sw)sw.value=S.wake;
@@ -1303,9 +1311,9 @@ function renderTodayPage(){
   document.getElementById('daily-verse-ref').textContent=v.ref;
   const hr=new Date().getHours();
   const greet=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
-  document.getElementById('today-greeting').innerHTML=`${greet},<br><em>${S.name}.</em>`;
+  document.getElementById('today-greeting').innerHTML=`${greet},<br><em>${esc(S.name)}.</em>`;
   document.getElementById('today-day-label').textContent=`Day ${calcTotalDays()}`;
-  renderIF();updateShareTemplate();
+  renderIF();
 }
 
 function renderIF(){
@@ -1337,7 +1345,7 @@ function toggleIF(){
     ss2();showToast('✓ Fast complete');
   }
 }
-function startIFTimer(){updateIFTimer();ifInterval=setInterval(updateIFTimer,30000);}
+function startIFTimer(){clearInterval(ifInterval);updateIFTimer();ifInterval=setInterval(updateIFTimer,30000);}
 function updateIFTimer(){
   if(!S.ifActive||!S.ifStart)return;
   const elapsed=Math.floor((new Date()-new Date(S.ifStart))/60000);
@@ -1430,7 +1438,7 @@ function saveDay(){
   };
   setToday('data',data);setToday('saved',true);
   const btn=document.getElementById('save-day-btn');btn.textContent='✓ Day Saved';btn.classList.add('saved');
-  updateStreakDisplay();renderInsights();updateShareTemplate();
+  updateStreakDisplay();renderInsights();
   showToast('🙏 Day saved — well done, faithful servant!');
 }
 
@@ -1510,7 +1518,7 @@ function renderJournalHistory(){
   const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const container=document.getElementById('journal-history');
   if(!entries.length){container.innerHTML='<div style="font-size:12px;color:var(--ink3);font-style:italic;">No journal entries this week yet.</div>';return;}
-  container.innerHTML=entries.map(e=>`<div class="journal-entry-card"><div class="jec-date">${days[e.date.getDay()]} ${e.date.getDate()}</div>${e.texts.map(t=>`<div class="jec-text">"${t}"</div>`).join('')}</div>`).join('');
+  container.innerHTML=entries.map(e=>`<div class="journal-entry-card"><div class="jec-date">${days[e.date.getDay()]} ${e.date.getDate()}</div>${e.texts.map(t=>`<div class="jec-text">"${esc(t)}"</div>`).join('')}</div>`).join('');
 }
 
 function renderWeeklyInsight(){
@@ -1647,7 +1655,7 @@ function renderGoalsReview(){
     const r=ratings[p.key]||0;
     return `<div class="goal-review-item">
       <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--${p.color});margin-bottom:4px;">${p.label}</div>
-      <div style="font-size:13px;color:var(--ink);margin-bottom:8px;">${goals[p.key]}</div>
+      <div style="font-size:13px;color:var(--ink);margin-bottom:8px;">${esc(goals[p.key])}</div>
       <div style="font-size:11px;color:var(--ink3);margin-bottom:5px;">How is it going?</div>
       <div class="goal-review-pill-row">
         ${pills.map((pill,i)=>`<button class="goal-review-pill ${r===i+1?pill.cls:''}" onclick="rateGoalProgress('${wk}','${p.key}',${i+1})">${pill.label}</button>`).join('')}
@@ -1677,28 +1685,11 @@ function renderGoalsHistory(){
       ${['temple','soul','spirit'].filter(p=>g[p]).map(p=>`
         <div class="goal-history-goal">
           <span>${icons[p]}</span>
-          <span style="flex:1;color:var(--ink2);">${g[p]}</span>
+          <span style="flex:1;color:var(--ink2);">${esc(g[p])}</span>
           ${r[p]?`<span style="font-size:9px;font-weight:700;color:var(--spirit);background:var(--spirit-light);padding:2px 7px;border-radius:20px;">${ratingLabels[r[p]]}</span>`:''}
         </div>`).join('')}
     </div>`;
   }).join('');
-}
-
-// TRIBE
-function renderTribe(){updateShareTemplate();}
-function updateShareTemplate(){
-  const t=today();const habits=t.habits||{};const done=HABITS.filter(h=>habits[h]).length;
-  const scores=t.scores||{};const day=calcTotalDays();
-  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
-  const v=DAILY_VERSES[doy%DAILY_VERSES.length];
-  const tmpl=`✝️ GodHealth — Day ${day}\n\n🏛️ Temple: ${scores.temple?scores.temple+'/10':'—'}\n🧠 Soul: ${scores.soul?scores.soul+'/10':'—'}\n✝️ Spirit: ${scores.spirit?scores.spirit+'/10':'—'}\n\n✓ ${done}/${HABITS.length} habits completed\n\n"${v.text.slice(0,60)}..."\n— ${v.ref}\n\n#GodHealthKingdomBuilder`;
-  const el=document.getElementById('share-template');if(el)el.textContent=tmpl;
-}
-function copyShare(){navigator.clipboard?.writeText(document.getElementById('share-template')?.textContent||'').then(()=>showToast('✓ Copied! Paste in the Kingdom Builder')).catch(()=>showToast('Select and copy the text'));}
-function openCircle(){
-  const url=GODHEALTH_CONFIG.kingdomBuilderUrl;
-  if(url&&url.startsWith('http')){window.open(url,'_blank','noopener');showToast('Opening Kingdom Builder...');}
-  else{showToast('Kingdom Builder link not set yet');}
 }
 
 // PROFILE
@@ -1720,6 +1711,7 @@ function updateSettings(){
 function parseTime(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
 function minsToTime(m){return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;}
 function fmt12(t){const[h,m]=t.split(':').map(Number);return `${h%12||12}:${String(m).padStart(2,'0')} ${h>=12?'PM':'AM'}`;}
+function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function dateStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function calcStreak(){let s=0,d=new Date();d.setHours(0,0,0,0);while(true){const k=dateStr(d);if(S.days[k]?.saved)s++;else break;d.setDate(d.getDate()-1);}return s;}
 function calcTotalDays(){const k=Object.keys(S.days).sort();if(!k.length)return 1;const diff=Math.floor((new Date()-new Date(k[0]))/(1000*60*60*24));return diff+1;}
@@ -1733,7 +1725,6 @@ function showPage(id){
   document.querySelector(`[data-page="${id}"]`)?.classList.add('active');
   document.querySelector('.scroll-area').scrollTop=0;
   if(id==='insights')renderInsights();
-  if(id==='tribe')renderTribe();
   if(id==='profile')renderProfile();
   if(id==='meals')renderMeals('all');
   if(id==='tips')renderTips('all');
@@ -1814,16 +1805,15 @@ const HEALTH_TIPS=[
   {id:15,pillar:'spirit',emoji:'🙏',title:'Prayer — The Most Powerful Habit',body:'Prayer is not a religious duty. It is a direct conversation with the Creator of the universe. Research consistently shows that people with a regular prayer practice have lower blood pressure, stronger immune systems and higher psychological resilience.',science:'Harvard Medical School studies show people who pray regularly are 40% less likely to experience major depression, 60% less likely to die by suicide, and 46% more likely to survive major illness.',verse:'"Pray without ceasing." — 1 Thessalonians 5:17 (KJV)',steps:['Pray out loud, not silently — vocalising prayer activates more of the brain.','Begin with thanksgiving. Name specific things — not general gratitude.','Pray for others before yourself.','Keep a written prayer list. Track answered prayers.','Pray at fixed times (morning, midday, evening) to build the habit.']},
   {id:16,pillar:'spirit',emoji:'📖',title:'Scripture — The Renewal of Your Mind',body:'Romans 12:2 says transformation begins with the renewing of the mind. The Word of God is not just spiritual food — it is the primary tool of mindset change.',science:'Repetitive reading of positive, hopeful text activates neuroplasticity — the brain\'s ability to rewire itself. Studies of communities with daily Scripture reading show lower rates of anxiety, depression and cognitive decline than comparable populations.',verse:'"Thy word is a lamp unto my feet, and a light unto my path." — Psalm 119:105 (KJV)',steps:['Read 1–2 chapters every morning before any other media.','Read out loud when possible — hearing the Word engages more neural pathways.','Keep a journal of what God speaks to you through Scripture each day.','Memorise one verse per week.','Read whole books of the Bible, not just individual verses — context is everything.']},
   {id:17,pillar:'spirit',emoji:'✝️',title:'Fasting — The Spiritual Discipline that Transforms',body:'Fasting is the only discipline that directly affects body, soul and spirit simultaneously. Physically it triggers autophagy. Mentally it develops self-mastery. Spiritually it is a declaration that God is more essential than food.',science:'After 16 hours, autophagy peaks — your body\'s cellular housekeeping process. After 24 hours, growth hormone increases by 300–500%. After 36 hours, the brain produces more BDNF and ketones — both neuroprotective.',verse:'"Is not this the fast that I have chosen? to loose the bands of wickedness." — Isaiah 58:6 (KJV)',steps:['Start with 12/12 — stop eating 2 hours before bed, resume 2 hours after waking.','Build to 16/8 over 4–6 weeks by delaying your first meal.','Drink water, black coffee or plain herbal tea during fasting hours.','Break your fast gently — start with water and fruit.','One 24-hour fast per month is a powerful spiritual and physical reset.']},
-  {id:18,pillar:'spirit',emoji:'🤝',title:'Accountability — Iron Sharpening Iron',body:'You cannot fulfil your calling alone. God designed humans for community — not just for comfort but for transformation. Accountability removes the privacy that allows sin and laziness to thrive.',science:'The American Society of Training and Development found that commitment to another person increases goal achievement by 65%. With a specific accountability appointment, this rises to 95%.',verse:'"Iron sharpeneth iron; so a man sharpeneth the countenance of his friend." — Proverbs 27:17 (KJV)',steps:['Choose one accountability partner from the GodHealth Tribe who is serious.','Check in daily — even a brief voice message is enough.','Be brutally honest. Accountability without honesty is just performance.','Share your three daily goals with your partner each morning.','Celebrate their victories as loudly as you celebrate your own.']},
   {id:19,pillar:'spirit',emoji:'🌅',title:'Fixed Prayer Times — The Ancient Practice',body:'Throughout Scripture, God\'s people prayed at fixed times — Daniel three times daily, David seven times. Fixed prayer times anchor your entire day around God, preventing drift into distraction.',science:'Habit research shows that habits attached to existing time anchors are 300% more likely to be maintained than flexible habits left to willpower. Fixed prayer times convert prayer from a discipline requiring constant decision-making into automatic behaviour.',verse:'"Evening, and morning, and at noon, will I pray." — Psalm 55:17 (KJV)',steps:['Choose three fixed prayer times: morning, midday, evening.','Set reminders until the times become automatic — approximately 66 days.','Morning prayer: 10 minutes minimum — thanksgiving, intercession, surrender.','Midday prayer: even 2 minutes of conscious acknowledgement of God\'s presence.','Evening prayer: review your day with God, confess, give thanks, entrust tomorrow to Him.']},
   {id:20,pillar:'spirit',emoji:'❤️',title:'Gratitude — Rewiring Your Brain for Joy',body:'Gratitude is a discipline of the mind that, when repeated daily, literally changes the structure of your brain. Consistent gratitude practice rewires the brain\'s negativity bias toward a baseline of thankfulness.',science:'MRI studies show that gratitude practice activates the medial prefrontal cortex and creates lasting changes in neural structure over 8–12 weeks. People who journal 3 specific things of gratitude daily report 25% higher happiness levels and sleep 30 minutes longer on average.',verse:'"In every thing give thanks: for this is the will of God." — 1 Thessalonians 5:18 (KJV)',steps:['Write 3 specific things of gratitude every single day.','Specificity is critical: not "I\'m grateful for my health" but "I\'m grateful that my body carried me through today\'s training."','Say thank you to God out loud for each one.','Write one gratitude to another person each week — and deliver it.','On hard days, gratitude is a weapon. Wield it deliberately.']},
   {id:21,pillar:'spirit',emoji:'🕊️',title:'Forgiveness — The Physical Act of Healing',body:'Unforgiveness keeps the body in a sustained stress response — elevated cortisol, elevated inflammatory markers, elevated blood pressure. Forgiveness is not just spiritual obedience — it is physical self-care.',science:'Studies show that people who forgive have 27% lower cortisol levels, significantly reduced blood pressure, lower rates of cardiovascular disease and improved immune function compared to those who hold grudges.',verse:'"Forgive us our debts, as we forgive our debtors." — Matthew 6:12 (KJV)',steps:['Write down the names of people you have not fully forgiven.','For each one, pray: "Lord, I choose to forgive [name]. I release this to You."','Forgiveness is a decision, not a feeling. Make the decision first.','Journal about what unforgiveness has been costing you physically and spiritually.','Repeat the prayer as many times as needed — 70 times 7 if necessary.']},
   {id:22,pillar:'spirit',emoji:'😴',title:'The Sabbath — God\'s Weekly Reset',body:'God commanded rest not because He needed it but because you do. The Sabbath is a weekly recalibration — a day to remember that your worth is not in your productivity.',science:'Research on burnout consistently identifies the absence of recovery time as the primary cause. Athletes who do not include recovery days plateau or regress — the same is true for mental and spiritual athletes.',verse:'"Remember the sabbath day, to keep it holy." — Exodus 20:8 (KJV)',steps:['Choose a fixed 24-hour Sabbath period — same time every week.','No work, no social media, no screens beyond minimal necessity.','Begin with worship. End with worship.','Eat a special meal with people you love.','Use the time for prayer, Scripture, nature, rest and relationships.']},
   {id:23,pillar:'soul',emoji:'📚',title:'Reading — The Discipline of the Renewed Mind',body:'Leaders are readers. Paul wrote "bring the books" from prison. Knowledge in service of God\'s Kingdom is never wasted.',science:'Reading for 6 minutes reduces stress by 68% — more than music, walking or drinking tea. Regular reading delays cognitive decline and builds cognitive reserve against dementia. Literary fiction improves understanding of others\'s perspectives by 25%.',verse:'"Study to shew thyself approved unto God." — 2 Timothy 2:15 (KJV)',steps:['Read 20–30 minutes every day — ideally morning or before sleep instead of screens.','Read Scripture first. Then books that grow your knowledge and calling.','Keep a reading journal — write one insight from every book.','Read biographies of great men and women of faith.','Set a goal: one book per month minimum.']},
   {id:24,pillar:'temple',emoji:'🔥',title:'HIIT — Short, Intense, Transformative',body:'High-Intensity Interval Training produces the same cardiovascular and metabolic adaptations as twice the volume of moderate cardio — in significantly less time. HIIT specifically targets visceral fat.',science:'A meta-analysis of 77 studies showed HIIT reduces waist circumference 1.8cm more than moderate exercise, reduces visceral fat by 17% more, and improves VO2 max 9% more per hour invested. The afterburn effect keeps metabolism elevated 24–48 hours post-session.',verse:'"She girdeth her loins with strength." — Proverbs 31:17 (KJV)',steps:['Start with 4 rounds of: 40 seconds hard effort, 20 seconds rest.','Examples: sprinting, burpees, jump squats, mountain climbers.','Always warm up 5 minutes before — cold muscles are injury-prone.','HIIT should feel genuinely difficult — if you can hold a conversation, push harder.','Limit to 3 sessions per week maximum — more increases cortisol.']},
-  {id:25,pillar:'soul',emoji:'🎯',title:'Goal Setting — The Vision that Disciplines',body:'Without a clear vision, your brain defaults to comfort and avoidance. Written goals activate the reticular activating system (RAS) — filtering information toward your stated objectives.',science:'Specific written goals with deadlines produce 90% higher achievement rates than vague intentions. Implementation intentions ("When X happens, I will do Y") reduce decision fatigue and automate behaviour change, making consistency require less willpower over time.',verse:'"Write the vision, and make it plain." — Habakkuk 2:2 (KJV)',steps:['Write 3 goals every morning — one physical, one spiritual, one personal.','Make each goal specific, measurable and time-bound.','Review your 90-day goals every Sunday.','Share your goals with your accountability partner in the Tribe.','At the end of each day, ask: did I live today in line with who I want to become?']},
+  {id:25,pillar:'soul',emoji:'🎯',title:'Goal Setting — The Vision that Disciplines',body:'Without a clear vision, your brain defaults to comfort and avoidance. Written goals activate the reticular activating system (RAS) — filtering information toward your stated objectives.',science:'Specific written goals with deadlines produce 90% higher achievement rates than vague intentions. Implementation intentions ("When X happens, I will do Y") reduce decision fatigue and automate behaviour change, making consistency require less willpower over time.',verse:'"Write the vision, and make it plain." — Habakkuk 2:2 (KJV)',steps:['Write 3 goals every morning — one physical, one spiritual, one personal.','Make each goal specific, measurable and time-bound.','Review your 90-day goals every Sunday.','Write your goals down and put them where you see them every morning.','At the end of each day, ask: did I live today in line with who I want to become?']},
   {id:26,pillar:'temple',emoji:'🧘',title:'Stretching & Mobility — The Body\'s Flexibility',body:'Flexibility and mobility are the foundation that determines how long you can train without injury. Tight hips and poor mobility create compensation patterns that eventually result in pain.',science:'Regular stretching (30–90 seconds per muscle, 5x per week) increases flexibility by 18–32% over 12 weeks. It improves sleep quality by activating the parasympathetic nervous system and reduces chronic lower back pain by 27%.',verse:'"Who satisfieth thy mouth with good things; so that thy youth is renewed like the eagle\'s." — Psalm 103:5 (KJV)',steps:['Stretch every morning after sunlight and water.','Hold each stretch for a minimum of 30 seconds.','Focus on hips, thoracic spine and hamstrings.','Never bounce during stretching — this causes micro-tears.','After training, hold stretches 60–90 seconds while muscles are warm.']},
-  {id:27,pillar:'soul',emoji:'🤲',title:'Serving Others — The Paradox of Fulfilment',body:'Acts of service for others consistently produce higher levels of wellbeing, purpose and happiness than self-focused pursuits — even when those pursuits are successful.',science:'Harvard research shows spending money on others produces greater happiness than spending on yourself. Volunteering regularly is associated with a 22% lower mortality rate. Helping others activates the brain\'s reward centre more powerfully than receiving help.',verse:'"For even the Son of man came not to be ministered unto, but to minister." — Mark 10:45 (KJV)',steps:['Identify one specific way you can serve someone today — before considering your own needs.','In the GodHealth Tribe: pray for one member daily by name.','Look for the person in your life who needs encouragement.','Give your time generously — time is more valuable than money in most relationships.','Serve without recognition. What you do in secret, God rewards openly.']}
+  {id:27,pillar:'soul',emoji:'🤲',title:'Serving Others — The Paradox of Fulfilment',body:'Acts of service for others consistently produce higher levels of wellbeing, purpose and happiness than self-focused pursuits — even when those pursuits are successful.',science:'Harvard research shows spending money on others produces greater happiness than spending on yourself. Volunteering regularly is associated with a 22% lower mortality rate. Helping others activates the brain\'s reward centre more powerfully than receiving help.',verse:'"For even the Son of man came not to be ministered unto, but to minister." — Mark 10:45 (KJV)',steps:['Identify one specific way you can serve someone today — before considering your own needs.','Pray daily, by name, for one person in your life.','Look for the person in your life who needs encouragement.','Give your time generously — time is more valuable than money in most relationships.','Serve without recognition. What you do in secret, God rewards openly.']}
 ];
 
 // ═══ RENDER MEALS ═══
@@ -1900,6 +1890,7 @@ if('serviceWorker' in navigator){
       .catch(e => console.warn('SW reg failed:', e));
   });
 }
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}));}
 </script>
 </body>
 </html>

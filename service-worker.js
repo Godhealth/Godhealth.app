@@ -3,7 +3,7 @@
 // Versie ophogen bij elke nieuwe release om cache te verversen
 // ============================================================
 
-const CACHE_NAME = 'godhealth-v1';
+const CACHE_NAME = 'godhealth-v2';
 
 const PRECACHE = [
   '/',
@@ -12,8 +12,9 @@ const PRECACHE = [
   '/godhealth-21days.html',
   '/godhealth-meals-plan.html',
   '/godhealth-prayer.html',
-  '/godhealth-tribe.html',
   '/godhealth-training.html',
+  '/reset-password.html',
+  '/gh-access.js',
   '/manifest.json',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
@@ -44,16 +45,21 @@ self.addEventListener('fetch', event => {
   // Supabase API calls altijd via netwerk (nooit cachen)
   if (url.hostname.includes('supabase.co')) return;
 
-  // Voor HTML-pagina's: network-first (altijd meest recente versie)
-  if (event.request.mode === 'navigate') {
+  // Alleen GET-verzoeken cachen
+  if (event.request.method !== 'GET') return;
+
+  // HTML-pagina's en eigen scripts: network-first (altijd meest recente versie)
+  if (event.request.mode === 'navigate' || (url.origin === self.location.origin && url.pathname.endsWith('.js'))) {
     event.respondWith(
       fetch(event.request)
         .then(res => {
-          const clone = res.clone();
-          caches.open(CACHE_NAME).then(c => c.put(event.request, clone));
+          if (res && res.ok) {
+            const clone = res.clone();
+            caches.open(CACHE_NAME).then(c => c.put(event.request, clone));
+          }
           return res;
         })
-        .catch(() => caches.match(event.request))
+        .catch(() => caches.match(event.request, { ignoreSearch: true }))
     );
     return;
   }
