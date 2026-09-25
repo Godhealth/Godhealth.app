@@ -152,37 +152,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
 .scroll-area>*{animation:ghFade .45s ease;}@keyframes ghFade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 </style>
-<!-- GodHealth Auth Guard -->
+<!-- GodHealth Access Guard: signed in + active subscription -->
 <style id="gh-hide">body{visibility:hidden}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function ghAuthGuard(){
-  function show(){var s=document.getElementById('gh-hide');if(s)s.parentNode.removeChild(s);}
-  // CHECK 1: new login key
-  try{var a=localStorage.getItem('gh_auth_v1');if(a){var p=JSON.parse(a);if(p&&p.name){show();return;}}}catch(e){}
-  // CHECK 2: original app state (name lives here too)
-  try{var b=localStorage.getItem('gh_app_v2');if(b){var q=JSON.parse(b);if(q&&q.name){show();return;}}}catch(e){}
-  // CHECK 3: Supabase session fallback (async)
-  try{
-    if(typeof supabase!=='undefined'&&supabase.createClient){
-      var db=supabase.createClient('https://attnnjhkjwpunlnokgvx.supabase.co','sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG');
-      db.auth.getSession().then(function(res){
-        var sess=res&&res.data&&res.data.session;
-        if(sess){
-          var name=(sess.user.user_metadata&&sess.user.user_metadata.full_name)||'';
-          if(name){try{localStorage.setItem('gh_auth_v1',JSON.stringify({name:name,email:sess.user.email||'',ts:Date.now()}));}catch(e){}}
-          show();
-        }else{
-          window.location.replace('index.html');
-        }
-      }).catch(function(){window.location.replace('index.html');});
-      return;
-    }
-  }catch(e){}
-  // No session anywhere and no Supabase → back to login
-  window.location.replace('index.html');
-})();
-</script>
+<script src="gh-access.js"></script>
+<script>GH.guardPage();</script>
 </head>
 <body>
 
@@ -324,7 +298,7 @@ const DAYS=[
     day:6,title:'Iron Sharpens Iron',theme:'Foundation',
     verse:{text:'Iron sharpeneth iron; so a man sharpeneth the countenance of his friend.',ref:'Proverbs 27:17 (KJV)'},
     tasks:[
-      {icon:'👥',name:'Tell one person about the 21-Day Arise Challenge',desc:'Accountability changes everything. You cannot grow in isolation. Today, invite one person to join you or hold you accountable. Send them a message right now.',pillar:'soul'},
+      {icon:'✍️',name:'Write down why you started the 21-Day Arise Challenge',desc:'Write three sentences: why you started, who you are becoming, and what God is already doing. Put it where you will see it every morning.',pillar:'soul'},
       {icon:'⚡',name:'Train with higher intensity than Day 3',desc:'Progressive overload is the principle of growth — in the gym and in life. Push harder than your last session. Your temple is getting stronger.',pillar:'temple'},
       {icon:'📖',name:'Memorise one Bible verse today',desc:'Write it on a card. Read it 5 times this morning and 5 times tonight. By tomorrow you will know it. This verse will stay with you for life.',pillar:'spirit'},
     ],
@@ -428,7 +402,7 @@ const DAYS=[
     day:16,title:'Community is Medicine',theme:'Transformation',
     verse:{text:'Two are better than one; because they have a good reward for their labour.',ref:'Ecclesiastes 4:9 (KJV)'},
     tasks:[
-      {icon:'👥',name:'Check in with your accountability partner today',desc:'Call them. Not message — call. Tell them exactly where you are. What is hard. What God is doing. Let them speak into your life.',pillar:'soul'},
+      {icon:'📞',name:'Call someone you love today',desc:'Not message — call. Tell them how you are really doing and ask how they are. Listen well. Relationships are medicine for body and soul.',pillar:'soul'},
       {icon:'🌿',name:'Cook a biblical meal and share it with someone',desc:'Food is covenant. In Scripture, eating together is never just eating — it is relationship. Cook something from the GodHealth Kitchen and invite someone to share it.',pillar:'temple'},
       {icon:'🙏',name:'Pray specifically for 3 people who are far from God',desc:'Not just believers — three people you know who need Christ. Pray for them by name, specifically, for 5 minutes each. This is the heartbeat of the Kingdom.',pillar:'spirit'},
     ],

@@ -174,37 +174,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
 .scroll-area>*{animation:ghFade .45s ease;}@keyframes ghFade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 </style>
-<!-- GodHealth Auth Guard -->
+<!-- GodHealth Access Guard: signed in + active subscription -->
 <style id="gh-hide">body{visibility:hidden}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function ghAuthGuard(){
-  function show(){var s=document.getElementById('gh-hide');if(s)s.parentNode.removeChild(s);}
-  // CHECK 1: new login key
-  try{var a=localStorage.getItem('gh_auth_v1');if(a){var p=JSON.parse(a);if(p&&p.name){show();return;}}}catch(e){}
-  // CHECK 2: original app state (name lives here too)
-  try{var b=localStorage.getItem('gh_app_v2');if(b){var q=JSON.parse(b);if(q&&q.name){show();return;}}}catch(e){}
-  // CHECK 3: Supabase session fallback (async)
-  try{
-    if(typeof supabase!=='undefined'&&supabase.createClient){
-      var db=supabase.createClient('https://attnnjhkjwpunlnokgvx.supabase.co','sb_publishable_KBSraE-BqUasxBUW5fOxbA_nK6FNITG');
-      db.auth.getSession().then(function(res){
-        var sess=res&&res.data&&res.data.session;
-        if(sess){
-          var name=(sess.user.user_metadata&&sess.user.user_metadata.full_name)||'';
-          if(name){try{localStorage.setItem('gh_auth_v1',JSON.stringify({name:name,email:sess.user.email||'',ts:Date.now()}));}catch(e){}}
-          show();
-        }else{
-          window.location.replace('index.html');
-        }
-      }).catch(function(){window.location.replace('index.html');});
-      return;
-    }
-  }catch(e){}
-  // No session anywhere and no Supabase → back to login
-  window.location.replace('index.html');
-})();
-</script>
+<script src="gh-access.js"></script>
+<script>GH.guardPage();</script>
 </head>
 <body>
 
@@ -554,6 +528,9 @@ const BADGES=[
   {id:'diamond',emoji:'💎',name:'90 Days',req:'90 day streak',days:90},
 ];
 
+const VITALITY_KEYS=['energy','sleep','god','fresh','joy'];
+const VITALITY_COLORS={energy:'var(--temple)',sleep:'var(--soul)',god:'var(--spirit)',fresh:'var(--gold)',joy:'var(--spirit)'};
+
 // ═══ INIT ═══
 ls();
 initStreak();
@@ -816,8 +793,6 @@ function formatDate(str){
 }
 
 // ═══ VITALITY TAB ═══
-const VITALITY_KEYS=['energy','sleep','god','fresh','joy'];
-const VITALITY_COLORS={energy:'var(--temple)',sleep:'var(--soul)',god:'var(--spirit)',fresh:'var(--gold)',joy:'var(--spirit)'};
 
 function updateVitality(key,val){
   document.getElementById('vval-'+key).textContent=val;
@@ -974,7 +949,7 @@ function renderNotifyTab(){
   if(T.eveningTime)document.getElementById('evening-time').value=T.eveningTime;
 
   const btn=document.getElementById('notif-btn');
-  if(T.notifEnabled||Notification?.permission==='granted'){
+  if(T.notifEnabled||(window.Notification&&Notification.permission==='granted')){
     btn.textContent='✓ Reminders Enabled';
     btn.classList.add('enabled');
   }
@@ -991,7 +966,7 @@ function requestNotifications(){
     showToast('Notifications not supported in this browser');
     return;
   }
-  Notification.requestPermission().then(perm=>{
+  Promise.resolve(Notification.requestPermission()).then(perm=>{
     if(perm==='granted'){
       T.notifEnabled=true;ss();
       const btn=document.getElementById('notif-btn');
@@ -1000,10 +975,10 @@ function requestNotifications(){
       // Show a test notification
       const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
       const v=VERSES[doy%VERSES.length];
-      new Notification('GodHealth 🙏',{
-        body:`"${v.text.slice(0,80)}..." — ${v.ref}`,
-        icon:'https://emoji.aranja.com/static/emoji-data/img-apple-160/271d.png'
-      });
+      const opts={body:`"${v.text.slice(0,80)}..." — ${v.ref}`,icon:'icons/icon-192x192.png'};
+      // Android/iOS only allow notifications via the service worker; desktop also allows the constructor
+      const viaSW=navigator.serviceWorker?navigator.serviceWorker.getRegistration().then(r=>{if(r)return r.showNotification('GodHealth 🙏',opts);throw 0;}):Promise.reject();
+      viaSW.catch(()=>{try{new Notification('GodHealth 🙏',opts);}catch(e){}});
       showToast('✓ Reminders enabled — God bless you!');
     } else {
       showToast('Please allow notifications in your browser settings');
